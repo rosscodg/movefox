@@ -3,34 +3,60 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-primary: #7c3aed;
-  --color-primary-hover: #6d28d9;
-  --color-primary-light: #a78bfa;
-  --color-accent: #10b981;
-  --color-accent-hover: #059669;
-  --color-surface: #12141f;
-  --color-surface-alt: #1e2030;
-  --color-border: #2d3348;
-  --color-border-light: #3d4460;
-  --color-text-primary: #f0f0f5;
-  --color-text-secondary: #9ca3af;
-  --color-text-muted: #6b7280;
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-light: var(--primary-light);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-surface: var(--surface);
+  --color-surface-alt: var(--surface-alt);
+  --color-border: var(--border);
+  --color-border-light: var(--border-light);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
   --color-danger: #ef4444;
   --color-warning: #f59e0b;
   --color-info: #3b82f6;
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
+/* ── Light mode (default) ── */
 :root {
-  --background: #0a0b14;
-  --foreground: #f0f0f5;
+  --background: #ffffff;
+  --foreground: #1a1d2e;
+  --primary: #7c3aed;
+  --primary-hover: #6d28d9;
+  --primary-light: #a78bfa;
+  --accent: #10b981;
+  --accent-hover: #059669;
+  --surface: #ffffff;
+  --surface-alt: #f8f9fc;
+  --border: #e2e5ef;
+  --border-light: #d1d5e0;
+  --text-primary: #1a1d2e;
+  --text-secondary: #555d73;
+  --text-muted: #8890a4;
+  color-scheme: light;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    --background: #f8f9fc;
-    --foreground: #1a1d2e;
-  }
+/* ── Dark mode ── */
+.dark {
+  --background: #0a0b14;
+  --foreground: #f0f0f5;
+  --primary: #7c3aed;
+  --primary-hover: #6d28d9;
+  --primary-light: #a78bfa;
+  --accent: #10b981;
+  --accent-hover: #059669;
+  --surface: #12141f;
+  --surface-alt: #1e2030;
+  --border: #2d3348;
+  --border-light: #3d4460;
+  --text-primary: #f0f0f5;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+  color-scheme: dark;
 }
 
 body {
@@ -44,22 +70,22 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Custom scrollbar for dark theme */
+/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0a0b14;
+  background: var(--background);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #2d3348;
+  background: var(--border);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3d4460;
+  background: var(--border-light);
 }
 
 /* Focus styles */
