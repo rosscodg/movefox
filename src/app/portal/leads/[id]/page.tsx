@@ -199,37 +199,39 @@ export default async function LeadDetailPage({ params }: PageProps) {
 
     if (user) {
       // Fetch lead
-      // const { data: leadData } = await supabase
-      //   .from('leads')
-      //   .select('*')
-      //   .eq('id', id)
-      //   .single();
-      // lead = leadData;
+      const { data: leadData } = await supabase
+        .from('leads')
+        .select('*')
+        .eq('id', id)
+        .single();
+      if (leadData) lead = leadData;
 
       // Fetch assignment for this company
-      // const { data: companyUser } = await supabase
-      //   .from('company_users')
-      //   .select('company_id')
-      //   .eq('user_id', user.id)
-      //   .single();
+      const { data: companyUser } = await supabase
+        .from('company_users')
+        .select('company_id')
+        .eq('user_id', user.id)
+        .single();
 
-      // const { data: assignmentData } = await supabase
-      //   .from('lead_assignments')
-      //   .select('*')
-      //   .eq('lead_id', id)
-      //   .eq('company_id', companyUser.company_id)
-      //   .single();
-      // assignment = assignmentData;
+      if (companyUser) {
+        const { data: assignmentData } = await supabase
+          .from('lead_assignments')
+          .select('*')
+          .eq('lead_id', id)
+          .eq('company_id', companyUser.company_id)
+          .single();
+        if (assignmentData) assignment = assignmentData;
+      }
 
       // If revealed, fetch contact details
-      // if (assignment?.revealed_at) {
-      //   const { data: contactData } = await supabase
-      //     .from('lead_contact_details')
-      //     .select('*')
-      //     .eq('lead_id', id)
-      //     .single();
-      //   contactDetails = contactData;
-      // }
+      if (assignment?.revealed_at) {
+        const { data: contactData } = await supabase
+          .from('lead_contact_details')
+          .select('*')
+          .eq('lead_id', id)
+          .single();
+        if (contactData) contactDetails = contactData;
+      }
     }
   } catch {
     // Fall through to mock data

@@ -96,13 +96,17 @@ export function LeadDetailClient({
   }
 
   function formatDateTime(dateStr: string): string {
-    return new Date(dateStr).toLocaleDateString('en-GB', {
+    const d = new Date(dateStr);
+    const date = d.toLocaleDateString('en-GB', {
       day: 'numeric',
       month: 'short',
       year: 'numeric',
+    });
+    const time = d.toLocaleTimeString('en-GB', {
       hour: '2-digit',
       minute: '2-digit',
     });
+    return `${date}, ${time}`;
   }
 
   async function handleReveal() {

@@ -13,7 +13,7 @@ const footerLinks = {
   ],
   partners: [
     { href: '/login', label: 'Partner Login' },
-    { href: '/contact', label: 'Become a Partner' },
+    { href: '/join', label: 'Become a Partner' },
   ],
 };
 

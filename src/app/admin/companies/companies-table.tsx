@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { Search, Check, X } from 'lucide-react';
+import { Search, Check } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -58,19 +58,8 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
     });
   }, [companies, statusFilter, searchQuery]);
 
-  function handleApprove(id: string) {
-    // In production:
-    // await supabase.from('companies').update({ status: 'approved' }).eq('id', id);
-    // revalidatePath('/admin/companies');
-    alert(`Approve company ${id} — wire up Supabase action`);
-  }
-
-  function handleReject(id: string) {
-    // In production:
-    // await supabase.from('companies').update({ status: 'rejected' }).eq('id', id);
-    // revalidatePath('/admin/companies');
-    alert(`Reject company ${id} — wire up Supabase action`);
-  }
+  // Approve/reject now handled on the detail page with the full
+  // email dialog experience. The inline buttons link there directly.
 
   return (
     <div className="space-y-4">
@@ -156,26 +145,12 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
                     <td className="px-6 py-4">
                       <div className="flex items-center justify-end gap-2">
                         {company.status === 'pending' && (
-                          <>
-                            <Button
-                              size="sm"
-                              variant="primary"
-                              className="gap-1"
-                              onClick={() => handleApprove(company.id)}
-                            >
+                          <Link href={`/admin/companies/${company.id}`}>
+                            <Button size="sm" variant="primary" className="gap-1">
                               <Check className="h-3.5 w-3.5" />
-                              Approve
+                              Review
                             </Button>
-                            <Button
-                              size="sm"
-                              variant="danger"
-                              className="gap-1"
-                              onClick={() => handleReject(company.id)}
-                            >
-                              <X className="h-3.5 w-3.5" />
-                              Reject
-                            </Button>
-                          </>
+                          </Link>
                         )}
                         <Link href={`/admin/companies/${company.id}`}>
                           <Button size="sm" variant="ghost">

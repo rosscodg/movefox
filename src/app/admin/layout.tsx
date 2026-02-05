@@ -14,20 +14,21 @@ export default async function AdminLayout({
   children: React.ReactNode;
 }) {
   // --- Server-side admin check ---
-  // const supabase = await createClient();
-  // const { data: { user } } = await supabase.auth.getUser();
-  // if (!user) redirect('/login');
-  // const { data: profile } = await supabase
-  //   .from('profiles')
-  //   .select('role')
-  //   .eq('user_id', user.id)
-  //   .single();
-  // if (!profile || profile.role !== 'admin') redirect('/login');
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) redirect('/login');
 
-  // Mock admin user for development
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role, full_name, email')
+    .eq('user_id', user.id)
+    .single();
+
+  if (!profile || profile.role !== 'admin') redirect('/login');
+
   const adminUser = {
-    email: 'admin@movecompare.co.uk',
-    full_name: 'Admin User',
+    email: profile.email ?? user.email ?? 'admin@movecompare.co.uk',
+    full_name: profile.full_name ?? 'Admin User',
   };
 
   return (

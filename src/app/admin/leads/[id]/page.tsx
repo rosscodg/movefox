@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-// import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 import type {
   Lead,
   LeadContactDetails,
@@ -30,14 +30,9 @@ export const metadata: Metadata = {
   title: 'Lead Detail',
 };
 
-// --- Mock Data ---
-// In production:
-// const supabase = await createClient();
-// const { data: lead } = await supabase.from('leads').select('*').eq('id', params.id).single();
-// const { data: contact } = await supabase.from('lead_contact_details').select('*').eq('lead_id', params.id).single();
-// const { data: assignments } = await supabase.from('lead_assignments').select('*, companies(name)').eq('lead_id', params.id);
+// --- Fallback Data (used when Supabase tables are empty or query errors) ---
 
-function getMockLead(id: string): Lead {
+function getFallbackLead(id: string): Lead {
   return {
     id,
     from_postcode: 'SW1A 1AA',
@@ -55,7 +50,7 @@ function getMockLead(id: string): Lead {
   };
 }
 
-function getMockContact(leadId: string): LeadContactDetails {
+function getFallbackContact(leadId: string): LeadContactDetails {
   return {
     id: 'lc1',
     lead_id: leadId,
@@ -67,7 +62,7 @@ function getMockContact(leadId: string): LeadContactDetails {
   };
 }
 
-const mockAssignments: (LeadAssignment & { companyName: string })[] = [
+const FALLBACK_ASSIGNMENTS: (LeadAssignment & { companyName: string })[] = [
   {
     id: 'la1',
     lead_id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
@@ -125,6 +120,40 @@ const mockAssignments: (LeadAssignment & { companyName: string })[] = [
   },
 ];
 
+async function getLeadData(id: string) {
+  try {
+    const supabase = await createClient();
+
+    const [leadResult, contactResult, assignmentsResult] = await Promise.all([
+      supabase.from('leads').select('*').eq('id', id).single(),
+      supabase.from('lead_contact_details').select('*').eq('lead_id', id).single(),
+      supabase.from('lead_assignments').select('*, companies(name)').eq('lead_id', id),
+    ]);
+
+    const lead: Lead = leadResult.data ?? getFallbackLead(id);
+    const contact: LeadContactDetails = contactResult.data ?? getFallbackContact(id);
+
+    let assignments: (LeadAssignment & { companyName: string })[];
+    if (assignmentsResult.error || !assignmentsResult.data || assignmentsResult.data.length === 0) {
+      assignments = FALLBACK_ASSIGNMENTS;
+    } else {
+      assignments = assignmentsResult.data.map((a: LeadAssignment & { companies?: { name: string } | null }) => ({
+        ...a,
+        companyName: a.companies?.name ?? 'Unknown Company',
+        companies: undefined,
+      }));
+    }
+
+    return { lead, contact, assignments };
+  } catch {
+    return {
+      lead: getFallbackLead(id),
+      contact: getFallbackContact(id),
+      assignments: FALLBACK_ASSIGNMENTS,
+    };
+  }
+}
+
 function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString('en-GB', {
     day: 'numeric',
@@ -165,8 +194,7 @@ export default async function LeadDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const lead = getMockLead(id);
-  const contact = getMockContact(id);
+  const { lead, contact, assignments } = await getLeadData(id);
 
   const requirementsList = [
     { label: 'Packing', icon: Package, value: lead.packing_required },
@@ -282,7 +310,7 @@ export default async function LeadDetailPage({
           <Card>
             <CardHeader>
               <CardTitle>
-                Assignments ({mockAssignments.length}/5)
+                Assignments ({assignments.length}/5)
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -299,7 +327,7 @@ export default async function LeadDetailPage({
                     </tr>
                   </thead>
                   <tbody>
-                    {mockAssignments.map((assignment) => (
+                    {assignments.map((assignment) => (
                       <tr
                         key={assignment.id}
                         className="border-b border-border/50 hover:bg-surface-alt/50 transition-colors"
@@ -400,19 +428,19 @@ export default async function LeadDetailPage({
               <div className="grid grid-cols-2 gap-4">
                 <div className="text-center p-3 rounded-xl bg-surface-alt">
                   <p className="text-2xl font-bold text-text-primary">
-                    {mockAssignments.length}
+                    {assignments.length}
                   </p>
                   <p className="text-xs text-text-muted mt-1">Assigned</p>
                 </div>
                 <div className="text-center p-3 rounded-xl bg-surface-alt">
                   <p className="text-2xl font-bold text-text-primary">
-                    {mockAssignments.filter((a) => a.revealed_at).length}
+                    {assignments.filter((a) => a.revealed_at).length}
                   </p>
                   <p className="text-xs text-text-muted mt-1">Revealed</p>
                 </div>
                 <div className="text-center p-3 rounded-xl bg-surface-alt">
                   <p className="text-2xl font-bold text-text-primary">
-                    £{mockAssignments
+                    £{assignments
                       .filter((a) => a.price_at_reveal)
                       .reduce((sum, a) => sum + (a.price_at_reveal ?? 0), 0)
                       .toFixed(2)}
@@ -421,7 +449,7 @@ export default async function LeadDetailPage({
                 </div>
                 <div className="text-center p-3 rounded-xl bg-surface-alt">
                   <p className="text-2xl font-bold text-text-primary">
-                    {mockAssignments.filter((a) => a.status === 'quoted' || a.status === 'won').length}
+                    {assignments.filter((a) => a.status === 'quoted' || a.status === 'won').length}
                   </p>
                   <p className="text-xs text-text-muted mt-1">Quoted/Won</p>
                 </div>

@@ -24,7 +24,7 @@ export default function ConfirmationPage() {
 
           {/* Heading */}
           <h1 className="text-2xl sm:text-3xl font-bold text-text-primary mb-3">
-            Quote request submitted!
+            Quote request submitted.
           </h1>
           <p className="text-text-secondary mb-8 leading-relaxed">
             Thank you for using MoveCompare. Your details have been securely

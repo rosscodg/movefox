@@ -50,38 +50,36 @@ export default async function PortalLayout({
     }
 
     // Fetch company for this user
-    // const { data: companyUser } = await supabase
-    //   .from('company_users')
-    //   .select('company_id')
-    //   .eq('user_id', user.id)
-    //   .single();
+    const { data: companyUser } = await supabase
+      .from('company_users')
+      .select('company_id')
+      .eq('user_id', user.id)
+      .single();
 
-    // if (!companyUser) {
-    //   redirect('/login');
-    // }
+    if (companyUser) {
+      const { data: companyData } = await supabase
+        .from('companies')
+        .select('*')
+        .eq('id', companyUser.company_id)
+        .single();
 
-    // const { data: companyData } = await supabase
-    //   .from('companies')
-    //   .select('*')
-    //   .eq('id', companyUser.company_id)
-    //   .single();
+      if (companyData) {
+        company = companyData;
+      }
 
-    // if (companyData) {
-    //   company = companyData;
-    // }
+      // Fetch credit balance (latest ledger entry)
+      const { data: ledger } = await supabase
+        .from('credit_ledger')
+        .select('balance_after')
+        .eq('company_id', companyUser.company_id)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
 
-    // Fetch credit balance (latest ledger entry)
-    // const { data: ledger } = await supabase
-    //   .from('credit_ledger')
-    //   .select('balance_after')
-    //   .eq('company_id', company.id)
-    //   .order('created_at', { ascending: false })
-    //   .limit(1)
-    //   .single();
-
-    // if (ledger) {
-    //   creditBalance = ledger.balance_after;
-    // }
+      if (ledger) {
+        creditBalance = ledger.balance_after;
+      }
+    }
   } catch {
     // In development without Supabase, fall through to mock data
   }

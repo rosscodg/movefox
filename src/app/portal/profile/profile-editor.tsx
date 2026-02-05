@@ -19,6 +19,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import type { Company } from '@/types/database';
+import { updateCompanyProfile as updateCompanyProfileAction } from '@/app/portal/actions';
 
 interface ProfileEditorProps {
   company: Company;
@@ -47,6 +48,7 @@ export function ProfileEditor({
   });
   const [isSaving, setIsSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   function updateField(field: string, value: string) {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -75,14 +77,34 @@ export function ProfileEditor({
 
   async function handleSave() {
     setIsSaving(true);
+    setError(null);
 
-    // TODO: Call server action to update company profile
-    // await updateCompanyProfile(company.id, form);
+    try {
+      const result = await updateCompanyProfileAction({
+        name: form.name,
+        description: form.description || null,
+        address_line1: form.address_line1 || null,
+        address_line2: form.address_line2 || null,
+        city: form.city || null,
+        postcode: form.postcode || null,
+        phone: form.phone || null,
+        email: form.email || null,
+        website: form.website || null,
+        services: form.services,
+        insurance_details: form.insurance_details || null,
+        accreditations: form.accreditations,
+      });
 
-    // Mock save
-    await new Promise((r) => setTimeout(r, 1500));
-    setIsSaving(false);
-    setSaved(true);
+      if (result.success) {
+        setSaved(true);
+      } else {
+        setError(result.error || 'Failed to save profile');
+      }
+    } catch {
+      setError('An unexpected error occurred');
+    } finally {
+      setIsSaving(false);
+    }
   }
 
   return (
@@ -119,6 +141,13 @@ export function ProfileEditor({
           <p className="text-sm text-accent">
             Profile saved successfully.
           </p>
+        </div>
+      )}
+
+      {/* Error banner */}
+      {error && (
+        <div className="p-4 bg-danger/10 border border-danger/30 rounded-xl">
+          <p className="text-sm text-danger">{error}</p>
         </div>
       )}
 

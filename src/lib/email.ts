@@ -1,10 +1,16 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const RESEND_API_KEY = process.env.RESEND_API_KEY;
+const resend = new Resend(RESEND_API_KEY);
 
 const FROM_EMAIL = process.env.FROM_EMAIL || 'noreply@movecompare.co.uk';
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || 'MoveCompare';
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://movecompare.co.uk';
+
+/** Returns true when Resend is properly configured (not a placeholder key) */
+export function isResendConfigured(): boolean {
+  return !!RESEND_API_KEY && RESEND_API_KEY !== 're_placeholder' && RESEND_API_KEY.startsWith('re_');
+}
 
 // ─── Lead confirmation email (sent to the mover) ─────────────────────────────
 
@@ -160,6 +166,239 @@ export async function sendNewLeadNotification(
     throw new Error(`Failed to send lead notification email: ${error.message}`);
   }
 
+  return data;
+}
+
+// ─── Partner approval email (with magic link) ──────────────────────────────────
+
+export async function sendPartnerApprovalEmail(
+  to: string,
+  companyName: string,
+  magicLink: string,
+  customMessage: string
+) {
+  // Convert line breaks in the custom message to HTML paragraphs
+  const messageHtml = customMessage
+    .split('\n\n')
+    .filter((p) => p.trim())
+    .map((p) => `<p style="margin:0 0 16px;font-size:14px;line-height:1.6;color:#4b5563;">${p.replace(/\n/g, '<br/>')}</p>`)
+    .join('');
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+    </head>
+    <body style="margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background-color:#f9fafb;">
+      <div style="max-width:560px;margin:40px auto;background:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
+        <div style="background:linear-gradient(135deg, #10b981, #1e3a5f);padding:32px;">
+          <h1 style="margin:0 0 8px;color:#ffffff;font-size:24px;font-weight:700;">Welcome to ${APP_NAME}</h1>
+          <p style="margin:0;color:rgba(255,255,255,0.85);font-size:14px;">Your application has been approved</p>
+        </div>
+        <div style="padding:32px;">
+          <p style="margin:0 0 16px;font-size:14px;line-height:1.6;color:#4b5563;">
+            Hi <strong style="color:#111827;">${companyName}</strong>,
+          </p>
+          ${messageHtml}
+          <div style="text-align:center;margin:32px 0;">
+            <a href="${magicLink}" style="display:inline-block;background:#1e3a5f;color:#ffffff;font-size:16px;font-weight:600;text-decoration:none;padding:14px 36px;border-radius:8px;">
+              Sign In to Your Portal
+            </a>
+          </div>
+          <p style="margin:0 0 8px;font-size:12px;color:#9ca3af;text-align:center;">
+            This link will expire in 24 hours. If it expires, you can request a new one from the <a href="${APP_URL}/login" style="color:#1e3a5f;">login page</a>.
+          </p>
+        </div>
+        <div style="padding:16px 32px;border-top:1px solid #e5e7eb;background:#f9fafb;">
+          <p style="margin:0;font-size:12px;color:#9ca3af;text-align:center;">
+            &copy; ${new Date().getFullYear()} ${APP_NAME}. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  const { data, error } = await resend.emails.send({
+    from: `${APP_NAME} <${FROM_EMAIL}>`,
+    to,
+    subject: `Welcome to ${APP_NAME} — Your application has been approved`,
+    html,
+  });
+
+  if (error) {
+    console.error('[email] Failed to send partner approval email:', error);
+    throw new Error(`Failed to send partner approval email: ${error.message}`);
+  }
+
+  return data;
+}
+
+// ─── Partner rejection email ────────────────────────────────────────────────────
+
+export async function sendPartnerRejectionEmail(
+  to: string,
+  companyName: string,
+  customMessage: string
+) {
+  const messageHtml = customMessage
+    .split('\n\n')
+    .filter((p) => p.trim())
+    .map((p) => `<p style="margin:0 0 16px;font-size:14px;line-height:1.6;color:#4b5563;">${p.replace(/\n/g, '<br/>')}</p>`)
+    .join('');
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+    </head>
+    <body style="margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background-color:#f9fafb;">
+      <div style="max-width:560px;margin:40px auto;background:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
+        <div style="background:#1e3a5f;padding:24px 32px;">
+          <h1 style="margin:0;color:#ffffff;font-size:20px;font-weight:600;">${APP_NAME}</h1>
+        </div>
+        <div style="padding:32px;">
+          <h2 style="margin:0 0 16px;font-size:18px;color:#111827;">Application Update</h2>
+          <p style="margin:0 0 16px;font-size:14px;line-height:1.6;color:#4b5563;">
+            Hi <strong style="color:#111827;">${companyName}</strong>,
+          </p>
+          ${messageHtml}
+          <p style="margin:24px 0 0;font-size:14px;line-height:1.6;color:#4b5563;">
+            If you have any questions, please <a href="${APP_URL}/contact" style="color:#1e3a5f;">get in touch</a>.
+          </p>
+        </div>
+        <div style="padding:16px 32px;border-top:1px solid #e5e7eb;background:#f9fafb;">
+          <p style="margin:0;font-size:12px;color:#9ca3af;text-align:center;">
+            &copy; ${new Date().getFullYear()} ${APP_NAME}. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  const { data, error } = await resend.emails.send({
+    from: `${APP_NAME} <${FROM_EMAIL}>`,
+    to,
+    subject: `Application update - ${APP_NAME}`,
+    html,
+  });
+
+  if (error) {
+    console.error('[email] Failed to send partner rejection email:', error);
+    throw new Error(`Failed to send partner rejection email: ${error.message}`);
+  }
+
+  return data;
+}
+
+// ─── Admin notification: new partner registration ───────────────────────────────
+
+interface NewPartnerDetails {
+  companyId: string;
+  companyName: string;
+  contactName: string;
+  contactEmail: string;
+  companyEmail: string;
+  companyPhone: string;
+  city: string;
+  postcode: string;
+  services: string[];
+}
+
+export async function sendNewPartnerNotification(details: NewPartnerDetails) {
+  const adminEmail = process.env.ADMIN_EMAIL;
+  if (!adminEmail) {
+    console.warn('[email] ADMIN_EMAIL not configured, skipping new partner notification');
+    return null;
+  }
+
+  const reviewUrl = `${APP_URL}/admin/companies/${details.companyId}`;
+
+  const servicesList = details.services.length > 0
+    ? details.services.map((s) => s.replace(/_/g, ' ')).join(', ')
+    : 'None specified';
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+    </head>
+    <body style="margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background-color:#f9fafb;">
+      <div style="max-width:560px;margin:40px auto;background:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
+        <div style="background:linear-gradient(135deg, #7c3aed, #1e3a5f);padding:24px 32px;">
+          <h1 style="margin:0 0 4px;color:#ffffff;font-size:20px;font-weight:600;">${APP_NAME} Admin</h1>
+          <p style="margin:0;color:rgba(255,255,255,0.8);font-size:13px;">New partner application</p>
+        </div>
+        <div style="padding:32px;">
+          <h2 style="margin:0 0 8px;font-size:18px;color:#111827;">${details.companyName}</h2>
+          <p style="margin:0 0 20px;font-size:14px;color:#6b7280;">
+            A new removal company has registered and is awaiting your review.
+          </p>
+
+          <div style="background:#f3f4f6;border-radius:8px;padding:20px;margin:0 0 24px;">
+            <table style="width:100%;border-collapse:collapse;font-size:14px;">
+              <tr>
+                <td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;vertical-align:top;">Contact:</td>
+                <td style="padding:6px 0;color:#111827;font-weight:500;">${details.contactName}</td>
+              </tr>
+              <tr>
+                <td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;vertical-align:top;">Email:</td>
+                <td style="padding:6px 0;color:#111827;font-weight:500;">${details.contactEmail}</td>
+              </tr>
+              <tr>
+                <td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;vertical-align:top;">Company email:</td>
+                <td style="padding:6px 0;color:#111827;font-weight:500;">${details.companyEmail}</td>
+              </tr>
+              <tr>
+                <td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;vertical-align:top;">Phone:</td>
+                <td style="padding:6px 0;color:#111827;font-weight:500;">${details.companyPhone}</td>
+              </tr>
+              <tr>
+                <td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;vertical-align:top;">Location:</td>
+                <td style="padding:6px 0;color:#111827;font-weight:500;">${details.city}, ${details.postcode}</td>
+              </tr>
+              <tr>
+                <td style="padding:6px 12px 6px 0;color:#6b7280;white-space:nowrap;vertical-align:top;">Services:</td>
+                <td style="padding:6px 0;color:#111827;font-weight:500;">${servicesList}</td>
+              </tr>
+            </table>
+          </div>
+
+          <a href="${reviewUrl}" style="display:inline-block;background:#7c3aed;color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;padding:12px 28px;border-radius:6px;">
+            Review Application
+          </a>
+        </div>
+        <div style="padding:16px 32px;border-top:1px solid #e5e7eb;background:#f9fafb;">
+          <p style="margin:0;font-size:12px;color:#9ca3af;text-align:center;">
+            &copy; ${new Date().getFullYear()} ${APP_NAME}. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  const { data, error } = await resend.emails.send({
+    from: `${APP_NAME} <${FROM_EMAIL}>`,
+    to: adminEmail,
+    subject: `New partner application: ${details.companyName} — ${APP_NAME}`,
+    html,
+  });
+
+  if (error) {
+    console.error('[email] Failed to send new partner notification:', error);
+    // Don't throw — admin notification failure shouldn't block registration
+    return null;
+  }
+
+  console.log('[email] Admin notified of new partner registration:', details.companyName);
   return data;
 }
 

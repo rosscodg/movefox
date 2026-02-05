@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-// import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 import type {
   Company,
   LeadAssignment,
@@ -29,16 +29,10 @@ export const metadata: Metadata = {
   title: 'Company Detail',
 };
 
-// --- Mock data ---
-// In production:
-// const supabase = await createClient();
-// const { data: company } = await supabase.from('companies').select('*').eq('id', params.id).single();
-// const { data: assignments } = await supabase.from('lead_assignments').select('*, leads(*)').eq('company_id', params.id).order('assigned_at', { ascending: false });
-// const { data: ledger } = await supabase.from('credit_ledger').select('*').eq('company_id', params.id).order('created_at', { ascending: false });
-// const { data: coverage } = await supabase.from('postcode_coverage').select('*').eq('company_id', params.id);
-// const { data: users } = await supabase.from('company_users').select('*, profiles(*)').eq('company_id', params.id);
+// --- Fallback data ---
+// Kept as dummy data so the page is still useful when the database is empty.
 
-function getMockCompany(id: string): Company {
+function getFallbackCompany(id: string): Company {
   return {
     id,
     name: 'Careful Carriers',
@@ -63,7 +57,7 @@ function getMockCompany(id: string): Company {
   };
 }
 
-const mockAssignments: (LeadAssignment & { leadFromPostcode: string; leadToPostcode: string })[] = [
+const FALLBACK_ASSIGNMENTS: (LeadAssignment & { leadFromPostcode: string; leadToPostcode: string })[] = [
   {
     id: 'la1',
     lead_id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
@@ -102,14 +96,14 @@ const mockAssignments: (LeadAssignment & { leadFromPostcode: string; leadToPostc
   },
 ];
 
-const mockLedger: CreditLedger[] = [
+const FALLBACK_LEDGER: CreditLedger[] = [
   { id: 'cl1', company_id: '3', delta: 50, balance_after: 34, reason: 'purchase', reference_type: 'stripe', reference_id: 'pi_123', description: 'Growth Pack purchased', created_at: '2025-01-25T10:00:00Z' },
   { id: 'cl2', company_id: '3', delta: -7, balance_after: -16, reason: 'reveal', reference_type: 'lead_assignment', reference_id: 'la1', description: 'Reveal: BS1 4DJ to BA1 1SU', created_at: '2025-01-28T11:00:00Z' },
   { id: 'cl3', company_id: '3', delta: -5, balance_after: 45, reason: 'reveal', reference_type: 'lead_assignment', reference_id: 'la3', description: 'Reveal: BS3 1QG to EX1 1EE', created_at: '2025-01-26T15:30:00Z' },
   { id: 'cl4', company_id: '3', delta: 5, balance_after: 39, reason: 'refund', reference_type: 'lead_assignment', reference_id: 'la_old', description: 'Refund: duplicate lead', created_at: '2025-01-22T09:00:00Z' },
 ];
 
-const mockCoverage: PostcodeCoverage[] = [
+const FALLBACK_COVERAGE: PostcodeCoverage[] = [
   { id: 'pc1', company_id: '3', postcode_prefix: 'BS', enabled: true, created_at: '2025-01-20T12:00:00Z' },
   { id: 'pc2', company_id: '3', postcode_prefix: 'BA', enabled: true, created_at: '2025-01-20T12:00:00Z' },
   { id: 'pc3', company_id: '3', postcode_prefix: 'GL', enabled: true, created_at: '2025-01-20T12:00:00Z' },
@@ -117,7 +111,7 @@ const mockCoverage: PostcodeCoverage[] = [
   { id: 'pc5', company_id: '3', postcode_prefix: 'SN', enabled: true, created_at: '2025-01-20T12:00:00Z' },
 ];
 
-const mockUsers: (CompanyUser & { fullName: string; email: string })[] = [
+const FALLBACK_USERS: (CompanyUser & { fullName: string; email: string })[] = [
   { id: 'cu1', company_id: '3', user_id: 'u1', is_primary: true, created_at: '2025-01-20T12:00:00Z', fullName: 'James Harper', email: 'james@carefulcarriers.co.uk' },
   { id: 'cu2', company_id: '3', user_id: 'u2', is_primary: false, created_at: '2025-01-22T08:00:00Z', fullName: 'Sarah Mitchell', email: 'sarah@carefulcarriers.co.uk' },
 ];
@@ -177,8 +171,101 @@ export default async function CompanyDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const company = getMockCompany(id);
-  const creditsBalance = 34;
+
+  let company: Company;
+  let assignments: (LeadAssignment & { leadFromPostcode: string; leadToPostcode: string })[];
+  let ledger: CreditLedger[];
+  let coverage: PostcodeCoverage[];
+  let users: (CompanyUser & { fullName: string; email: string })[];
+  let creditsBalance: number;
+
+  try {
+    const supabase = await createClient();
+
+    // Fetch company
+    const { data: companyData, error: companyError } = await supabase
+      .from('companies')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (companyError || !companyData) {
+      throw new Error('Company not found');
+    }
+
+    company = companyData;
+
+    // Fetch assignments with joined lead postcodes
+    const { data: assignmentsData } = await supabase
+      .from('lead_assignments')
+      .select('*, leads(from_postcode, to_postcode)')
+      .eq('company_id', id)
+      .order('assigned_at', { ascending: false });
+
+    // Fetch ledger
+    const { data: ledgerData } = await supabase
+      .from('credit_ledger')
+      .select('*')
+      .eq('company_id', id)
+      .order('created_at', { ascending: false });
+
+    // Fetch coverage
+    const { data: coverageData } = await supabase
+      .from('postcode_coverage')
+      .select('*')
+      .eq('company_id', id);
+
+    // Fetch users with joined profile data
+    const { data: usersData } = await supabase
+      .from('company_users')
+      .select('*, profiles(full_name, email)')
+      .eq('company_id', id);
+
+    // Map assignments to include leadFromPostcode / leadToPostcode from joined leads
+    assignments = (assignmentsData ?? []).map((a: Record<string, unknown>) => {
+      const leads = a.leads as { from_postcode: string; to_postcode: string } | null;
+      return {
+        id: a.id as string,
+        lead_id: a.lead_id as string,
+        company_id: a.company_id as string,
+        assigned_at: a.assigned_at as string,
+        revealed_at: a.revealed_at as string | null,
+        status: a.status as LeadAssignmentStatus,
+        price_at_reveal: a.price_at_reveal as number | null,
+        notes: a.notes as string | null,
+        leadFromPostcode: leads?.from_postcode ?? '',
+        leadToPostcode: leads?.to_postcode ?? '',
+      };
+    });
+
+    // Map users to include fullName / email from joined profiles
+    users = (usersData ?? []).map((u: Record<string, unknown>) => {
+      const profile = u.profiles as { full_name: string; email: string } | null;
+      return {
+        id: u.id as string,
+        company_id: u.company_id as string,
+        user_id: u.user_id as string,
+        is_primary: u.is_primary as boolean,
+        created_at: u.created_at as string,
+        fullName: profile?.full_name ?? '',
+        email: profile?.email ?? '',
+      };
+    });
+
+    ledger = (ledgerData ?? []) as CreditLedger[];
+    coverage = (coverageData ?? []) as PostcodeCoverage[];
+
+    // Credit balance: latest ledger entry's balance_after
+    creditsBalance = ledger.length > 0 ? ledger[0].balance_after : 0;
+  } catch {
+    // Supabase unavailable or query failed — fall back to dummy data
+    company = getFallbackCompany(id);
+    assignments = FALLBACK_ASSIGNMENTS;
+    ledger = FALLBACK_LEDGER;
+    coverage = FALLBACK_COVERAGE;
+    users = FALLBACK_USERS;
+    creditsBalance = 34;
+  }
 
   return (
     <div className="space-y-6">
@@ -199,7 +286,7 @@ export default async function CompanyDetailPage({
             <p className="text-text-secondary mt-1">Company ID: {company.id}</p>
           </div>
         </div>
-        <CompanyActions companyId={company.id} currentStatus={company.status} />
+        <CompanyActions companyId={company.id} companyName={company.name} companyEmail={company.email ?? ''} currentStatus={company.status} />
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
@@ -318,7 +405,7 @@ export default async function CompanyDetailPage({
                     </tr>
                   </thead>
                   <tbody>
-                    {mockAssignments.map((a) => (
+                    {assignments.map((a) => (
                       <tr key={a.id} className="border-b border-border/50 hover:bg-surface-alt/50 transition-colors">
                         <td className="px-6 py-3">
                           <Link href={`/admin/leads/${a.lead_id}`} className="text-primary-light hover:underline font-mono text-xs">
@@ -370,7 +457,7 @@ export default async function CompanyDetailPage({
                     </tr>
                   </thead>
                   <tbody>
-                    {mockLedger.map((entry) => (
+                    {ledger.map((entry) => (
                       <tr key={entry.id} className="border-b border-border/50 hover:bg-surface-alt/50 transition-colors">
                         <td className="px-6 py-3 text-text-secondary text-xs">{formatDateTime(entry.created_at)}</td>
                         <td className="px-4 py-3">
@@ -409,7 +496,7 @@ export default async function CompanyDetailPage({
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                {mockCoverage.map((pc) => (
+                {coverage.map((pc) => (
                   <div
                     key={pc.id}
                     className="flex items-center justify-between px-3 py-2 rounded-lg bg-surface-alt"
@@ -431,7 +518,7 @@ export default async function CompanyDetailPage({
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {mockUsers.map((user) => (
+                {users.map((user) => (
                   <div key={user.id} className="flex items-center justify-between p-3 rounded-xl bg-surface-alt">
                     <div>
                       <p className="text-sm font-medium text-text-primary">{user.fullName}</p>

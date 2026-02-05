@@ -253,11 +253,15 @@ export function ContactFormSection() {
               For Removal Companies
             </h3>
             <p className="text-sm text-text-secondary mb-4">
-              Interested in joining MoveCompare as a partner? We would love
-              to hear from you. Use the contact form or email us to discuss
-              how we can help grow your business.
+              Interested in joining MoveCompare as a partner? Register your
+              company and start receiving quality move requests.
             </p>
-            <Badge variant="info">Partner enquiries welcome</Badge>
+            <a
+              href="/join"
+              className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-xl bg-primary text-white hover:bg-primary-hover transition-colors"
+            >
+              Become a Partner &rarr;
+            </a>
           </CardContent>
         </Card>
       </div>

@@ -251,7 +251,7 @@ export default function LoginPage() {
           <p className="text-sm text-text-muted">
             Are you a removal company?{' '}
             <Link
-              href="/contact"
+              href="/join"
               className="text-primary hover:text-primary-light transition-colors font-medium"
             >
               Become a partner

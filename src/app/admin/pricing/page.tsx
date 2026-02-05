@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-// import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 import type { PricingRule, CreditPack } from '@/types/database';
 import { PricingForm } from './pricing-form';
 import { CreditPacksManager } from './credit-packs-manager';
@@ -8,13 +8,9 @@ export const metadata: Metadata = {
   title: 'Pricing',
 };
 
-// --- Mock Data ---
-// In production:
-// const supabase = await createClient();
-// const { data: activeRule } = await supabase.from('pricing_rules').select('*').eq('is_active', true).single();
-// const { data: creditPacks } = await supabase.from('credit_packs').select('*').order('credits', { ascending: true });
+// --- Fallback Data (used when Supabase tables are empty or on error) ---
 
-const mockActiveRule: PricingRule = {
+const FALLBACK_activeRule: PricingRule = {
   id: 'pr1',
   name: 'Standard Pricing',
   base_price: 5.0,
@@ -38,7 +34,7 @@ const mockActiveRule: PricingRule = {
   updated_at: '2025-01-20T10:00:00Z',
 };
 
-const mockCreditPacks: CreditPack[] = [
+const FALLBACK_creditPacks: CreditPack[] = [
   {
     id: 'cp1',
     name: 'Starter',
@@ -77,7 +73,30 @@ const mockCreditPacks: CreditPack[] = [
   },
 ];
 
-export default function PricingPage() {
+export default async function PricingPage() {
+  const supabase = await createClient();
+
+  // Query active pricing rule from Supabase, fall back to mock data
+  const { data: activeRule, error: ruleError } = await supabase
+    .from('pricing_rules')
+    .select('*')
+    .eq('is_active', true)
+    .single();
+
+  // Query credit packs from Supabase, fall back to mock data
+  const { data: creditPacks, error: packsError } = await supabase
+    .from('credit_packs')
+    .select('*')
+    .order('credits', { ascending: true });
+
+  const resolvedRule: PricingRule =
+    !ruleError && activeRule ? activeRule : FALLBACK_activeRule;
+
+  const resolvedPacks: CreditPack[] =
+    !packsError && creditPacks && creditPacks.length > 0
+      ? creditPacks
+      : FALLBACK_creditPacks;
+
   return (
     <div className="space-y-6">
       <div>
@@ -86,8 +105,8 @@ export default function PricingPage() {
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-        <PricingForm rule={mockActiveRule} />
-        <CreditPacksManager packs={mockCreditPacks} />
+        <PricingForm rule={resolvedRule} />
+        <CreditPacksManager packs={resolvedPacks} />
       </div>
     </div>
   );

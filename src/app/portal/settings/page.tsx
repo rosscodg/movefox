@@ -90,32 +90,34 @@ export default async function SettingsPage() {
 
     if (user) {
       // Fetch company
-      // const { data: companyUser } = await supabase
-      //   .from('company_users')
-      //   .select('company_id')
-      //   .eq('user_id', user.id)
-      //   .single();
+      const { data: companyUser } = await supabase
+        .from('company_users')
+        .select('company_id')
+        .eq('user_id', user.id)
+        .single();
 
-      // const { data: companyData } = await supabase
-      //   .from('companies')
-      //   .select('*')
-      //   .eq('id', companyUser.company_id)
-      //   .single();
+      if (companyUser) {
+        const { data: companyData } = await supabase
+          .from('companies')
+          .select('*')
+          .eq('id', companyUser.company_id)
+          .single();
 
-      // if (companyData) {
-      //   company = companyData;
-      // }
+        if (companyData) {
+          company = companyData;
+        }
 
-      // Fetch postcode coverage
-      // const { data: postcodeData } = await supabase
-      //   .from('postcode_coverage')
-      //   .select('*')
-      //   .eq('company_id', companyUser.company_id)
-      //   .order('postcode_prefix');
+        // Fetch postcode coverage
+        const { data: postcodeData } = await supabase
+          .from('postcode_coverage')
+          .select('*')
+          .eq('company_id', companyUser.company_id)
+          .order('postcode_prefix');
 
-      // if (postcodeData) {
-      //   postcodes = postcodeData;
-      // }
+        if (postcodeData && postcodeData.length > 0) {
+          postcodes = postcodeData;
+        }
+      }
     }
   } catch {
     // Fall through to mock data

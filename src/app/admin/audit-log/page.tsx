@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-// import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 import type { AdminAuditLog } from '@/types/database';
 import { AuditLogViewer } from './audit-log-viewer';
 
@@ -7,16 +7,9 @@ export const metadata: Metadata = {
   title: 'Audit Log',
 };
 
-// --- Mock Data ---
-// In production:
-// const supabase = await createClient();
-// const { data: logs, count } = await supabase
-//   .from('admin_audit_log')
-//   .select('*, profiles!actor_user_id(email, full_name)', { count: 'exact' })
-//   .order('created_at', { ascending: false })
-//   .range(0, 24);
+// --- Fallback Data (used when Supabase tables are empty or on error) ---
 
-const mockAuditLogs: (AdminAuditLog & { actorEmail: string })[] = [
+const FALLBACK_auditLogs: (AdminAuditLog & { actorEmail: string })[] = [
   {
     id: 'al1',
     actor_user_id: 'admin1',
@@ -163,7 +156,38 @@ const mockAuditLogs: (AdminAuditLog & { actorEmail: string })[] = [
   })),
 ];
 
-export default function AuditLogPage() {
+export default async function AuditLogPage() {
+  const supabase = await createClient();
+
+  // Query audit logs from Supabase, fall back to mock data
+  const { data: logs, error } = await supabase
+    .from('admin_audit_log')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(50);
+
+  let resolvedLogs: (AdminAuditLog & { actorEmail: string })[];
+
+  if (!error && logs && logs.length > 0) {
+    // Look up actor emails from profiles for each unique actor_user_id
+    const actorIds = [...new Set(logs.map((log) => log.actor_user_id))];
+    const { data: profiles } = await supabase
+      .from('profiles')
+      .select('id, email')
+      .in('id', actorIds);
+
+    const emailMap = new Map(
+      (profiles ?? []).map((p: { id: string; email: string }) => [p.id, p.email])
+    );
+
+    resolvedLogs = logs.map((log) => ({
+      ...log,
+      actorEmail: emailMap.get(log.actor_user_id) ?? 'unknown@movecompare.co.uk',
+    }));
+  } else {
+    resolvedLogs = FALLBACK_auditLogs;
+  }
+
   return (
     <div className="space-y-6">
       <div>
@@ -171,7 +195,7 @@ export default function AuditLogPage() {
         <p className="text-text-secondary mt-1">Track all administrative actions</p>
       </div>
 
-      <AuditLogViewer logs={mockAuditLogs} />
+      <AuditLogViewer logs={resolvedLogs} />
     </div>
   );
 }

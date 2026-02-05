@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-// import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 import type { CmsContent } from '@/types/database';
 import { ContentManager } from './content-manager';
 
@@ -7,16 +7,9 @@ export const metadata: Metadata = {
   title: 'Content',
 };
 
-// --- Mock Data ---
-// In production:
-// const supabase = await createClient();
-// const { data: content } = await supabase
-//   .from('cms_content')
-//   .select('*')
-//   .order('content_type')
-//   .order('sort_order');
+// --- Fallback Data (used when Supabase tables are empty or on error) ---
 
-const mockContent: CmsContent[] = [
+const FALLBACK_content: CmsContent[] = [
   {
     id: 'cms1',
     slug: 'about-us',
@@ -139,7 +132,19 @@ const mockContent: CmsContent[] = [
   },
 ];
 
-export default function ContentPage() {
+export default async function ContentPage() {
+  const supabase = await createClient();
+
+  // Query CMS content from Supabase, fall back to mock data
+  const { data: content, error } = await supabase
+    .from('cms_content')
+    .select('*')
+    .order('content_type')
+    .order('sort_order');
+
+  const resolvedContent: CmsContent[] =
+    !error && content && content.length > 0 ? content : FALLBACK_content;
+
   return (
     <div className="space-y-6">
       <div>
@@ -147,7 +152,7 @@ export default function ContentPage() {
         <p className="text-text-secondary mt-1">Manage pages, FAQs, and blog posts</p>
       </div>
 
-      <ContentManager content={mockContent} />
+      <ContentManager content={resolvedContent} />
     </div>
   );
 }

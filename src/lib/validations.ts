@@ -60,6 +60,60 @@ export const contactFormSchema = z.object({
 
 export type ContactFormData = z.infer<typeof contactFormSchema>;
 
+export const partnerRegistrationSchema = z.object({
+  // Account
+  full_name: z.string().min(2, 'Full name is required').max(100),
+  email: z.string().email('Please enter a valid email address'),
+  password: z.string().min(8, 'Password must be at least 8 characters'),
+  confirm_password: z.string(),
+  // Company
+  company_name: z.string().min(2, 'Company name is required').max(200),
+  company_phone: z.string().min(10, 'Please enter a valid phone number').max(20).regex(/^[\d\s+()-]+$/, 'Please enter a valid phone number'),
+  company_email: z.string().email('Please enter a valid company email'),
+  company_website: z.string().url('Please enter a valid URL').or(z.literal('')).optional(),
+  address_line1: z.string().min(1, 'Address is required').max(200),
+  address_line2: z.string().max(200).optional(),
+  city: z.string().min(1, 'City is required').max(100),
+  postcode: z.string().min(1, 'Postcode is required').regex(ukPostcodeRegex, 'Please enter a valid UK postcode'),
+  description: z.string().max(2000).optional(),
+  // Services
+  services: z.array(z.string()).min(1, 'Please select at least one service'),
+  accreditations: z.array(z.string()),
+  insurance_details: z.string().max(1000).optional(),
+  postcode_areas: z.array(z.string()).min(1, 'Please select at least one coverage area'),
+  // Terms
+  terms_accepted: z.literal(true, { message: 'You must accept the terms and conditions' }),
+}).refine((data) => data.password === data.confirm_password, {
+  message: 'Passwords do not match',
+  path: ['confirm_password'],
+});
+
+export type PartnerRegistrationData = z.infer<typeof partnerRegistrationSchema>;
+
+export const UK_POSTCODE_PREFIXES = [
+  'E', 'EC', 'N', 'NW', 'SE', 'SW', 'W', 'WC',
+  'AL', 'B', 'BA', 'BB', 'BD', 'BH', 'BL', 'BN', 'BR', 'BS',
+  'CA', 'CB', 'CF', 'CH', 'CM', 'CO', 'CR', 'CT', 'CV', 'CW',
+  'DA', 'DE', 'DH', 'DL', 'DN', 'DT', 'DY',
+  'EN', 'EX',
+  'FY',
+  'GL', 'GU',
+  'HA', 'HD', 'HG', 'HP', 'HR', 'HU', 'HX',
+  'IG', 'IP',
+  'KT',
+  'L', 'LA', 'LE', 'LL', 'LN', 'LS', 'LU',
+  'M', 'ME', 'MK', 'ML',
+  'NE', 'NG', 'NN', 'NP', 'NR',
+  'OL', 'OX',
+  'PE', 'PL', 'PO', 'PR',
+  'RG', 'RH', 'RM',
+  'S', 'SA', 'SG', 'SK', 'SL', 'SM', 'SN', 'SO', 'SP', 'SR', 'SS', 'ST', 'SY',
+  'TA', 'TD', 'TF', 'TN', 'TQ', 'TR', 'TS', 'TW',
+  'UB',
+  'WA', 'WD', 'WF', 'WN', 'WR', 'WS', 'WV',
+  'YO',
+] as const;
+
 export const pricingRuleSchema = z.object({
   name: z.string().min(1).max(100),
   base_price: z.number().min(0),

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-// import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 import type { Company } from '@/types/database';
 import { CompaniesTable } from './companies-table';
 
@@ -7,19 +7,9 @@ export const metadata: Metadata = {
   title: 'Companies',
 };
 
-// --- Mock Data ---
-// In production:
-// const supabase = await createClient();
-// const { data: companies } = await supabase
-//   .from('companies')
-//   .select(`
-//     *,
-//     lead_assignments(count),
-//     credit_ledger(balance_after)
-//   `)
-//   .order('created_at', { ascending: false });
-
-const mockCompanies: (Company & {
+// --- Fallback Data ---
+// Kept as dummy data so the page is still useful when the database is empty.
+const FALLBACK_COMPANIES: (Company & {
   leadsAssigned: number;
   reveals: number;
   creditsBalance: number;
@@ -176,7 +166,65 @@ const mockCompanies: (Company & {
   },
 ];
 
-export default function CompaniesPage() {
+export default async function CompaniesPage() {
+  let companies: (Company & {
+    leadsAssigned: number;
+    reveals: number;
+    creditsBalance: number;
+  })[] = [];
+
+  try {
+    const supabase = await createClient();
+
+    const { data: rawCompanies, error } = await supabase
+      .from('companies')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (!error && rawCompanies && rawCompanies.length > 0) {
+      // For each company, fetch aggregated stats
+      companies = await Promise.all(
+        rawCompanies.map(async (c) => {
+          // Count of lead_assignments
+          const { count: leadsAssigned } = await supabase
+            .from('lead_assignments')
+            .select('*', { count: 'exact', head: true })
+            .eq('company_id', c.id);
+
+          // Count of revealed assignments (where revealed_at is not null)
+          const { count: reveals } = await supabase
+            .from('lead_assignments')
+            .select('*', { count: 'exact', head: true })
+            .eq('company_id', c.id)
+            .not('revealed_at', 'is', null);
+
+          // Credit balance: latest ledger entry's balance_after
+          const { data: latestLedger } = await supabase
+            .from('credit_ledger')
+            .select('balance_after')
+            .eq('company_id', c.id)
+            .order('created_at', { ascending: false })
+            .limit(1)
+            .maybeSingle();
+
+          return {
+            ...c,
+            leadsAssigned: leadsAssigned ?? 0,
+            reveals: reveals ?? 0,
+            creditsBalance: latestLedger?.balance_after ?? 0,
+          };
+        })
+      );
+    }
+  } catch {
+    // Supabase unavailable or query failed — fall through to fallback
+  }
+
+  // Fall back to dummy data when the database is empty or errored
+  if (companies.length === 0) {
+    companies = FALLBACK_COMPANIES;
+  }
+
   return (
     <div className="space-y-6">
       <div>
@@ -184,7 +232,7 @@ export default function CompaniesPage() {
         <p className="text-text-secondary mt-1">Manage removal companies on the platform</p>
       </div>
 
-      <CompaniesTable companies={mockCompanies} />
+      <CompaniesTable companies={companies} />
     </div>
   );
 }

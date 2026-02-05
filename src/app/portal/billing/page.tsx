@@ -109,36 +109,38 @@ export default async function BillingPage() {
 
     if (user) {
       // Fetch company
-      // const { data: companyUser } = await supabase
-      //   .from('company_users')
-      //   .select('company_id')
-      //   .eq('user_id', user.id)
-      //   .single();
+      const { data: companyUser } = await supabase
+        .from('company_users')
+        .select('company_id')
+        .eq('user_id', user.id)
+        .single();
 
-      // Fetch credit balance
-      // const { data: balanceData } = await supabase
-      //   .from('credit_ledger')
-      //   .select('balance_after')
-      //   .eq('company_id', companyUser.company_id)
-      //   .order('created_at', { ascending: false })
-      //   .limit(1)
-      //   .single();
+      if (companyUser) {
+        // Fetch credit balance
+        const { data: balanceData } = await supabase
+          .from('credit_ledger')
+          .select('balance_after')
+          .eq('company_id', companyUser.company_id)
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .single();
 
-      // if (balanceData) {
-      //   creditBalance = balanceData.balance_after;
-      // }
+        if (balanceData) {
+          creditBalance = balanceData.balance_after;
+        }
 
-      // Fetch ledger history
-      // const { data: ledgerData } = await supabase
-      //   .from('credit_ledger')
-      //   .select('*')
-      //   .eq('company_id', companyUser.company_id)
-      //   .order('created_at', { ascending: false })
-      //   .limit(50);
+        // Fetch ledger history
+        const { data: ledgerData } = await supabase
+          .from('credit_ledger')
+          .select('*')
+          .eq('company_id', companyUser.company_id)
+          .order('created_at', { ascending: false })
+          .limit(50);
 
-      // if (ledgerData) {
-      //   ledger = ledgerData;
-      // }
+        if (ledgerData && ledgerData.length > 0) {
+          ledger = ledgerData;
+        }
+      }
     }
   } catch {
     // Fall through to mock data

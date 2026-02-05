@@ -12,32 +12,24 @@ import {
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-// import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 import type { Lead, Company } from '@/types/database';
 
 export const metadata: Metadata = {
   title: 'Dashboard',
 };
 
-// --- Mock Data ---
-// In production, replace with Supabase queries:
-// const supabase = await createClient();
-// const { data: leads } = await supabase.from('leads').select('*, lead_assignments(*)').order('created_at', { ascending: false }).limit(10);
-// const { data: companies } = await supabase.from('companies').select('*').order('created_at', { ascending: false }).limit(5);
-// const { count: totalLeads } = await supabase.from('leads').select('*', { count: 'exact', head: true });
-// const { count: activeCompanies } = await supabase.from('companies').select('*', { count: 'exact', head: true }).eq('status', 'approved');
-// const { count: pendingCompanies } = await supabase.from('companies').select('*', { count: 'exact', head: true }).eq('status', 'pending');
-
-const mockKpis = {
+// --- Fallback mock data (shown when Supabase tables are empty) ---
+const FALLBACK_KPIS = {
   totalLeads: 1_247,
   leadsThisWeek: 83,
   totalReveals: 4_891,
-  revenue: 29_346, // reveals x avg price
+  revenue: 29_346,
   activeCompanies: 64,
   pendingApproval: 7,
 };
 
-const mockRecentLeads: (Lead & { assignedCount: number; revealedCount: number })[] = [
+const FALLBACK_LEADS: (Lead & { assignedCount: number; revealedCount: number })[] = [
   {
     id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
     from_postcode: 'SW1A 1AA',
@@ -125,7 +117,7 @@ const mockRecentLeads: (Lead & { assignedCount: number; revealedCount: number })
   },
 ];
 
-const mockRecentCompanies: Pick<Company, 'id' | 'name' | 'city' | 'status' | 'created_at'>[] = [
+const FALLBACK_COMPANIES: Pick<Company, 'id' | 'name' | 'city' | 'status' | 'created_at'>[] = [
   { id: '1', name: 'Swift Movers Ltd', city: 'London', status: 'pending', created_at: '2025-01-28T08:00:00Z' },
   { id: '2', name: 'Northern Relocations', city: 'Manchester', status: 'pending', created_at: '2025-01-27T15:30:00Z' },
   { id: '3', name: 'Careful Carriers', city: 'Bristol', status: 'approved', created_at: '2025-01-26T12:00:00Z' },
@@ -133,14 +125,90 @@ const mockRecentCompanies: Pick<Company, 'id' | 'name' | 'city' | 'status' | 'cr
   { id: '5', name: 'QuickShift Removals', city: 'Birmingham', status: 'pending', created_at: '2025-01-24T11:30:00Z' },
 ];
 
-const kpiCards = [
-  { label: 'Total Leads', value: mockKpis.totalLeads.toLocaleString(), icon: FileText, color: 'text-primary-light' },
-  { label: 'Leads This Week', value: mockKpis.leadsThisWeek.toLocaleString(), icon: TrendingUp, color: 'text-accent' },
-  { label: 'Total Reveals', value: mockKpis.totalReveals.toLocaleString(), icon: Eye, color: 'text-info' },
-  { label: 'Revenue', value: `£${mockKpis.revenue.toLocaleString()}`, icon: PoundSterling, color: 'text-accent' },
-  { label: 'Active Companies', value: mockKpis.activeCompanies.toLocaleString(), icon: Building2, color: 'text-primary-light' },
-  { label: 'Pending Approval', value: mockKpis.pendingApproval.toLocaleString(), icon: Clock, color: 'text-warning' },
-];
+// --- Fetch real data from Supabase (falls back to mock if empty) ---
+async function getDashboardData() {
+  try {
+    const supabase = await createClient();
+
+    // Fetch KPIs
+    const [
+      { count: totalLeads },
+      { count: activeCompanies },
+      { count: pendingApproval },
+    ] = await Promise.all([
+      supabase.from('leads').select('*', { count: 'exact', head: true }),
+      supabase.from('companies').select('*', { count: 'exact', head: true }).eq('status', 'approved'),
+      supabase.from('companies').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
+    ]);
+
+    // Leads this week
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+    const { count: leadsThisWeek } = await supabase
+      .from('leads')
+      .select('*', { count: 'exact', head: true })
+      .gte('created_at', oneWeekAgo.toISOString());
+
+    // Total reveals & revenue
+    const { data: revealData } = await supabase
+      .from('lead_assignments')
+      .select('price_at_reveal')
+      .not('revealed_at', 'is', null);
+
+    const totalReveals = revealData?.length ?? 0;
+    const revenue = revealData?.reduce((sum, r) => sum + (Number(r.price_at_reveal) || 0), 0) ?? 0;
+
+    const hasRealData = (totalLeads ?? 0) > 0;
+
+    const kpis = hasRealData
+      ? {
+          totalLeads: totalLeads ?? 0,
+          leadsThisWeek: leadsThisWeek ?? 0,
+          totalReveals,
+          revenue,
+          activeCompanies: activeCompanies ?? 0,
+          pendingApproval: pendingApproval ?? 0,
+        }
+      : FALLBACK_KPIS;
+
+    // Recent leads with assignment counts
+    const { data: dbLeads } = await supabase
+      .from('leads')
+      .select('*, lead_assignments(id, revealed_at)')
+      .order('created_at', { ascending: false })
+      .limit(5);
+
+    const recentLeads = dbLeads && dbLeads.length > 0
+      ? dbLeads.map((l: Record<string, unknown>) => ({
+          ...l,
+          lead_assignments: undefined,
+          assignedCount: (l.lead_assignments as unknown[])?.length ?? 0,
+          revealedCount: (l.lead_assignments as { revealed_at: string | null }[])?.filter(
+            (a) => a.revealed_at !== null
+          ).length ?? 0,
+        }))
+      : FALLBACK_LEADS;
+
+    // Recent companies
+    const { data: dbCompanies } = await supabase
+      .from('companies')
+      .select('id, name, city, status, created_at')
+      .order('created_at', { ascending: false })
+      .limit(5);
+
+    const recentCompanies = dbCompanies && dbCompanies.length > 0
+      ? dbCompanies
+      : FALLBACK_COMPANIES;
+
+    return { kpis, recentLeads, recentCompanies };
+  } catch {
+    return {
+      kpis: FALLBACK_KPIS,
+      recentLeads: FALLBACK_LEADS,
+      recentCompanies: FALLBACK_COMPANIES,
+    };
+  }
+}
 
 function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString('en-GB', {
@@ -160,7 +228,18 @@ function statusBadgeVariant(status: string) {
   }
 }
 
-export default function AdminDashboardPage() {
+export default async function AdminDashboardPage() {
+  const { kpis, recentLeads, recentCompanies } = await getDashboardData();
+
+  const kpiCards = [
+    { label: 'Total Leads', value: kpis.totalLeads.toLocaleString(), icon: FileText, color: 'text-primary-light' },
+    { label: 'Leads This Week', value: kpis.leadsThisWeek.toLocaleString(), icon: TrendingUp, color: 'text-accent' },
+    { label: 'Total Reveals', value: kpis.totalReveals.toLocaleString(), icon: Eye, color: 'text-info' },
+    { label: 'Revenue', value: `£${kpis.revenue.toLocaleString()}`, icon: PoundSterling, color: 'text-accent' },
+    { label: 'Active Companies', value: kpis.activeCompanies.toLocaleString(), icon: Building2, color: 'text-primary-light' },
+    { label: 'Pending Approval', value: kpis.pendingApproval.toLocaleString(), icon: Clock, color: 'text-warning' },
+  ];
+
   return (
     <div className="space-y-6">
       {/* Page header */}
@@ -220,7 +299,7 @@ export default function AdminDashboardPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {mockRecentLeads.map((lead) => (
+                  {recentLeads.map((lead) => (
                     <tr
                       key={lead.id}
                       className="border-b border-border/50 hover:bg-surface-alt/50 transition-colors"
@@ -273,7 +352,7 @@ export default function AdminDashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {mockRecentCompanies.map((company) => (
+                {recentCompanies.map((company) => (
                   <Link
                     key={company.id}
                     href={`/admin/companies/${company.id}`}

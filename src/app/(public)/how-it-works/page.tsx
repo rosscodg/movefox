@@ -234,7 +234,7 @@ export default function HowItWorksPage() {
               Interested in becoming a MoveCompare partner?
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/contact">
+              <Link href="/join">
                 <Button variant="secondary" size="lg">
                   Become a Partner
                   <ArrowRight className="ml-2 w-5 h-5" />

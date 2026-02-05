@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-// import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 import type { Lead } from '@/types/database';
 import { LeadsTable } from './leads-table';
 
@@ -7,15 +7,8 @@ export const metadata: Metadata = {
   title: 'Leads',
 };
 
-// --- Mock Data ---
-// In production:
-// const supabase = await createClient();
-// const { data: leads } = await supabase
-//   .from('leads')
-//   .select('*, lead_assignments(count)')
-//   .order('created_at', { ascending: false });
-
-const mockLeads: (Lead & { assignedCount: number; revealedCount: number })[] = [
+// --- Fallback Data (used when Supabase tables are empty or query errors) ---
+const FALLBACK_LEADS: (Lead & { assignedCount: number; revealedCount: number })[] = [
   {
     id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
     from_postcode: 'SW1A 1AA',
@@ -154,7 +147,37 @@ const mockLeads: (Lead & { assignedCount: number; revealedCount: number })[] = [
   },
 ];
 
-export default function LeadsPage() {
+async function getLeads(): Promise<(Lead & { assignedCount: number; revealedCount: number })[]> {
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from('leads')
+      .select('*, lead_assignments(id, revealed_at)')
+      .order('created_at', { ascending: false });
+
+    if (error || !data || data.length === 0) {
+      return FALLBACK_LEADS;
+    }
+
+    return data.map((lead) => {
+      const assignments = lead.lead_assignments ?? [];
+      return {
+        ...lead,
+        lead_assignments: undefined,
+        assignedCount: assignments.length,
+        revealedCount: assignments.filter(
+          (a: { id: string; revealed_at: string | null }) => a.revealed_at !== null
+        ).length,
+      };
+    });
+  } catch {
+    return FALLBACK_LEADS;
+  }
+}
+
+export default async function LeadsPage() {
+  const leads = await getLeads();
+
   return (
     <div className="space-y-6">
       <div>
@@ -162,7 +185,7 @@ export default function LeadsPage() {
         <p className="text-text-secondary mt-1">Browse and manage all leads on the platform</p>
       </div>
 
-      <LeadsTable leads={mockLeads} />
+      <LeadsTable leads={leads} />
     </div>
   );
 }

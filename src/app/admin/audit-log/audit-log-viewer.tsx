@@ -38,14 +38,18 @@ const entityTypes = [
 ];
 
 function formatDateTime(dateStr: string) {
-  return new Date(dateStr).toLocaleString('en-GB', {
+  const d = new Date(dateStr);
+  const date = d.toLocaleDateString('en-GB', {
     day: 'numeric',
     month: 'short',
     year: 'numeric',
+  });
+  const time = d.toLocaleTimeString('en-GB', {
     hour: '2-digit',
     minute: '2-digit',
     second: '2-digit',
   });
+  return `${date}, ${time}`;
 }
 
 function actionBadgeVariant(action: string) {
