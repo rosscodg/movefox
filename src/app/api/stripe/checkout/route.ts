@@ -4,11 +4,15 @@ import Stripe from 'stripe';
 import { createClient } from '@/lib/supabase/server';
 import { CREDIT_PACKS } from '@/lib/constants';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-01-28.clover',
-});
-
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://movecompare.co.uk';
+
+function getStripe() {
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key) {
+    throw new Error('STRIPE_SECRET_KEY is not configured');
+  }
+  return new Stripe(key, { apiVersion: '2025-12-18.acacia' as Stripe.LatestApiVersion });
+}
 
 const checkoutRequestSchema = z.union([
   z.object({
@@ -119,6 +123,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     // Create Stripe checkout session
+    const stripe = getStripe();
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       mode: 'payment',

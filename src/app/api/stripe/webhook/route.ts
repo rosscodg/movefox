@@ -2,11 +2,21 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createAdminClient } from '@/lib/supabase/server';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-01-28.clover',
-});
+function getStripe() {
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key) {
+    throw new Error('STRIPE_SECRET_KEY is not configured');
+  }
+  return new Stripe(key, { apiVersion: '2025-12-18.acacia' as Stripe.LatestApiVersion });
+}
 
-const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET!;
+function getWebhookSecret() {
+  const secret = process.env.STRIPE_WEBHOOK_SECRET;
+  if (!secret) {
+    throw new Error('STRIPE_WEBHOOK_SECRET is not configured');
+  }
+  return secret;
+}
 
 // ─── POST /api/stripe/webhook ────────────────────────────────────────────────
 
@@ -27,7 +37,8 @@ export async function POST(request: NextRequest) {
 
     // Verify webhook signature
     try {
-      event = stripe.webhooks.constructEvent(body, signature, WEBHOOK_SECRET);
+      const stripe = getStripe();
+      event = stripe.webhooks.constructEvent(body, signature, getWebhookSecret());
     } catch (err) {
       console.error('[stripe/webhook] Signature verification failed:', err);
       return NextResponse.json(
