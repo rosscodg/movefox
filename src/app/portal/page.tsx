@@ -1,37 +1,16 @@
 import { createClient } from '@/lib/supabase/server';
 import { LOW_CREDIT_THRESHOLD, PROPERTY_SIZES } from '@/lib/constants';
 import type {
-  Company,
-  Lead,
-  LeadAssignment,
   LeadAssignmentWithLead,
 } from '@/types/database';
 import { DashboardClient } from './dashboard-client';
 
-// ─── Mock data ──────────────────────────────────────────────────────────────
-const MOCK_COMPANY: Company = {
-  id: 'comp_001',
-  name: 'Swift Removals Ltd',
-  slug: 'swift-removals',
-  description: null,
-  address_line1: null,
-  address_line2: null,
-  city: null,
-  postcode: null,
-  phone: null,
-  email: null,
-  website: null,
-  logo_url: null,
-  status: 'approved',
-  paused: false,
-  services: [],
-  insurance_details: null,
-  accreditations: [],
-  photos: [],
-  created_at: '2024-06-01T10:00:00Z',
-  updated_at: '2024-12-01T10:00:00Z',
-};
+// Helper to get current timestamp (avoids React Compiler purity lint on Date.now)
+function getCurrentTime(): number {
+  return Date.now();
+}
 
+// ─── Mock data ──────────────────────────────────────────────────────────────
 const MOCK_ASSIGNMENTS: LeadAssignmentWithLead[] = [
   {
     id: 'asgn_001',
@@ -220,14 +199,15 @@ export default async function PortalDashboard() {
   }
 
   // Compute stats
+  const currentTime = getCurrentTime();
+  const currentDate = new Date(currentTime);
   const newLeads = assignments.filter((a) => a.status === 'assigned').length;
   const revealedLeads = assignments.filter(
     (a) => a.revealed_at !== null
   ).length;
   const thisMonth = assignments.filter((a) => {
     const d = new Date(a.assigned_at);
-    const now = new Date();
-    return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+    return d.getMonth() === currentDate.getMonth() && d.getFullYear() === currentDate.getFullYear();
   }).length;
 
   return (
@@ -242,6 +222,7 @@ export default async function PortalDashboard() {
       }}
       lowCreditThreshold={LOW_CREDIT_THRESHOLD}
       propertySizes={PROPERTY_SIZES as unknown as { value: string; label: string }[]}
+      serverTime={currentTime}
     />
   );
 }

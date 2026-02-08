@@ -65,6 +65,55 @@ const STEPS = [
 
 const LONDON_PREFIXES = ['E', 'EC', 'N', 'NW', 'SE', 'SW', 'W', 'WC'];
 
+// ─── Step Indicator ─────────────────────────────────────────────────────────
+
+function StepIndicator({ step }: { step: number }) {
+  return (
+    <div className="flex items-center justify-center mt-4 mb-8">
+      {STEPS.map((s, i) => {
+        const Icon = s.icon;
+        const isActive = i === step;
+        const isComplete = i < step;
+        return (
+          <div key={s.label} className="flex items-center">
+            <div className="flex flex-col items-center">
+              <div
+                className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 ${
+                  isComplete
+                    ? 'bg-accent text-white'
+                    : isActive
+                      ? 'bg-primary text-white'
+                      : 'bg-surface-alt text-text-muted'
+                }`}
+              >
+                {isComplete ? (
+                  <Check className="w-4 h-4" />
+                ) : (
+                  <Icon className="w-4 h-4" />
+                )}
+              </div>
+              <span
+                className={`text-xs mt-1.5 font-medium ${
+                  isActive ? 'text-text-primary' : 'text-text-muted'
+                }`}
+              >
+                {s.label}
+              </span>
+            </div>
+            {i < STEPS.length - 1 && (
+              <div
+                className={`w-12 sm:w-20 h-0.5 mx-2 mb-5 ${
+                  i < step ? 'bg-accent' : 'bg-border'
+                }`}
+              />
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 // ─── Component ──────────────────────────────────────────────────────────────
 
 export function RegistrationForm() {
@@ -263,60 +312,11 @@ export function RegistrationForm() {
       )
     : UK_POSTCODE_PREFIXES;
 
-  // ── Step indicator ───────────────────────────────────────────────────────
-
-  function StepIndicator() {
-    return (
-      <div className="flex items-center justify-center mt-4 mb-8">
-        {STEPS.map((s, i) => {
-          const Icon = s.icon;
-          const isActive = i === step;
-          const isComplete = i < step;
-          return (
-            <div key={s.label} className="flex items-center">
-              <div className="flex flex-col items-center">
-                <div
-                  className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 ${
-                    isComplete
-                      ? 'bg-accent text-white'
-                      : isActive
-                        ? 'bg-primary text-white'
-                        : 'bg-surface-alt text-text-muted'
-                  }`}
-                >
-                  {isComplete ? (
-                    <Check className="w-4 h-4" />
-                  ) : (
-                    <Icon className="w-4 h-4" />
-                  )}
-                </div>
-                <span
-                  className={`text-xs mt-1.5 font-medium ${
-                    isActive ? 'text-text-primary' : 'text-text-muted'
-                  }`}
-                >
-                  {s.label}
-                </span>
-              </div>
-              {i < STEPS.length - 1 && (
-                <div
-                  className={`w-12 sm:w-20 h-0.5 mx-2 mb-5 ${
-                    i < step ? 'bg-accent' : 'bg-border'
-                  }`}
-                />
-              )}
-            </div>
-          );
-        })}
-      </div>
-    );
-  }
-
   // ── Render steps ─────────────────────────────────────────────────────────
 
   return (
     <div>
-      <StepIndicator />
+      <StepIndicator step={step} />
 
       {/* Global error */}
       {errors.general && (

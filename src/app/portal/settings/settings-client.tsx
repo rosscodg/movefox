@@ -7,13 +7,11 @@ import {
   Trash2,
   Pause,
   Play,
-  Settings,
   Shield,
   Bell,
   CheckCircle2,
   AlertTriangle,
   Save,
-  X,
   Mail,
   Key,
 } from 'lucide-react';

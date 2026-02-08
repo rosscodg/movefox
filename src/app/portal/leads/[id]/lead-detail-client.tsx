@@ -21,7 +21,6 @@ import {
   Phone,
   Clock,
   CheckCircle2,
-  XCircle,
   MessageSquare,
   Save,
 } from 'lucide-react';

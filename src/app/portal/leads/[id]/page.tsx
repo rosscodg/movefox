@@ -189,7 +189,7 @@ export default async function LeadDetailPage({ params }: PageProps) {
   let lead: Lead | null = null;
   let assignment: LeadAssignment | null = null;
   let contactDetails: LeadContactDetails | null = null;
-  let creditCost = 5; // default reveal cost
+  const creditCost = 5; // default reveal cost
 
   try {
     const supabase = await createClient();
