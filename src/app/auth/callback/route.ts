@@ -7,6 +7,31 @@ export async function GET(request: NextRequest) {
   const code = searchParams.get('code');
   const token_hash = searchParams.get('token_hash');
   const type = searchParams.get('type');
+  const redirectTo = searchParams.get('redirect');
+
+  // Helper to determine the final redirect path based on user role
+  async function getRedirectPath(
+    supabase: Awaited<ReturnType<typeof createClient>>
+  ): Promise<string> {
+    // If a specific redirect was requested, honour it
+    if (redirectTo) return redirectTo;
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (user) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('user_id', user.id)
+        .single();
+
+      if (profile?.role === 'admin') return '/admin';
+    }
+
+    return '/portal';
+  }
 
   // Handle PKCE flow (code exchange)
   if (code) {
@@ -14,23 +39,8 @@ export async function GET(request: NextRequest) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (!error) {
-      // Check user role and redirect accordingly
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      if (user) {
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('role')
-          .eq('user_id', user.id)
-          .single();
-
-        if (profile?.role === 'admin') {
-          return NextResponse.redirect(`${origin}/admin`);
-        }
-        return NextResponse.redirect(`${origin}/portal`);
-      }
+      const path = await getRedirectPath(supabase);
+      return NextResponse.redirect(`${origin}${path}`);
     }
   }
 
@@ -43,22 +53,8 @@ export async function GET(request: NextRequest) {
     });
 
     if (!error) {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      if (user) {
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('role')
-          .eq('user_id', user.id)
-          .single();
-
-        if (profile?.role === 'admin') {
-          return NextResponse.redirect(`${origin}/admin`);
-        }
-        return NextResponse.redirect(`${origin}/portal`);
-      }
+      const path = await getRedirectPath(supabase);
+      return NextResponse.redirect(`${origin}${path}`);
     }
   }
 

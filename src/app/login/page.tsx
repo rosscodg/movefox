@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, type FormEvent } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { LogIn, Mail, ArrowRight, Sparkles } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
@@ -11,15 +11,29 @@ import { Card } from '@/components/ui/card';
 
 type AuthMode = 'password' | 'magic';
 
+const AUTH_ERROR_MESSAGES: Record<string, string> = {
+  auth_callback_error: 'Sign-in failed. Please try again.',
+  auth_failed: 'Authentication failed. Please try again.',
+  missing_code: 'Invalid sign-in link. Please request a new one.',
+};
+
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const supabase = createClient();
+
+  const redirectTo = searchParams.get('redirect');
+  const urlError = searchParams.get('error');
 
   const [mode, setMode] = useState<AuthMode>('password');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(
+    urlError
+      ? (AUTH_ERROR_MESSAGES[urlError] ?? 'An error occurred. Please try again.')
+      : null
+  );
   const [magicSent, setMagicSent] = useState(false);
 
   // ------------------------------------------------------------------
@@ -42,7 +56,7 @@ export default function LoginPage() {
       return;
     }
 
-    // Determine redirect based on user role
+    // Determine redirect based on user role (or use redirect param)
     const userId = data.user?.id;
     if (userId) {
       const { data: profile } = await supabase
@@ -52,12 +66,12 @@ export default function LoginPage() {
         .single();
 
       if (profile?.role === 'admin') {
-        router.push('/admin');
+        router.push(redirectTo ?? '/admin');
       } else {
-        router.push('/portal');
+        router.push(redirectTo ?? '/portal');
       }
     } else {
-      router.push('/portal');
+      router.push(redirectTo ?? '/portal');
     }
   }
 
@@ -66,10 +80,15 @@ export default function LoginPage() {
     setLoading(true);
     setError(null);
 
+    const callbackUrl = new URL('/auth/callback', window.location.origin);
+    if (redirectTo) {
+      callbackUrl.searchParams.set('redirect', redirectTo);
+    }
+
     const { error: authError } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
+        emailRedirectTo: callbackUrl.toString(),
       },
     });
 
