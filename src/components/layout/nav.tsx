@@ -99,7 +99,7 @@ export function Nav() {
                     key={link.href}
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
-                    className={`px-4 py-3 text-text-secondary hover:text-text-primary hover:bg-surface-alt rounded-lg transition-all duration-300 ${
+                    className={`px-4 py-3 text-text-secondary hover:text-text-primary hover:bg-surface-alt rounded-lg transition-[opacity,translate] duration-300 ease-out ${
                       mobileOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
                     }`}
                     style={{ transitionDelay: mobileOpen ? `${i * 50}ms` : '0ms' }}
@@ -109,7 +109,7 @@ export function Nav() {
                   </Link>
                 ))}
                 <div
-                  className={`flex flex-col gap-2 mt-4 px-4 transition-all duration-300 ${
+                  className={`flex flex-col gap-2 mt-4 px-4 transition-[opacity,translate] duration-300 ease-out ${
                     mobileOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
                   }`}
                   style={{ transitionDelay: mobileOpen ? `${navLinks.length * 50}ms` : '0ms' }}

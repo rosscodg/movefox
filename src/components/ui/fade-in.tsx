@@ -2,6 +2,25 @@
 
 import { useRef, useEffect, useState, type ReactNode } from 'react';
 
+// Shared IntersectionObserver for all FadeIn instances — avoids creating
+// dozens of individual observers on pages with many animated sections.
+const callbacks = new Map<Element, (visible: boolean) => void>();
+let sharedObserver: IntersectionObserver | null = null;
+
+function getObserver() {
+  if (sharedObserver) return sharedObserver;
+  sharedObserver = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        const cb = callbacks.get(entry.target);
+        if (cb) cb(entry.isIntersecting);
+      }
+    },
+    { threshold: 0.1, rootMargin: '0px 0px -40px 0px' },
+  );
+  return sharedObserver;
+}
+
 interface FadeInProps {
   children: ReactNode;
   className?: string;
@@ -20,7 +39,7 @@ export function FadeIn({
   className = '',
   delay = 0,
   direction = 'up',
-  duration = 600,
+  duration = 400,
   once = true,
 }: FadeInProps) {
   const ref = useRef<HTMLDivElement>(null);
@@ -30,23 +49,26 @@ export function FadeIn({
     const el = ref.current;
     if (!el) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          if (once) observer.unobserve(el);
-        } else if (!once) {
-          setIsVisible(false);
+    const observer = getObserver();
+
+    callbacks.set(el, (visible) => {
+      if (visible) {
+        setIsVisible(true);
+        if (once) {
+          observer.unobserve(el);
+          callbacks.delete(el);
         }
-      },
-      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' },
-    );
+      } else if (!once) {
+        setIsVisible(false);
+      }
+    });
 
     observer.observe(el);
-    return () => observer.disconnect();
+    return () => {
+      observer.unobserve(el);
+      callbacks.delete(el);
+    };
   }, [once]);
-
-  const translate = direction === 'up' ? 'translateY(20px)' : 'none';
 
   return (
     <div
@@ -54,9 +76,9 @@ export function FadeIn({
       className={className}
       style={{
         opacity: isVisible ? 1 : 0,
-        transform: isVisible ? 'none' : translate,
-        transition: `opacity ${duration}ms ease-out, transform ${duration}ms ease-out`,
-        transitionDelay: `${delay}ms`,
+        translate: isVisible ? 'none' : direction === 'up' ? '0 16px' : 'none',
+        transition: `opacity ${duration}ms ease-out ${delay}ms, translate ${duration}ms ease-out ${delay}ms`,
+        willChange: isVisible ? 'auto' : 'opacity, translate',
       }}
     >
       {children}
