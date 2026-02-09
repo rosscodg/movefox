@@ -86,12 +86,12 @@ export function Nav() {
 
         {/* Mobile menu — always in DOM, animated with grid-rows */}
         <div
-          className={`md:hidden grid transition-[grid-template-rows,opacity] duration-300 ease-out ${
-            mobileOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+          className={`md:hidden grid transition-[grid-template-rows] duration-300 ease-out ${
+            mobileOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
           }`}
           aria-hidden={!mobileOpen}
         >
-          <div className="overflow-hidden">
+          <div className="overflow-hidden min-h-0">
             <div className="pb-4 border-t border-border mt-2 pt-4">
               <div className="flex flex-col gap-1">
                 {navLinks.map((link, i) => (
@@ -99,28 +99,20 @@ export function Nav() {
                     key={link.href}
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
-                    className="px-4 py-3 text-text-secondary hover:text-text-primary hover:bg-surface-alt rounded-lg transition-colors"
-                    style={
-                      mobileOpen
-                        ? {
-                            animation: `slideDown 300ms ease-out ${i * 50}ms both`,
-                          }
-                        : undefined
-                    }
+                    className={`px-4 py-3 text-text-secondary hover:text-text-primary hover:bg-surface-alt rounded-lg transition-all duration-300 ${
+                      mobileOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
+                    }`}
+                    style={{ transitionDelay: mobileOpen ? `${i * 50}ms` : '0ms' }}
                     tabIndex={mobileOpen ? 0 : -1}
                   >
                     {link.label}
                   </Link>
                 ))}
                 <div
-                  className="flex flex-col gap-2 mt-4 px-4"
-                  style={
-                    mobileOpen
-                      ? {
-                          animation: `slideDown 300ms ease-out ${navLinks.length * 50}ms both`,
-                        }
-                      : undefined
-                  }
+                  className={`flex flex-col gap-2 mt-4 px-4 transition-all duration-300 ${
+                    mobileOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
+                  }`}
+                  style={{ transitionDelay: mobileOpen ? `${navLinks.length * 50}ms` : '0ms' }}
                 >
                   <Link href="/login" tabIndex={mobileOpen ? 0 : -1}>
                     <Button variant="outline" className="w-full">
