@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 export const metadata: Metadata = {
   title: 'Terms of Service',
   description:
-    'MoveCompare terms of service. Read our terms and conditions for using the MoveCompare platform.',
+    'MoveFox terms of service. Read our terms and conditions for using the MoveFox platform.',
 };
 
 export default function TermsPage() {
@@ -41,13 +41,13 @@ export default function TermsPage() {
               1. Agreement to Terms
             </h2>
             <p className="text-text-secondary leading-relaxed mb-4">
-              By accessing or using the MoveCompare website and services
+              By accessing or using the MoveFox website and services
               (&quot;Service&quot;), you agree to be bound by these Terms of Service
               (&quot;Terms&quot;). If you do not agree to these Terms, you must not use
               our Service.
             </p>
             <p className="text-text-secondary leading-relaxed">
-              MoveCompare reserves the right to update or modify these Terms at
+              MoveFox reserves the right to update or modify these Terms at
               any time. Continued use of the Service after any changes
               constitutes your acceptance of the revised Terms.
             </p>
@@ -58,7 +58,7 @@ export default function TermsPage() {
               2. Description of Service
             </h2>
             <p className="text-text-secondary leading-relaxed mb-4">
-              MoveCompare is a free online comparison platform that connects
+              MoveFox is a free online comparison platform that connects
               homeowners and individuals planning a move (&quot;Users&quot;) with
               verified removal companies (&quot;Partners&quot;). We facilitate the
               process of obtaining quotes but do not ourselves provide removal
@@ -162,8 +162,8 @@ export default function TermsPage() {
               5. Quotes and Pricing
             </h2>
             <p className="text-text-secondary leading-relaxed mb-4">
-              Quotes provided through MoveCompare are estimates provided by the
-              removal companies themselves. MoveCompare does not set, control,
+              Quotes provided through MoveFox are estimates provided by the
+              removal companies themselves. MoveFox does not set, control,
               or guarantee the pricing of any removal services.
             </p>
             <p className="text-text-secondary leading-relaxed">
@@ -179,7 +179,7 @@ export default function TermsPage() {
               6. Limitation of Liability
             </h2>
             <p className="text-text-secondary leading-relaxed mb-4">
-              MoveCompare acts solely as an intermediary platform. We do not
+              MoveFox acts solely as an intermediary platform. We do not
               provide removal services and are not liable for:
             </p>
             <ul className="space-y-2">
@@ -210,7 +210,7 @@ export default function TermsPage() {
               </li>
             </ul>
             <p className="mt-4 text-text-secondary leading-relaxed">
-              To the maximum extent permitted by law, MoveCompare&apos;s total
+              To the maximum extent permitted by law, MoveFox&apos;s total
               liability for any claims arising from or related to the Service
               shall not exceed the amount paid by you (if any) to use the
               Service.
@@ -223,8 +223,8 @@ export default function TermsPage() {
             </h2>
             <p className="text-text-secondary leading-relaxed">
               All content, trademarks, logos, and intellectual property
-              displayed on the MoveCompare website are the property of
-              MoveCompare or their respective owners. You may not reproduce,
+              displayed on the MoveFox website are the property of
+              MoveFox or their respective owners. You may not reproduce,
               distribute, or create derivative works from any content on our
               website without our prior written consent.
             </p>
@@ -265,7 +265,7 @@ export default function TermsPage() {
             </p>
             <div className="mt-4 p-4 bg-surface-alt rounded-xl">
               <p className="text-sm text-text-primary font-medium">
-                MoveCompare Legal
+                MoveFox Legal
               </p>
               <p className="text-sm text-text-secondary mt-1">
                 Email:{' '}

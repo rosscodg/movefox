@@ -18,6 +18,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { CITIES } from '@/data/cities';
 
 export const metadata: Metadata = {
   title: 'Compare UK Removal Companies — Get Free Quotes',
@@ -219,11 +220,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Why Choose MoveCompare */}
+      {/* Why Choose MoveFox */}
       <section className="bg-surface/50 border-y border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
           <div className="text-center mb-12 sm:mb-16">
-            <Badge variant="primary" className="mb-4">Why MoveCompare</Badge>
+            <Badge variant="primary" className="mb-4">Why MoveFox</Badge>
             <h2 className="text-3xl sm:text-4xl font-bold text-text-primary">
               The smarter way to find your mover
             </h2>
@@ -252,6 +253,55 @@ export default function HomePage() {
               </Card>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Popular Locations */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+        <div className="text-center mb-12 sm:mb-16">
+          <Badge variant="primary" className="mb-4">UK Coverage</Badge>
+          <h2 className="text-3xl sm:text-4xl font-bold text-text-primary">
+            Popular locations
+          </h2>
+          <p className="mt-4 text-text-secondary max-w-2xl mx-auto">
+            We cover the whole of the UK. Browse removal companies in these
+            popular cities or search for your area.
+          </p>
+        </div>
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {CITIES.filter((c) =>
+            ['london', 'manchester', 'birmingham', 'edinburgh', 'bristol', 'leeds', 'glasgow', 'liverpool'].includes(c.slug),
+          ).map((city) => (
+            <Link key={city.slug} href={`/removals/${city.slug}`}>
+              <Card
+                variant="bordered"
+                className="h-full hover:border-primary/50 transition-colors group"
+              >
+                <CardContent className="p-5">
+                  <div className="flex items-center gap-2 mb-1">
+                    <MapPin className="w-4 h-4 text-primary" />
+                    <h3 className="font-semibold text-text-primary">
+                      Removals in {city.name}
+                    </h3>
+                  </div>
+                  <p className="text-sm text-text-muted mb-3">{city.county}</p>
+                  <span className="text-sm text-primary font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all">
+                    Compare quotes <ArrowRight className="w-3 h-3" />
+                  </span>
+                </CardContent>
+              </Card>
+            </Link>
+          ))}
+        </div>
+
+        <div className="text-center mt-8">
+          <Link href="/removals">
+            <Button variant="outline" size="lg">
+              View All Locations
+              <ArrowRight className="ml-2 w-4 h-4" />
+            </Button>
+          </Link>
         </div>
       </section>
 

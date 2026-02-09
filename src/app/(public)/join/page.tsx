@@ -4,9 +4,9 @@ import { Badge } from '@/components/ui/badge';
 import { RegistrationFormLoader } from './registration-form-loader';
 
 export const metadata: Metadata = {
-  title: 'Become a Partner | MoveCompare',
+  title: 'Become a Partner | MoveFox',
   description:
-    'Register your removal company with MoveCompare and start receiving quality move requests in your area.',
+    'Register your removal company with MoveFox and start receiving quality move requests in your area.',
 };
 
 export default function JoinPage() {
@@ -28,7 +28,7 @@ export default function JoinPage() {
               Grow Your Removal Business
             </h1>
             <p className="mt-6 text-lg text-text-secondary leading-relaxed max-w-2xl mx-auto">
-              Join MoveCompare and receive quality move requests from
+              Join MoveFox and receive quality move requests from
               customers in your area. Register your company in just a few
               minutes.
             </p>

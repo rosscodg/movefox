@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback, type FormEvent } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   MapPin,
   Calendar,
@@ -87,9 +87,17 @@ const INITIAL_VALUES: QuoteFormData = {
 
 export default function GetQuotesPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [currentStep, setCurrentStep] = useState(0);
-  const [formData, setFormData] = useState<QuoteFormData>({ ...INITIAL_VALUES, consent: false as unknown as true });
+  const [formData, setFormData] = useState<QuoteFormData>(() => {
+    const from = searchParams.get('from');
+    return {
+      ...INITIAL_VALUES,
+      consent: false as unknown as true,
+      ...(from ? { from_postcode: from.toUpperCase() } : {}),
+    };
+  });
   const [errors, setErrors] = useState<FieldErrors>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);

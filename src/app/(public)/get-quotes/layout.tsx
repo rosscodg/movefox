@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
   title: 'Get Free Removal Quotes',
@@ -11,5 +12,5 @@ export default function GetQuotesLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return <Suspense>{children}</Suspense>;
 }

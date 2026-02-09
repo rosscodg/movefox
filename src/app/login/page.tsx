@@ -135,7 +135,7 @@ export default function LoginPage() {
               <span className="text-white font-bold text-base">M</span>
             </div>
             <span className="text-xl font-bold text-text-primary">
-              Move<span className="text-primary">Compare</span>
+              Move<span className="text-primary">Fox</span>
             </span>
           </Link>
         </div>

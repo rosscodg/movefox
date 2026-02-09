@@ -844,7 +844,7 @@ export function RegistrationForm() {
                       className="w-4 h-4 mt-0.5 rounded border-border text-primary focus:ring-primary bg-surface"
                     />
                     <span className="text-sm text-text-secondary">
-                      I agree to the MoveCompare{' '}
+                      I agree to the MoveFox{' '}
                       <Link href="/terms" className="text-primary hover:underline">
                         Terms of Service
                       </Link>{' '}

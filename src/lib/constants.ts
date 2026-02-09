@@ -1,4 +1,4 @@
-export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || 'MoveCompare';
+export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || 'MoveFox';
 
 export const PROPERTY_SIZES = [
   { value: 'studio', label: 'Studio / 1 room' },

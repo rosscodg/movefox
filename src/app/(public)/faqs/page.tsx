@@ -8,7 +8,7 @@ import { FAQItem } from './faq-accordion';
 export const metadata: Metadata = {
   title: 'FAQs',
   description:
-    'Frequently asked questions about MoveCompare. Learn about our free quote comparison service, data protection, and how we verify removal companies.',
+    'Frequently asked questions about MoveFox. Learn about our free quote comparison service, data protection, and how we verify removal companies.',
 };
 
 const faqs = [
@@ -16,12 +16,12 @@ const faqs = [
     category: 'About the Service',
     questions: [
       {
-        q: 'How does MoveCompare work?',
-        a: 'MoveCompare is a free comparison service for UK home movers. You submit your move details through our short online form, and we match you with up to 5 verified removal companies in your area. They provide you with competitive quotes so you can compare prices, services, and reviews before choosing the right mover for you.',
+        q: 'How does MoveFox work?',
+        a: 'MoveFox is a free comparison service for UK home movers. You submit your move details through our short online form, and we match you with up to 5 verified removal companies in your area. They provide you with competitive quotes so you can compare prices, services, and reviews before choosing the right mover for you.',
       },
       {
-        q: 'Is MoveCompare really free to use?',
-        a: 'Yes, MoveCompare is completely free for homeowners. We never charge you any fees, and there is no obligation to accept any of the quotes you receive. Our service is funded by the removal companies who pay a small fee when they receive a lead.',
+        q: 'Is MoveFox really free to use?',
+        a: 'Yes, MoveFox is completely free for homeowners. We never charge you any fees, and there is no obligation to accept any of the quotes you receive. Our service is funded by the removal companies who pay a small fee when they receive a lead.',
       },
       {
         q: 'How many quotes will I receive?',
@@ -38,7 +38,7 @@ const faqs = [
     questions: [
       {
         q: 'How are removal companies selected?',
-        a: 'Every removal company on MoveCompare goes through a verification process. We check their public liability insurance, goods in transit insurance, business registration, and customer reviews. Only companies that meet our quality standards are allowed to quote on the platform.',
+        a: 'Every removal company on MoveFox goes through a verification process. We check their public liability insurance, goods in transit insurance, business registration, and customer reviews. Only companies that meet our quality standards are allowed to quote on the platform.',
       },
       {
         q: 'Are the removal companies insured?',
@@ -46,11 +46,11 @@ const faqs = [
       },
       {
         q: 'Can I see reviews of the removal companies?',
-        a: 'Yes, every company profile on MoveCompare includes genuine reviews from previous customers who used the platform to book their move. This helps you make an informed decision based on real experiences.',
+        a: 'Yes, every company profile on MoveFox includes genuine reviews from previous customers who used the platform to book their move. This helps you make an informed decision based on real experiences.',
       },
       {
         q: 'What if I have a problem with the removal company I chose?',
-        a: 'While MoveCompare is a comparison service and you book directly with the removal company, we are here to help. If you experience any issues, please contact our support team and we will do our best to assist you in resolving the matter.',
+        a: 'While MoveFox is a comparison service and you book directly with the removal company, we are here to help. If you experience any issues, please contact our support team and we will do our best to assist you in resolving the matter.',
       },
     ],
   },
@@ -113,7 +113,7 @@ export default function FAQsPage() {
               Frequently Asked Questions
             </h1>
             <p className="mt-6 text-lg text-text-secondary leading-relaxed max-w-2xl mx-auto">
-              Find answers to common questions about MoveCompare, our quote
+              Find answers to common questions about MoveFox, our quote
               process, data protection, and more.
             </p>
           </div>

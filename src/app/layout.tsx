@@ -10,8 +10,8 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: 'MoveCompare — Compare UK Removal Companies',
-    template: '%s | MoveCompare',
+    default: 'MoveFox — Compare UK Removal Companies',
+    template: '%s | MoveFox',
   },
   description:
     'Compare trusted UK removal companies and get up to 5 free quotes for your home move. Verified movers, transparent pricing.',

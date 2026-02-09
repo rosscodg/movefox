@@ -252,7 +252,7 @@ export function ContactFormSection() {
               For Removal Companies
             </h3>
             <p className="text-sm text-text-secondary mb-4">
-              Interested in joining MoveCompare as a partner? Register your
+              Interested in joining MoveFox as a partner? Register your
               company and start receiving quality move requests.
             </p>
             <a

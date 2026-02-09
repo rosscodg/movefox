@@ -23,7 +23,7 @@ import { Badge } from '@/components/ui/badge';
 export const metadata: Metadata = {
   title: 'How It Works',
   description:
-    'Learn how MoveCompare helps you find and compare trusted UK removal companies. Simple, free, and no obligation.',
+    'Learn how MoveFox helps you find and compare trusted UK removal companies. Simple, free, and no obligation.',
 };
 
 const stepsForHomemovers = [
@@ -125,13 +125,13 @@ export default function HowItWorksPage() {
             <h1 className="text-4xl sm:text-5xl font-extrabold text-text-primary leading-tight tracking-tight">
               How{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-light">
-                MoveCompare
+                MoveFox
               </span>{' '}
               Works
             </h1>
             <p className="mt-6 text-lg text-text-secondary leading-relaxed max-w-2xl mx-auto">
               Whether you are a homeowner looking for movers or a removal
-              company looking for customers, MoveCompare makes the process
+              company looking for customers, MoveFox makes the process
               simple and transparent.
             </p>
           </div>
@@ -231,7 +231,7 @@ export default function HowItWorksPage() {
 
           <div className="mt-12 text-center">
             <p className="text-text-secondary mb-6">
-              Interested in becoming a MoveCompare partner?
+              Interested in becoming a MoveFox partner?
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/join">
@@ -254,7 +254,7 @@ export default function HowItWorksPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
         <div className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl font-bold text-text-primary">
-            Why trust MoveCompare?
+            Why trust MoveFox?
           </h2>
           <p className="mt-4 text-text-secondary max-w-2xl mx-auto">
             We are committed to making your moving experience as smooth and
@@ -287,7 +287,7 @@ export default function HowItWorksPage() {
                 Genuine Reviews
               </h3>
               <p className="mt-2 text-sm text-text-secondary leading-relaxed">
-                All reviews on MoveCompare come from real customers who have used
+                All reviews on MoveFox come from real customers who have used
                 the service, so you can trust the feedback.
               </p>
             </CardContent>

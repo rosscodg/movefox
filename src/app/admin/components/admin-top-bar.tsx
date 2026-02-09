@@ -89,7 +89,7 @@ export function AdminTopBar({ user }: AdminTopBarProps) {
               <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
                 <span className="text-white font-bold text-sm">MC</span>
               </div>
-              <span className="text-text-primary font-semibold text-lg">MoveCompare</span>
+              <span className="text-text-primary font-semibold text-lg">MoveFox</span>
             </div>
             <nav className="space-y-1">
               {mobileNavItems.map((item) => {

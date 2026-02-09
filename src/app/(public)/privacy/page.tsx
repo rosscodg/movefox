@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 export const metadata: Metadata = {
   title: 'Privacy Policy',
   description:
-    'MoveCompare privacy policy. Learn how we collect, use, and protect your personal data in compliance with UK GDPR.',
+    'MoveFox privacy policy. Learn how we collect, use, and protect your personal data in compliance with UK GDPR.',
 };
 
 export default function PrivacyPage() {
@@ -41,7 +41,7 @@ export default function PrivacyPage() {
               1. Introduction
             </h2>
             <p className="text-text-secondary leading-relaxed mb-4">
-              MoveCompare (&quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) is committed to protecting
+              MoveFox (&quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) is committed to protecting
               your privacy and personal data. This Privacy Policy explains how
               we collect, use, store, and share your personal information when
               you use our website and services.
@@ -59,7 +59,7 @@ export default function PrivacyPage() {
               2. Data Controller
             </h2>
             <p className="text-text-secondary leading-relaxed">
-              MoveCompare is the data controller responsible for your personal
+              MoveFox is the data controller responsible for your personal
               data. If you have any questions about this policy or how we handle
               your data, please contact us at{' '}
               <a
@@ -294,7 +294,7 @@ export default function PrivacyPage() {
             </p>
             <div className="mt-4 p-4 bg-surface-alt rounded-xl">
               <p className="text-sm text-text-primary font-medium">
-                MoveCompare Data Protection
+                MoveFox Data Protection
               </p>
               <p className="text-sm text-text-secondary mt-1">
                 Email:{' '}

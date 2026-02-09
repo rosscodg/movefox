@@ -4,7 +4,7 @@ const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const resend = new Resend(RESEND_API_KEY);
 
 const FROM_EMAIL = process.env.FROM_EMAIL || 'noreply@movecompare.co.uk';
-const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || 'MoveCompare';
+const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || 'MoveFox';
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://movecompare.co.uk';
 
 /** Returns true when Resend is properly configured (not a placeholder key) */

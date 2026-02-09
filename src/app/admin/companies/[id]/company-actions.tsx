@@ -23,13 +23,13 @@ interface CompanyActionsProps {
   currentStatus: CompanyStatus;
 }
 
-const DEFAULT_APPROVAL_MESSAGE = `Congratulations. Your application to join MoveCompare has been approved.
+const DEFAULT_APPROVAL_MESSAGE = `Congratulations. Your application to join MoveFox has been approved.
 
 You can now log in to your partner portal to manage your company profile, set your coverage areas, and start receiving removal leads from customers in your area.
 
 Click the button below to securely sign in to your account — no password needed.`;
 
-const DEFAULT_REJECTION_MESSAGE = `Thank you for your interest in joining MoveCompare.
+const DEFAULT_REJECTION_MESSAGE = `Thank you for your interest in joining MoveFox.
 
 After reviewing your application, we're unable to approve your company at this time. If you believe this was made in error or would like to discuss further, please don't hesitate to contact us.`;
 

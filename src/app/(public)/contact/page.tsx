@@ -6,7 +6,7 @@ import { ContactFormSection } from './contact-form';
 export const metadata: Metadata = {
   title: 'Contact Us',
   description:
-    'Get in touch with the MoveCompare team. We are here to help with any questions about our removal company comparison service.',
+    'Get in touch with the MoveFox team. We are here to help with any questions about our removal company comparison service.',
 };
 
 export default function ContactPage() {

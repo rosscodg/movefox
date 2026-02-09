@@ -27,7 +27,7 @@ export default function ConfirmationPage() {
             Quote request submitted.
           </h1>
           <p className="text-text-secondary mb-8 leading-relaxed">
-            Thank you for using MoveCompare. Your details have been securely
+            Thank you for using MoveFox. Your details have been securely
             received and we&apos;re now matching you with trusted removal
             companies in your area.
           </p>

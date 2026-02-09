@@ -8,6 +8,7 @@ import { ThemeToggle } from '@/components/theme-toggle';
 
 const navLinks = [
   { href: '/how-it-works', label: 'How It Works' },
+  { href: '/removals', label: 'Locations' },
   { href: '/get-quotes', label: 'Get Quotes' },
   { href: '/faqs', label: 'FAQs' },
   { href: '/contact', label: 'Contact' },
@@ -26,7 +27,7 @@ export function Nav() {
               <span className="text-white font-bold text-sm">M</span>
             </div>
             <span className="text-lg font-bold text-text-primary">
-              Move<span className="text-primary">Compare</span>
+              Move<span className="text-primary">Fox</span>
             </span>
           </Link>
 

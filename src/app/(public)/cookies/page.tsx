@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 export const metadata: Metadata = {
   title: 'Cookie Policy',
   description:
-    'MoveCompare cookie policy. Learn how we use cookies and similar technologies on our website.',
+    'MoveFox cookie policy. Learn how we use cookies and similar technologies on our website.',
 };
 
 export default function CookiesPage() {
@@ -324,7 +324,7 @@ export default function CookiesPage() {
             </p>
             <div className="mt-4 p-4 bg-surface-alt rounded-xl">
               <p className="text-sm text-text-primary font-medium">
-                MoveCompare
+                MoveFox
               </p>
               <p className="text-sm text-text-secondary mt-1">
                 Email:{' '}
