@@ -80,10 +80,10 @@ export default function RemovalsIndexPage() {
 
       {/* Hero */}
       <section className="relative overflow-hidden py-16 sm:py-20">
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[120px]" />
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-[120px]" />
-        </div>
+        <div
+          className="absolute inset-0 -z-10"
+          style={{ background: 'radial-gradient(ellipse 60% 50% at 25% 30%, rgba(124,58,237,0.08) 0%, transparent 70%), radial-gradient(ellipse 60% 50% at 75% 70%, rgba(16,185,129,0.08) 0%, transparent 70%)' }}
+        />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl sm:text-5xl font-bold text-text-primary mb-6">

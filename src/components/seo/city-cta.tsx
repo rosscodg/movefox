@@ -15,8 +15,10 @@ export function CityCta({ city }: CityCtaProps) {
         <FadeIn>
           <div className="relative rounded-2xl bg-primary/5 border border-primary/20 p-8 sm:p-12 text-center overflow-hidden">
             {/* Background decoration */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-[80px] -z-10" />
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/10 rounded-full blur-[80px] -z-10" />
+            <div
+              className="absolute inset-0 -z-10"
+              style={{ background: 'radial-gradient(ellipse 60% 60% at 80% 20%, rgba(124,58,237,0.10) 0%, transparent 70%), radial-gradient(ellipse 60% 60% at 20% 80%, rgba(16,185,129,0.10) 0%, transparent 70%)' }}
+            />
 
             <h2 className="text-2xl sm:text-3xl font-bold text-text-primary mb-4">
               Ready to compare removal quotes in {city.name}?

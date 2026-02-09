@@ -16,10 +16,10 @@ export function CityHero({ city }: CityHeroProps) {
   return (
     <section className="relative overflow-hidden py-16 sm:py-20">
       {/* Background gradient */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[120px]" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-[120px]" />
-      </div>
+      <div
+        className="absolute inset-0 -z-10"
+        style={{ background: 'radial-gradient(ellipse 50% 50% at 25% 25%, rgba(124,58,237,0.08) 0%, transparent 70%), radial-gradient(ellipse 50% 50% at 75% 75%, rgba(16,185,129,0.08) 0%, transparent 70%)' }}
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl">

@@ -105,10 +105,10 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="relative overflow-hidden">
         {/* Background gradient effects */}
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-primary/10 rounded-full blur-[120px]" />
-          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-accent/5 rounded-full blur-[100px]" />
-        </div>
+        <div
+          className="absolute inset-0 -z-10"
+          style={{ background: 'radial-gradient(ellipse 80% 60% at 50% 30%, rgba(124,58,237,0.08) 0%, transparent 70%), radial-gradient(ellipse 50% 50% at 0% 100%, rgba(16,185,129,0.04) 0%, transparent 70%)' }}
+        />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 sm:pt-28 sm:pb-24">
           <div className="max-w-3xl mx-auto text-center">
@@ -329,9 +329,10 @@ export default function HomePage() {
 
       {/* Final CTA */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-primary/10 rounded-full blur-[120px]" />
-        </div>
+        <div
+          className="absolute inset-0 -z-10"
+          style={{ background: 'radial-gradient(ellipse 60% 50% at 50% 50%, rgba(124,58,237,0.08) 0%, transparent 70%)' }}
+        />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
           <FadeIn>

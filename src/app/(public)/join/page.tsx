@@ -14,9 +14,10 @@ export default function JoinPage() {
     <>
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-primary/10 rounded-full blur-[120px]" />
-        </div>
+        <div
+          className="absolute inset-0 -z-10"
+          style={{ background: 'radial-gradient(ellipse 60% 50% at 50% 30%, rgba(124,58,237,0.08) 0%, transparent 70%)' }}
+        />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-12 sm:pt-28 sm:pb-16">
           <div className="max-w-3xl mx-auto text-center">
