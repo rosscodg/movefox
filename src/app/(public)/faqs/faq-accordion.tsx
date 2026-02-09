@@ -22,17 +22,25 @@ export function FAQItem({ question, answer }: FAQItemProps) {
           {question}
         </span>
         <ChevronDown
-          className={`w-5 h-5 text-text-muted flex-shrink-0 transition-transform duration-200 ${
+          className={`w-5 h-5 text-text-muted flex-shrink-0 transition-transform duration-300 ${
             isOpen ? 'rotate-180 text-primary' : ''
           }`}
         />
       </button>
       <div
-        className={`overflow-hidden transition-all duration-200 ${
-          isOpen ? 'max-h-96 pb-5' : 'max-h-0'
+        className={`grid transition-[grid-template-rows] duration-300 ease-out ${
+          isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
         }`}
       >
-        <p className="text-sm text-text-secondary leading-relaxed">{answer}</p>
+        <div className="overflow-hidden">
+          <div
+            className={`pb-5 transition-opacity duration-300 ${
+              isOpen ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            <p className="text-sm text-text-secondary leading-relaxed">{answer}</p>
+          </div>
+        </div>
       </div>
     </div>
   );

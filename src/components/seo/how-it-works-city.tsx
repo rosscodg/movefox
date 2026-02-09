@@ -1,4 +1,5 @@
 import { ClipboardList, Users, BarChart3, CalendarCheck } from 'lucide-react';
+import { FadeIn } from '@/components/ui/fade-in';
 import type { CityData } from '@/data/cities';
 
 interface HowItWorksCityProps {
@@ -40,29 +41,33 @@ export function HowItWorksCity({ city }: HowItWorksCityProps) {
   return (
     <section className="py-16 bg-surface-alt/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-2xl sm:text-3xl font-bold text-text-primary mb-2">
-          How to Get Removal Quotes in {city.name}
-        </h2>
-        <p className="text-text-secondary mb-10">
-          Getting quotes from trusted {city.name} removal companies takes less than 2 minutes.
-        </p>
+        <FadeIn>
+          <h2 className="text-2xl sm:text-3xl font-bold text-text-primary mb-2">
+            How to Get Removal Quotes in {city.name}
+          </h2>
+          <p className="text-text-secondary mb-10">
+            Getting quotes from trusted {city.name} removal companies takes less than 2 minutes.
+          </p>
+        </FadeIn>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {steps.map((step) => {
+          {steps.map((step, i) => {
             const Icon = step.icon;
             return (
-              <div key={step.number} className="relative">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <Icon className="w-5 h-5 text-primary" />
+              <FadeIn key={step.number} delay={i * 100}>
+                <div className="relative">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <Icon className="w-5 h-5 text-primary" />
+                    </div>
+                    <span className="text-xs font-bold text-text-muted">STEP {step.number}</span>
                   </div>
-                  <span className="text-xs font-bold text-text-muted">STEP {step.number}</span>
+                  <h3 className="font-semibold text-text-primary mb-2">{step.title}</h3>
+                  <p className="text-sm text-text-secondary leading-relaxed">
+                    {step.getDescription(city.name)}
+                  </p>
                 </div>
-                <h3 className="font-semibold text-text-primary mb-2">{step.title}</h3>
-                <p className="text-sm text-text-secondary leading-relaxed">
-                  {step.getDescription(city.name)}
-                </p>
-              </div>
+              </FadeIn>
             );
           })}
         </div>

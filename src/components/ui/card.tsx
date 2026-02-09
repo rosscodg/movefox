@@ -13,7 +13,7 @@ export function Card({ variant = 'default', className = '', children, ...props }
 
   return (
     <div
-      className={`rounded-2xl p-6 ${variants[variant]} ${className}`}
+      className={`rounded-2xl p-6 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg ${variants[variant]} ${className}`}
       {...props}
     >
       {children}
