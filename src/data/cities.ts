@@ -97,7 +97,7 @@ export const CITIES: CityData[] = [
       'Check whether your removal company\'s vehicles are ULEZ compliant to avoid unexpected surcharges on the day.',
       'Consider a mid-week move if your schedule allows it — London removal companies often offer better rates Tuesday to Thursday.',
     ],
-    nearbyCities: ['brighton', 'reading', 'cambridge', 'oxford', 'southampton', 'luton'],
+    nearbyCities: ['brighton', 'reading', 'cambridge', 'oxford', 'southampton', 'luton', 'watford', 'slough'],
     parkingNotes: 'Most boroughs require a parking suspension for removal vans, typically costing £30–£70 with 10–14 days\' notice.',
     congestionNotes: 'The Congestion Charge (£15/day) and ULEZ (£12.50/day for non-compliant vehicles) apply to central London moves.',
     propertyTypes: 'A mix of Victorian and Georgian conversions, purpose-built flats, terraced houses, and modern new-build apartments.',
@@ -126,7 +126,7 @@ export const CITIES: CityData[] = [
       'If moving to a city centre apartment, contact your building management in advance to book the service lift and confirm any time restrictions.',
       'Avoid moving during university term changeover periods (September and late June) when demand spikes across the whole of Greater Manchester.',
     ],
-    nearbyCities: ['liverpool', 'warrington', 'preston', 'leeds', 'sheffield', 'york'],
+    nearbyCities: ['liverpool', 'warrington', 'preston', 'leeds', 'sheffield', 'york', 'stockport', 'wigan'],
     propertyTypes: 'Victorian terraces, modern city centre apartments, and suburban semi-detached homes in the outer boroughs.',
   },
 
@@ -183,7 +183,7 @@ export const CITIES: CityData[] = [
       'If moving to or from a waterfront apartment, call your building management to check access restrictions, lift availability, and permitted moving hours.',
       'For Wirral-bound moves, factor in tunnel toll charges and peak-hour queues — crossing at off-peak times can save 30+ minutes.',
     ],
-    nearbyCities: ['manchester', 'warrington', 'preston', 'leeds', 'birmingham', 'cardiff'],
+    nearbyCities: ['manchester', 'warrington', 'preston', 'leeds', 'birmingham', 'birkenhead', 'wigan'],
     propertyTypes: 'Georgian townhouses, waterfront apartments, post-war council estates, and suburban Edwardian semis.',
   },
 
@@ -210,7 +210,7 @@ export const CITIES: CityData[] = [
       'Avoid the Headingley area during September if possible — it\'s the busiest time of year due to the student population shift.',
       'If moving to a converted mill or warehouse, check the goods lift capacity and dimensions in advance to avoid surprises on moving day.',
     ],
-    nearbyCities: ['bradford', 'sheffield', 'york', 'hull', 'manchester', 'newcastle'],
+    nearbyCities: ['bradford', 'sheffield', 'york', 'hull', 'manchester', 'newcastle', 'wakefield', 'huddersfield'],
     propertyTypes: 'Converted mills and warehouses, Victorian terraces, modern city centre apartments, and suburban semis.',
   },
 
@@ -237,7 +237,7 @@ export const CITIES: CityData[] = [
       'Be upfront about the number of steps and the gradient at your property when getting quotes — this is the single biggest factor affecting removal costs in Sheffield.',
       'If your property is on a steep hillside street, ask whether the removal company has a smaller shuttle vehicle for the final leg.',
     ],
-    nearbyCities: ['leeds', 'derby', 'nottingham', 'manchester', 'york', 'bradford'],
+    nearbyCities: ['leeds', 'derby', 'nottingham', 'manchester', 'york', 'doncaster', 'wakefield'],
     congestionNotes: 'Sheffield\'s Clean Air Zone charges non-compliant buses, coaches, taxis, and HGVs entering the city centre.',
     propertyTypes: 'Stone-built Victorian terraces, hillside cottages, modern city centre apartments, and suburban detached homes in the south-west.',
   },
@@ -266,7 +266,7 @@ export const CITIES: CityData[] = [
       'For properties on Bristol\'s steepest streets, ask your removal company about shuttle vehicles that can navigate narrow, hilly roads.',
       'Early morning moves work best in Bristol — the city centre and Gloucester Road corridor get very congested from mid-morning onwards.',
     ],
-    nearbyCities: ['bath', 'cardiff', 'swindon', 'southampton', 'birmingham', 'reading'],
+    nearbyCities: ['bath', 'cardiff', 'swindon', 'southampton', 'birmingham', 'gloucester', 'cheltenham'],
     congestionNotes: 'Bristol\'s Clean Air Zone charges non-compliant vehicles entering the central area.',
     parkingNotes: 'RPZs cover much of central Bristol — a temporary parking dispensation from the council is usually needed for removal vans.',
     propertyTypes: 'Georgian and Victorian terraces, converted harbour warehouses, Edwardian semis, and modern new-builds in the south of the city.',
@@ -376,7 +376,7 @@ export const CITIES: CityData[] = [
       'Check the cruise ship schedule before booking your move — terminal traffic can gridlock the city centre on sailing days.',
       'If you\'re in a CPZ, arrange a dispensation from Southampton City Council well in advance to guarantee loading access.',
     ],
-    nearbyCities: ['portsmouth', 'bournemouth', 'brighton', 'reading', 'bath', 'london'],
+    nearbyCities: ['portsmouth', 'bournemouth', 'brighton', 'reading', 'salisbury', 'basingstoke'],
     parkingNotes: 'Controlled Parking Zones cover most of the city centre and inner suburbs — removal van dispensations are needed.',
     propertyTypes: 'Victorian terraces, 1930s suburban semis, waterfront apartments, and student HMOs near the university.',
   },
@@ -405,7 +405,7 @@ export const CITIES: CityData[] = [
       'If your property is accessed via stairs or a basement, mention this upfront when getting quotes — it significantly affects the time and cost.',
       'Weekday moves are strongly recommended in Brighton to avoid seafront tourist traffic.',
     ],
-    nearbyCities: ['london', 'southampton', 'reading', 'oxford', 'cambridge', 'bristol'],
+    nearbyCities: ['worthing', 'crawley', 'eastbourne', 'london', 'portsmouth', 'hastings'],
     parkingNotes: 'Virtually the entire city is covered by Controlled Parking Zones — a parking suspension (£30–£60) is almost always required.',
     propertyTypes: 'Regency townhouses, Victorian terraces, seafront apartments, and modern new-builds in Hove.',
   },
@@ -435,7 +435,7 @@ export const CITIES: CityData[] = [
       'For tenement flats, get an accurate stair count to your removal company — the number of flights is the biggest cost factor in Edinburgh moves.',
       'Apply for a parking bay suspension from the City of Edinburgh Council at least 5 working days in advance.',
     ],
-    nearbyCities: ['glasgow', 'aberdeen', 'newcastle', 'sunderland', 'york', 'leeds'],
+    nearbyCities: ['glasgow', 'aberdeen', 'newcastle', 'sunderland', 'dundee', 'stirling'],
     congestionNotes: 'Edinburgh\'s Low Emission Zone (LEZ) restricts the oldest, most polluting vehicles from the city centre.',
     parkingNotes: 'Central Edinburgh has very limited parking — a bay suspension from the council is essential for removal day.',
     propertyTypes: 'Georgian and Victorian tenement flats, New Town townhouses, modern waterfront apartments in Leith, and suburban bungalows.',
@@ -464,7 +464,7 @@ export const CITIES: CityData[] = [
       'For tenement moves, measure your furniture against the dimensions of the communal close and stairwell — some larger items simply won\'t fit through.',
       'Check your removal company\'s LEZ compliance before booking — Glasgow actively enforces its Low Emission Zone with automatic number plate recognition cameras.',
     ],
-    nearbyCities: ['edinburgh', 'aberdeen', 'newcastle', 'sunderland', 'leeds', 'manchester'],
+    nearbyCities: ['edinburgh', 'aberdeen', 'newcastle', 'dundee', 'stirling', 'manchester'],
     congestionNotes: 'Glasgow\'s Low Emission Zone (LEZ) covers the city centre — non-compliant vehicles face daily charges.',
     propertyTypes: 'Red sandstone tenement flats, converted townhouses, modern city centre apartments, and suburban semis.',
   },
@@ -492,7 +492,7 @@ export const CITIES: CityData[] = [
       'Check the Principality Stadium events calendar before setting your moving date — Six Nations rugby days and major concerts cause widespread road closures.',
       'If moving to Cardiff Bay, confirm access arrangements and lift booking requirements with your building management in advance.',
     ],
-    nearbyCities: ['swansea', 'bristol', 'bath', 'birmingham', 'southampton', 'exeter'],
+    nearbyCities: ['swansea', 'bristol', 'bath', 'birmingham', 'newport', 'wrexham'],
     parkingNotes: 'Residents\' Parking Zones cover Pontcanna, Canton, Cathays, and parts of Roath.',
     propertyTypes: 'Victorian and Edwardian terraces, bay-front apartments, inter-war semis, and modern suburban estates.',
   },
@@ -520,7 +520,7 @@ export const CITIES: CityData[] = [
       'Check Oxford\'s bus gate locations and time restrictions before planning your removal route — getting caught means a fine and a lengthy detour.',
       'If moving in central Oxford, an early morning start (before 7am) is strongly recommended to avoid bus gate restrictions and daytime traffic.',
     ],
-    nearbyCities: ['reading', 'london', 'milton-keynes', 'bristol', 'cambridge', 'southampton'],
+    nearbyCities: ['reading', 'cheltenham', 'swindon', 'london', 'milton-keynes', 'gloucester'],
     congestionNotes: 'Oxford\'s bus gates restrict general traffic on key city centre routes during the day. A Zero Emission Zone is being phased in.',
     propertyTypes: 'Victorian and Edwardian terraces, period college properties, modern apartments, and suburban family homes.',
   },
@@ -576,7 +576,7 @@ export const CITIES: CityData[] = [
       'If moving across the river to or from Caversham, avoid rush hour on the two bridges — or consider a route via the A4074 if loads allow.',
       'Avoid the August Bank Holiday weekend if possible — Reading Festival causes widespread traffic disruption.',
     ],
-    nearbyCities: ['london', 'oxford', 'southampton', 'brighton', 'bristol', 'milton-keynes'],
+    nearbyCities: ['slough', 'basingstoke', 'guildford', 'london', 'oxford', 'swindon'],
     propertyTypes: 'Victorian terraces, modern station-quarter apartments, inter-war semis, and suburban family homes.',
   },
 
@@ -603,7 +603,7 @@ export const CITIES: CityData[] = [
       'Take advantage of MK\'s grid road system — plan your route to stick to the main grid (H and V roads) for the fastest, most direct journey.',
       'MK\'s modern housing means fewer access challenges than most UK cities, but double-check if your estate has any width restrictions on approach roads.',
     ],
-    nearbyCities: ['london', 'oxford', 'cambridge', 'leicester', 'nottingham', 'reading'],
+    nearbyCities: ['london', 'oxford', 'cambridge', 'leicester', 'northampton', 'luton', 'watford', 'st-albans'],
     propertyTypes: 'Modern detached and semi-detached homes, new-build estates, town centre apartments, and older properties in Stony Stratford and Wolverton.',
   },
 
@@ -630,7 +630,7 @@ export const CITIES: CityData[] = [
       'For properties within the city walls, your removal company will likely need to use a smaller vehicle and possibly hand-carry items from the nearest accessible road.',
       'Check the York Racecourse and events calendar — race days cause major traffic disruption, particularly on the A1036 and Knavesmire area.',
     ],
-    nearbyCities: ['leeds', 'hull', 'middlesbrough', 'sheffield', 'newcastle', 'bradford'],
+    nearbyCities: ['leeds', 'hull', 'middlesbrough', 'sheffield', 'harrogate', 'wakefield'],
     propertyTypes: 'Medieval and Georgian townhouses, Victorian terraces, post-war semis, and modern suburban estates.',
   },
 
@@ -657,7 +657,7 @@ export const CITIES: CityData[] = [
       'Familiarise yourself (or your removal company) with the Coventry ring road junction numbering system — exits are numbered and easy to miss at speed.',
       'If moving into the city centre, arrange an early morning time slot to avoid pedestrianisation restrictions.',
     ],
-    nearbyCities: ['birmingham', 'leicester', 'nottingham', 'oxford', 'milton-keynes', 'wolverhampton'],
+    nearbyCities: ['birmingham', 'leicester', 'nottingham', 'oxford', 'wolverhampton', 'dudley', 'worcester'],
     propertyTypes: 'Post-war housing, 1930s semis, Edwardian terraces in Earlsdon, and modern city centre apartments.',
   },
 
@@ -685,7 +685,7 @@ export const CITIES: CityData[] = [
       'Properties on clifftop roads often have limited parking — arrange a parking suspension through BCP Council if there\'s no driveway.',
       'The A338 Wessex Way is the main artery into Bournemouth and is prone to rush-hour congestion — plan your removal van\'s route to avoid peak times.',
     ],
-    nearbyCities: ['southampton', 'bath', 'bristol', 'brighton', 'exeter', 'portsmouth'],
+    nearbyCities: ['southampton', 'salisbury', 'bath', 'brighton', 'exeter', 'portsmouth'],
     propertyTypes: 'Victorian villas and conversions, purpose-built retirement flats, modern seafront apartments, and suburban family homes.',
   },
 
@@ -739,7 +739,7 @@ export const CITIES: CityData[] = [
       'The A500 can be gridlocked during rush hour — if your move involves crossing between the six towns, aim for a mid-morning start after 9:30am.',
       'Some of the older terraced streets in Burslem and Longton have very narrow access — confirm with your removal company that their vehicle will fit.',
     ],
-    nearbyCities: ['birmingham', 'manchester', 'derby', 'nottingham', 'wolverhampton', 'sheffield'],
+    nearbyCities: ['birmingham', 'manchester', 'derby', 'nottingham', 'wolverhampton', 'dudley'],
     propertyTypes: 'Victorian terraces, 1930s semis, converted pottery buildings, and modern estates on the outskirts.',
   },
 
@@ -766,7 +766,7 @@ export const CITIES: CityData[] = [
       'If moving to one of Bradford\'s hillside terraces, check whether your removal company has experience with steep-gradient streets and stair-climbing equipment.',
       'The Bradford-Leeds commute is very common — if moving between the two, consider off-peak hours to avoid the A650/A647 rush-hour gridlock.',
     ],
-    nearbyCities: ['leeds', 'sheffield', 'york', 'manchester', 'hull', 'middlesbrough'],
+    nearbyCities: ['leeds', 'sheffield', 'york', 'manchester', 'huddersfield', 'wakefield'],
     propertyTypes: 'Victorian stone-built terraces, Edwardian villas, inter-war semis, and modern new-builds in surrounding villages.',
   },
 
@@ -820,7 +820,7 @@ export const CITIES: CityData[] = [
       'Preston\'s M6 junction 31 and 32 access makes it an ideal staging post for long-distance moves — ask your removal company about overnight storage options.',
       'If moving to a Preston Docks apartment, book the building\'s goods lift well in advance as time slots fill up quickly.',
     ],
-    nearbyCities: ['manchester', 'liverpool', 'leeds', 'sheffield', 'warrington', 'bradford'],
+    nearbyCities: ['manchester', 'liverpool', 'blackpool', 'wigan', 'warrington', 'bradford'],
     propertyTypes: 'Victorian terraces, 1930s semis, modern dockside apartments, and new-build estates in Fulwood and Broughton.',
   },
 
@@ -874,7 +874,7 @@ export const CITIES: CityData[] = [
       'If moving to the Mumbles or Gower, check that your removal company has experience with narrow coastal lanes and steep driveways.',
       'The M4 corridor from Cardiff to Swansea can be congested, especially around Port Talbot — plan for delays if moving between the two cities.',
     ],
-    nearbyCities: ['cardiff', 'bristol', 'bath', 'exeter', 'birmingham', 'bournemouth'],
+    nearbyCities: ['cardiff', 'bristol', 'bath', 'exeter', 'newport', 'bournemouth'],
     propertyTypes: 'Victorian bay-fronted terraces, Edwardian villas in Sketty, modern waterfront apartments, and coastal cottages in the Mumbles.',
   },
 
@@ -928,7 +928,7 @@ export const CITIES: CityData[] = [
       'Avoid the M275 during morning and evening rush hours — the single motorway onto the island becomes heavily congested.',
       'For Southsea and Old Portsmouth moves, a smaller van may be necessary for the final stretch on narrow terraced streets, even if a larger vehicle handles the long-distance leg.',
     ],
-    nearbyCities: ['southampton', 'brighton', 'bournemouth', 'reading', 'london', 'winchester'],
+    nearbyCities: ['southampton', 'brighton', 'bournemouth', 'guildford', 'basingstoke', 'worthing'],
     parkingNotes: 'Most of Southsea and Old Portsmouth is resident-permit parking only — apply to Portsmouth City Council for a temporary removal van suspension.',
     propertyTypes: 'Dense Victorian terraces, Georgian townhouses in Old Portsmouth, modern waterfront apartments, and suburban semis in the north.',
   },
@@ -983,7 +983,7 @@ export const CITIES: CityData[] = [
       'If moving from London, avoid Friday evenings and bank holiday weekends when M1 traffic and airport congestion overlap.',
       'Many Luton removal companies offer competitive rates for the Luton-to-London corridor — compare at least three quotes to get the best deal.',
     ],
-    nearbyCities: ['london', 'milton-keynes', 'cambridge', 'reading', 'oxford', 'northampton'],
+    nearbyCities: ['london', 'milton-keynes', 'cambridge', 'northampton', 'watford', 'st-albans'],
     propertyTypes: 'Victorian terraces, inter-war semis, 1960s estates, and modern new-build developments.',
   },
 
@@ -1010,7 +1010,7 @@ export const CITIES: CityData[] = [
       'If you\'re moving between Wolverhampton and Birmingham, the A41 or A454 are often faster than the motorway during rush hour.',
       'Parking in the city centre is restricted — if moving to a city centre apartment, arrange access permits well in advance.',
     ],
-    nearbyCities: ['birmingham', 'coventry', 'stoke-on-trent', 'derby', 'nottingham', 'leicester'],
+    nearbyCities: ['birmingham', 'dudley', 'stoke-on-trent', 'derby', 'worcester', 'coventry'],
     propertyTypes: 'Victorian villas in Tettenhall, inter-war semis, post-war estates, and modern city centre apartments.',
   },
 
@@ -1037,7 +1037,7 @@ export const CITIES: CityData[] = [
       'If you\'re moving to a new-build estate on the outskirts, double-check the address with your removal company — some new developments aren\'t fully mapped yet.',
       'The M4 between Swindon and Bristol is prone to delays at the Almondsbury Interchange — factor in extra time for cross-region moves.',
     ],
-    nearbyCities: ['bath', 'bristol', 'oxford', 'reading', 'bournemouth', 'southampton'],
+    nearbyCities: ['bath', 'bristol', 'oxford', 'cheltenham', 'gloucester', 'salisbury'],
     propertyTypes: 'Railway-era terraces in Old Town, 1930s semis, extensive modern new-build estates, and Cotswold stone villages nearby.',
   },
 
@@ -1064,7 +1064,7 @@ export const CITIES: CityData[] = [
       'If commuting to Manchester or Liverpool, test the journey during rush hour before committing — the M62 can be unpredictable.',
       'Stockton Heath and Lymm are the premium areas with higher property values — expect removal quotes to reflect the larger property sizes here.',
     ],
-    nearbyCities: ['manchester', 'liverpool', 'preston', 'sheffield', 'stoke-on-trent', 'birmingham'],
+    nearbyCities: ['manchester', 'liverpool', 'preston', 'wigan', 'stockport', 'birkenhead'],
     propertyTypes: 'Victorian terraces in the town centre, Cheshire-style detached homes in Stockton Heath, and modern new-build estates.',
   },
 
@@ -1145,7 +1145,7 @@ export const CITIES: CityData[] = [
       'Northampton\'s central UK location means you\'re rarely more than 2 hours from anywhere — take advantage of this for scheduling flexibility.',
       'If moving to one of the newer estates, check access road completion status with your developer before the moving day.',
     ],
-    nearbyCities: ['milton-keynes', 'coventry', 'leicester', 'birmingham', 'luton', 'oxford'],
+    nearbyCities: ['milton-keynes', 'coventry', 'leicester', 'birmingham', 'luton', 'watford'],
     propertyTypes: '1930s semis, Victorian terraces, extensive new-build estates, and converted boot and shoe factories.',
   },
 
@@ -1253,7 +1253,7 @@ export const CITIES: CityData[] = [
       'If moving from London to Chelmsford, avoid the A12 during Friday evening rush — it becomes a car park from the Brentwood junction onwards.',
       'Beaulieu Park is still being built — check road access and site conditions with your removal company before moving day.',
     ],
-    nearbyCities: ['colchester', 'london', 'ipswich', 'cambridge', 'luton', 'reading'],
+    nearbyCities: ['colchester', 'london', 'ipswich', 'cambridge', 'luton', 'watford'],
     propertyTypes: 'Victorian terraces in Moulsham, Edwardian semis, 1930s homes, and large modern new-build developments.',
   },
 
@@ -1339,6 +1339,762 @@ export const CITIES: CityData[] = [
     parkingNotes: 'Most central Bath streets are residents\' parking only. A Council parking suspension is essential and should be arranged at least two weeks ahead.',
     congestionNotes: 'Bath\'s Clean Air Zone (CAZ) charges non-compliant vehicles entering the zone — up to £100/day for HGVs.',
     propertyTypes: 'Georgian townhouses and crescents, Regency villas, Victorian terraces in the suburbs, and modern developments on the outskirts.',
+  },
+
+  // ─── Dundee ─────────────────────────────────────────────────────────────
+  {
+    slug: 'dundee',
+    name: 'Dundee',
+    county: 'Angus',
+    region: 'scotland',
+    postcodeAreas: ['DD'],
+    postcodeExample: 'DD1 1AA',
+    population: '149,000',
+    heroDescription:
+      'Dundee is Scotland\'s fourth-largest city, dramatically positioned on the Tay Estuary and undergoing a remarkable waterfront transformation anchored by the V&A Museum. With affordable housing, two universities, and a growing tech and gaming sector, the city attracts a steady stream of new residents. MoveFox matches you with experienced Scottish movers who navigate Dundee\'s hilly streets and tenement stairwells.',
+    localInsights: [
+      'Dundee is built on steep slopes rising from the Tay — many residential streets have sharp gradients that require experienced removal crews.',
+      'The city\'s traditional tenement buildings have narrow communal stairwells, often without lifts, making specialist stair-climbing equipment essential.',
+      'The V&A waterfront regeneration has brought new apartment developments with modern access requirements and goods-lift bookings.',
+      'Two universities (Dundee and Abertay) drive significant student removal demand in September and June.',
+    ],
+    averageCostRange: '£200 – £650',
+    popularAreas: ['West End', 'Broughty Ferry', 'Barnhill', 'Invergowrie', 'Ninewells', 'Dundee Waterfront'],
+    movingTips: [
+      'If moving to Broughty Ferry or the West End, be aware that on-street parking is limited — arrange a suspension with Dundee City Council.',
+      'The A90/Tay Road Bridge is the main route from the south — avoid crossing during morning and evening rush hours.',
+    ],
+    nearbyCities: ['edinburgh', 'aberdeen', 'glasgow', 'stirling', 'newcastle', 'sunderland'],
+    propertyTypes: 'Victorian and Edwardian tenements, Broughty Ferry villas, modern waterfront apartments, and suburban new-builds.',
+  },
+
+  // ─── Stirling ───────────────────────────────────────────────────────────
+  {
+    slug: 'stirling',
+    name: 'Stirling',
+    county: 'Stirlingshire',
+    region: 'scotland',
+    postcodeAreas: ['FK'],
+    postcodeExample: 'FK8 1AA',
+    population: '37,000',
+    heroDescription:
+      'Stirling is one of Scotland\'s most historic cities, sitting at the geographical heart of the country where the Lowlands meet the Highlands. Dominated by its magnificent castle and surrounded by stunning countryside, Stirling combines compact city living with easy access to Edinburgh, Glasgow, and the Highlands. MoveFox connects you with central Scotland movers who know every cobbled close and modern estate.',
+    localInsights: [
+      'Stirling\'s Old Town sits on a volcanic crag with extremely narrow medieval streets — large removal vehicles cannot access many properties here.',
+      'The city\'s central location means it\'s roughly equidistant from Edinburgh, Glasgow, Dundee, and Perth, making it a crossroads for Scottish removals.',
+      'Stirling University campus drives student removal demand, particularly in the Bridge of Allan and University areas.',
+      'The M9 and M80 motorways meet near Stirling, providing excellent road links but also creating congestion at peak times.',
+    ],
+    averageCostRange: '£200 – £600',
+    popularAreas: ['Bridge of Allan', 'Dunblane', 'Cambusbarron', 'Kings Park', 'Riverside', 'St Ninians'],
+    movingTips: [
+      'If moving to the Old Town, your removal company will likely need a smaller van — discuss this at booking stage.',
+      'Bridge of Allan and Dunblane are popular commuter villages with larger properties — expect slightly higher quotes for these areas.',
+    ],
+    nearbyCities: ['edinburgh', 'glasgow', 'dundee', 'aberdeen', 'newcastle', 'leeds'],
+    propertyTypes: 'Medieval Old Town properties, Georgian townhouses, Victorian villas in Bridge of Allan, and modern estates.',
+  },
+
+  // ─── Wakefield ──────────────────────────────────────────────────────────
+  {
+    slug: 'wakefield',
+    name: 'Wakefield',
+    county: 'West Yorkshire',
+    region: 'north-east',
+    postcodeAreas: ['WF'],
+    postcodeExample: 'WF1 1AA',
+    population: '345,000',
+    heroDescription:
+      'Wakefield is one of West Yorkshire\'s largest cities, offering significantly more affordable housing than nearby Leeds while still being just 20 minutes away by train. With the Hepworth Gallery putting it on the cultural map and excellent M1/M62 motorway access, Wakefield is increasingly popular with families and commuters. MoveFox matches you with Yorkshire movers who know every corner of the WF postcode area.',
+    localInsights: [
+      'Wakefield sits at the junction of the M1 and M62, giving superb road links in all directions but also creating heavy congestion around Junctions 39-42.',
+      'The city\'s proximity to Leeds means the Wakefield-Leeds removal corridor is one of the busiest and most competitive in West Yorkshire.',
+      'Pontefract, Castleford, and Ossett are all within the Wakefield district and have their own distinct property markets.',
+      'The Hepworth Wakefield gallery and waterfront area have driven new apartment developments in the city centre.',
+    ],
+    averageCostRange: '£150 – £600',
+    popularAreas: ['Sandal', 'Walton', 'Ossett', 'Horbury', 'Pontefract', 'Stanley', 'Outwood'],
+    movingTips: [
+      'The M1/M62 interchange (Lofthouse) is one of the most congested junctions in the country — avoid moving during Friday evening rush.',
+      'If you\'re commuting to Leeds, test the train or road route during rush hour before committing to a specific area.',
+    ],
+    nearbyCities: ['leeds', 'bradford', 'sheffield', 'hull', 'york', 'doncaster'],
+    propertyTypes: 'Victorian terraces, inter-war semis, stone-built cottages in surrounding villages, and modern new-builds.',
+  },
+
+  // ─── Dudley ─────────────────────────────────────────────────────────────
+  {
+    slug: 'dudley',
+    name: 'Dudley',
+    county: 'West Midlands',
+    region: 'midlands',
+    postcodeAreas: ['DY'],
+    postcodeExample: 'DY1 1AA',
+    population: '312,000',
+    heroDescription:
+      'Dudley is the historic heart of the Black Country, offering some of the most affordable property in the West Midlands with excellent access to Birmingham city centre. With a proud industrial heritage, Dudley\'s housing stock ranges from Victorian terraces to modern estates, and the borough includes popular areas like Stourbridge and Halesowen. MoveFox connects you with Black Country movers who know every estate and terrace.',
+    localInsights: [
+      'Dudley borough covers a large area including Stourbridge, Halesowen, and Brierley Hill — each with its own distinct character and property market.',
+      'The town centre sits on a hill crowned by the castle and zoo, with steep approach roads that can challenge larger removal vehicles.',
+      'The Merry Hill shopping centre area in Brierley Hill has seen significant residential development in recent years.',
+      'Black Country property prices are well below the Birmingham average, attracting first-time buyers and investors.',
+    ],
+    averageCostRange: '£150 – £550',
+    popularAreas: ['Stourbridge', 'Halesowen', 'Brierley Hill', 'Kingswinford', 'Sedgley', 'Wordsley'],
+    movingTips: [
+      'If moving between Dudley and Birmingham, the A456 and A459 are often faster than the motorway for short cross-city moves.',
+      'Stourbridge and Halesowen command higher prices than central Dudley — property sizes vary significantly across the borough.',
+    ],
+    nearbyCities: ['wolverhampton', 'birmingham', 'coventry', 'stoke-on-trent', 'worcester', 'northampton'],
+    propertyTypes: 'Victorian terraces, 1930s semis, post-war council estates, and modern new-builds in Stourbridge and Halesowen.',
+  },
+
+  // ─── Wigan ──────────────────────────────────────────────────────────────
+  {
+    slug: 'wigan',
+    name: 'Wigan',
+    county: 'Greater Manchester',
+    region: 'north-west',
+    postcodeAreas: ['WN'],
+    postcodeExample: 'WN1 1AA',
+    population: '327,000',
+    heroDescription:
+      'Wigan is one of Greater Manchester\'s largest boroughs, offering excellent value for money with fast rail links to Manchester and Liverpool. With a borough that stretches from Leigh to Standish, Wigan combines proud northern character with growing commuter appeal. MoveFox matches you with North West movers who cover every corner of the WN postcode area.',
+    localInsights: [
+      'Wigan borough covers a wide area — Leigh, Atherton, Hindley, and Standish are all within the district, each with distinct property markets.',
+      'The M6 and M58 motorways provide good road links, but Junction 25-27 congestion can affect moving-day schedules.',
+      'Wigan North Western station offers direct trains to London in under 2 hours, making it increasingly attractive to long-distance commuters.',
+      'The Leeds-Liverpool canal corridor has seen waterside residential development in recent years.',
+    ],
+    averageCostRange: '£150 – £550',
+    popularAreas: ['Standish', 'Aspull', 'Shevington', 'Orrell', 'Leigh', 'Atherton', 'Hindley'],
+    movingTips: [
+      'Standish and Shevington are the most sought-after areas with larger properties — expect quotes to reflect this.',
+      'If commuting to Manchester, test the road and rail routes during rush hour before deciding on your area.',
+    ],
+    nearbyCities: ['manchester', 'warrington', 'liverpool', 'preston', 'bolton', 'stockport'],
+    propertyTypes: 'Victorian terraces, inter-war semis, 1960s estates, and modern new-builds in Standish and Leigh.',
+  },
+
+  // ─── Doncaster ──────────────────────────────────────────────────────────
+  {
+    slug: 'doncaster',
+    name: 'Doncaster',
+    county: 'South Yorkshire',
+    region: 'north-east',
+    postcodeAreas: ['DN'],
+    postcodeExample: 'DN1 1AA',
+    population: '310,000',
+    heroDescription:
+      'Doncaster is a major South Yorkshire town strategically positioned at the crossroads of the A1(M) and M18, with fast East Coast Main Line trains reaching London in just 90 minutes. Famous for its racecourse and railway heritage, Doncaster offers affordable family housing and excellent road links. MoveFox connects you with South Yorkshire movers who handle everything from town centre terraces to rural village moves.',
+    localInsights: [
+      'Doncaster\'s position on the A1(M) and M18 makes it one of the best-connected towns in Yorkshire for long-distance removals.',
+      'The town has benefited from significant regeneration, with new developments around Lakeside and the railway station quarter.',
+      'Doncaster Robin Hood Airport (now closed) has freed up land for potential future development that may affect the local property market.',
+      'The surrounding villages of Bessacarr, Sprotbrough, and Bawtry are popular with families seeking larger homes.',
+    ],
+    averageCostRange: '£150 – £550',
+    popularAreas: ['Bessacarr', 'Sprotbrough', 'Bawtry', 'Tickhill', 'Hatfield', 'Armthorpe', 'Edenthorpe'],
+    movingTips: [
+      'Take advantage of Doncaster\'s excellent road network — the A1(M) makes north-south moves particularly straightforward.',
+      'The surrounding villages command premium prices but are easily accessible — discuss rural lane access with your removal company.',
+    ],
+    nearbyCities: ['sheffield', 'leeds', 'hull', 'york', 'nottingham', 'lincoln'],
+    propertyTypes: 'Victorian terraces, inter-war semis, 1960s estates, modern new-builds, and village properties in surrounding areas.',
+  },
+
+  // ─── Huddersfield ───────────────────────────────────────────────────────
+  {
+    slug: 'huddersfield',
+    name: 'Huddersfield',
+    county: 'West Yorkshire',
+    region: 'north-east',
+    postcodeAreas: ['HD'],
+    postcodeExample: 'HD1 1AA',
+    population: '162,000',
+    heroDescription:
+      'Huddersfield is a characterful West Yorkshire town nestled in the Colne and Holme valleys, with some of the finest Victorian architecture in the North of England. Its position between Leeds and Manchester makes it popular with commuters, while the surrounding Pennine countryside attracts families seeking space and character. MoveFox matches you with Yorkshire movers who handle Huddersfield\'s steep valleys and stone-built terraces.',
+    localInsights: [
+      'Huddersfield is built across steep Pennine valleys — many residential areas have challenging gradients and narrow access roads.',
+      'The town\'s stone-built Victorian and Edwardian terraces are characterful but heavy — stairwells can be narrow and doorways tight.',
+      'The M62 passes just south of the town, providing fast links to Leeds and Manchester, but Junction 24-25 congestion is a regular issue.',
+      'Huddersfield University drives student demand, particularly in the Marsh, Birkby, and Edgerton areas.',
+    ],
+    averageCostRange: '£150 – £600',
+    popularAreas: ['Edgerton', 'Lindley', 'Marsh', 'Holmfirth', 'Meltham', 'Kirkburton', 'Slaithwaite'],
+    movingTips: [
+      'Many of the valley-side streets have steep gradients and limited turning space — confirm your removal company is comfortable with Pennine terrain.',
+      'Holmfirth and the Holme Valley villages are beautiful but have narrow lanes — a smaller van may be needed for the last mile.',
+    ],
+    nearbyCities: ['leeds', 'bradford', 'sheffield', 'wakefield', 'manchester', 'york'],
+    propertyTypes: 'Stone-built Victorian terraces, Edwardian villas, converted mills, Pennine cottages, and modern new-builds.',
+  },
+
+  // ─── Stockport ──────────────────────────────────────────────────────────
+  {
+    slug: 'stockport',
+    name: 'Stockport',
+    county: 'Greater Manchester',
+    region: 'north-west',
+    postcodeAreas: ['SK'],
+    postcodeExample: 'SK1 1AA',
+    population: '293,000',
+    heroDescription:
+      'Stockport sits on Manchester\'s southern edge, combining excellent city-centre access with leafy Cheshire-border suburbs. Areas like Bramhall, Cheadle Hulme, and Marple are consistently rated among the best places to live in Greater Manchester. With the town centre undergoing major regeneration and property values climbing steadily, MoveFox helps you find movers experienced with Stockport\'s diverse neighbourhoods.',
+    localInsights: [
+      'Stockport\'s southern suburbs (Bramhall, Cheadle Hulme, Hazel Grove) are among the most sought-after in Greater Manchester, with larger properties and higher removal costs.',
+      'The A6 corridor through Stockport is heavily congested during peak hours — local movers know the back routes through Heaton Moor and Reddish.',
+      'Stockport town centre is undergoing a £1 billion regeneration, bringing new residential developments with modern access requirements.',
+      'The proximity to Manchester Airport means flight-path noise is a factor in some areas — this doesn\'t affect your move but may affect your choice of neighbourhood.',
+    ],
+    averageCostRange: '£200 – £700',
+    popularAreas: ['Bramhall', 'Cheadle Hulme', 'Marple', 'Heaton Moor', 'Hazel Grove', 'Romiley', 'Edgeley'],
+    movingTips: [
+      'If moving from central Manchester to Stockport, avoid the A6 during rush hour — the route through Levenshulme and Heaton Chapel is often faster.',
+      'Bramhall and Marple have larger detached properties — expect removal quotes to be higher than for terraced properties in Edgeley or Reddish.',
+    ],
+    nearbyCities: ['manchester', 'warrington', 'sheffield', 'stoke-on-trent', 'wigan', 'leeds'],
+    propertyTypes: '1930s semis, Victorian terraces in Edgeley, large detached homes in Bramhall, and modern developments in the town centre.',
+  },
+
+  // ─── Blackpool ──────────────────────────────────────────────────────────
+  {
+    slug: 'blackpool',
+    name: 'Blackpool',
+    county: 'Lancashire',
+    region: 'north-west',
+    postcodeAreas: ['FY'],
+    postcodeExample: 'FY1 1AA',
+    population: '141,000',
+    heroDescription:
+      'Blackpool is Britain\'s most famous seaside resort, offering some of the most affordable property in the North West alongside its iconic Tower and Golden Mile. With a large retirement and buy-to-let market, Blackpool sees a constant flow of removals. The town\'s unique seafront geography and seasonal traffic patterns make choosing a local mover who knows the area essential.',
+    localInsights: [
+      'Blackpool\'s promenade and seafront roads can be extremely congested during Illuminations season (September–November) and summer weekends.',
+      'Many seafront properties are converted Victorian hotels and guest houses, often with narrow staircases and multiple floors.',
+      'The FY postcode area extends to Cleveleys, Thornton, and Fleetwood, each with distinct property markets.',
+      'Property prices in Blackpool are among the lowest in the UK, attracting investors and first-time buyers, keeping removal demand consistently high.',
+    ],
+    averageCostRange: '£150 – £500',
+    popularAreas: ['South Shore', 'North Shore', 'Bispham', 'Cleveleys', 'Thornton', 'Layton', 'Marton'],
+    movingTips: [
+      'Avoid moving during Blackpool Illuminations (September–November) when seafront traffic grinds to a halt.',
+      'If moving to a converted seafront property, discuss staircase access and floor count with your removal company — some have 4+ floors with no lift.',
+    ],
+    nearbyCities: ['preston', 'manchester', 'liverpool', 'warrington', 'wigan', 'leeds'],
+    propertyTypes: 'Victorian seafront terraces, converted guest houses, inter-war semis, and modern estates in Marton and Bispham.',
+  },
+
+  // ─── Birkenhead ─────────────────────────────────────────────────────────
+  {
+    slug: 'birkenhead',
+    name: 'Birkenhead',
+    county: 'Merseyside',
+    region: 'north-west',
+    postcodeAreas: ['CH'],
+    postcodeExample: 'CH41 1AA',
+    population: '142,000',
+    heroDescription:
+      'Birkenhead sits on the Wirral Peninsula directly across the Mersey from Liverpool, offering dramatic waterfront views and significantly more affordable housing than its famous neighbour. With the Mersey Tunnel providing direct access to Liverpool city centre in minutes, Birkenhead and the wider Wirral are popular with families and commuters. MoveFox matches you with Merseyside movers who cover both sides of the river.',
+    localInsights: [
+      'The Mersey Tunnel (Queensway) connects Birkenhead to Liverpool city centre, but tunnel tolls and queues should be factored into moving-day plans.',
+      'The Wirral Peninsula offers a varied property market — from affordable terraces in Birkenhead to premium homes in Heswall and West Kirby.',
+      'Hamilton Square in central Birkenhead has some of the finest Georgian architecture outside London, with many properties now converted into flats.',
+      'The Woodside waterfront area is undergoing regeneration with new residential developments.',
+    ],
+    averageCostRange: '£150 – £600',
+    popularAreas: ['Oxton', 'Prenton', 'Heswall', 'West Kirby', 'Hoylake', 'Bebington', 'Bromborough'],
+    movingTips: [
+      'If moving between Liverpool and Birkenhead, the Mersey Tunnel can have long queues during rush hour — consider the Wallasey Tunnel (Kingsway) as an alternative.',
+      'Heswall and West Kirby are premium areas with larger properties — expect quotes to reflect the bigger job size.',
+    ],
+    nearbyCities: ['liverpool', 'warrington', 'manchester', 'chester', 'wigan', 'preston'],
+    propertyTypes: 'Georgian townhouses in Hamilton Square, Victorian terraces, inter-war semis, and modern developments on the waterfront.',
+  },
+
+  // ─── Gloucester ─────────────────────────────────────────────────────────
+  {
+    slug: 'gloucester',
+    name: 'Gloucester',
+    county: 'Gloucestershire',
+    region: 'south-west',
+    postcodeAreas: ['GL'],
+    postcodeExample: 'GL1 1AA',
+    population: '134,000',
+    heroDescription:
+      'Gloucester is a historic cathedral city on the River Severn, offering affordable housing with easy access to the Cotswolds, Bristol, and Birmingham. The city\'s regenerated Docks area, medieval centre, and expanding suburbs make it an attractive option for families and commuters. MoveFox connects you with Gloucestershire movers who handle everything from Docks apartments to Cotswold village homes.',
+    localInsights: [
+      'Gloucester\'s Docks area has been transformed into a residential and leisure destination, with converted warehouse apartments requiring goods-lift access.',
+      'The A40 and M5 provide excellent road links, but the A40 Over roundabout and Westgate area are notorious congestion points.',
+      'Gloucester is the gateway to the Cotswolds — many surrounding villages have narrow lanes that challenge large removal vehicles.',
+      'The city offers significantly more affordable housing than nearby Cheltenham, just 8 miles away.',
+    ],
+    averageCostRange: '£200 – £650',
+    popularAreas: ['Quedgeley', 'Hucclecote', 'Longlevens', 'Barnwood', 'Churchdown', 'Gloucester Docks'],
+    movingTips: [
+      'If moving to a surrounding Cotswold village, confirm your removal company is comfortable with narrow rural lanes and potentially unpaved tracks.',
+      'The A40 between Gloucester and Cheltenham is heavily congested — moves between the two cities should avoid peak hours.',
+    ],
+    nearbyCities: ['cheltenham', 'bristol', 'bath', 'worcester', 'swindon', 'cardiff'],
+    propertyTypes: 'Medieval and Tudor properties near the cathedral, Victorian terraces, converted Docks warehouses, and modern suburban estates.',
+  },
+
+  // ─── Worcester ──────────────────────────────────────────────────────────
+  {
+    slug: 'worcester',
+    name: 'Worcester',
+    county: 'Worcestershire',
+    region: 'midlands',
+    postcodeAreas: ['WR'],
+    postcodeExample: 'WR1 1AA',
+    population: '102,000',
+    heroDescription:
+      'Worcester is an elegant cathedral city on the River Severn, blending rich history with excellent connectivity to Birmingham and the wider Midlands. With beautiful Georgian and Victorian architecture, a thriving high street, and a growing university, Worcester offers character-filled living at prices well below nearby counties. MoveFox matches you with Worcestershire movers who treat the city\'s period properties with care.',
+    localInsights: [
+      'Worcester\'s medieval street layout around the cathedral means tight access and limited parking for removal vehicles in the city centre.',
+      'The city is prone to flooding along the Severn — some riverside properties in Diglis and St Johns require special consideration during winter moves.',
+      'The A44 and A449 are the main routes into Worcester, with the M5 Junctions 6 and 7 providing motorway access — but the Powick roundabout is a bottleneck.',
+      'Worcester is a popular choice for Birmingham commuters, with trains taking around 50 minutes to New Street.',
+    ],
+    averageCostRange: '£200 – £650',
+    popularAreas: ['St Johns', 'Barbourne', 'Diglis', 'Claines', 'Battenhall', 'Great Malvern'],
+    movingTips: [
+      'Check flood history before buying near the Severn — and ask your removal company about ground-floor access during the wetter months.',
+      'The narrow streets around the cathedral are restricted — your removal company may need to use a smaller van for final delivery.',
+    ],
+    nearbyCities: ['birmingham', 'gloucester', 'cheltenham', 'coventry', 'wolverhampton', 'dudley'],
+    propertyTypes: 'Georgian and Victorian townhouses, half-timbered medieval properties, suburban semis, and new-builds on the outskirts.',
+  },
+
+  // ─── Cheltenham ─────────────────────────────────────────────────────────
+  {
+    slug: 'cheltenham',
+    name: 'Cheltenham',
+    county: 'Gloucestershire',
+    region: 'south-west',
+    postcodeAreas: ['GL'],
+    postcodeExample: 'GL50 1AA',
+    population: '119,000',
+    heroDescription:
+      'Cheltenham is one of England\'s most elegant Regency towns, famous for its festivals, racecourse, and tree-lined Promenade. With GCHQ as a major employer and a thriving tech scene, the town attracts professionals, families, and retirees alike. Cheltenham\'s Regency architecture brings removal challenges — high ceilings, narrow hallways, and basement kitchens — making experienced local movers essential.',
+    localInsights: [
+      'Cheltenham\'s Regency properties have distinctive features — sash windows, ornate cornicing, and high ceilings — that require careful handling during removals.',
+      'Race week (March) and the various festivals (Literature, Music, Science) cause significant traffic disruption throughout the year.',
+      'GCHQ and the cyber-security sector drive a steady stream of relocations, many handled by specialist corporate removal services.',
+      'Montpellier and the Suffolks are premium areas with high property values and correspondingly larger removal jobs.',
+    ],
+    averageCostRange: '£250 – £750',
+    popularAreas: ['Montpellier', 'The Suffolks', 'Pittville', 'Leckhampton', 'Charlton Kings', 'Prestbury', 'Bishops Cleeve'],
+    movingTips: [
+      'Avoid moving during Cheltenham Race Week (mid-March) — hotel prices treble and roads around the town are gridlocked.',
+      'Regency properties often have narrow basement staircases and tight front doors — measure large furniture pieces before moving day.',
+    ],
+    nearbyCities: ['gloucester', 'bristol', 'bath', 'oxford', 'swindon', 'worcester'],
+    propertyTypes: 'Regency townhouses, Victorian villas, Edwardian semis, and modern developments on the outskirts.',
+  },
+
+  // ─── Harrogate ──────────────────────────────────────────────────────────
+  {
+    slug: 'harrogate',
+    name: 'Harrogate',
+    county: 'North Yorkshire',
+    region: 'north-east',
+    postcodeAreas: ['HG'],
+    postcodeExample: 'HG1 1AA',
+    population: '77,000',
+    heroDescription:
+      'Harrogate is one of the most affluent towns in the North of England, famous for its spa heritage, beautiful gardens, and independent shops. With excellent schools, stunning surrounding countryside, and fast rail links to Leeds and York, Harrogate commands premium property prices. MoveFox connects you with Yorkshire movers experienced in handling the town\'s larger, high-value properties.',
+    localInsights: [
+      'Harrogate property prices are significantly above the Yorkshire average — larger homes mean bigger removal jobs and higher quotes.',
+      'The town centre around The Stray has limited parking and residents\' zones — parking suspensions are often essential for removals.',
+      'Harrogate is a major conference destination — check for events at the Convention Centre that might affect traffic and accommodation.',
+      'The surrounding villages of Knaresborough, Ripon, and Boroughbridge are within the HG postcode and have their own distinct property markets.',
+    ],
+    averageCostRange: '£250 – £800',
+    popularAreas: ['The Stray', 'Cold Bath Road', 'Duchy', 'Jennyfields', 'Knaresborough', 'Ripon', 'Pannal'],
+    movingTips: [
+      'Harrogate\'s premium properties often have large furniture collections and antiques — ask your removal company about specialist packing and insurance.',
+      'If moving from Leeds, the A61 is the most direct route but can be slow through Chapel Allerton — the A658 via Harewood is often quicker.',
+    ],
+    nearbyCities: ['york', 'leeds', 'bradford', 'middlesbrough', 'wakefield', 'hull'],
+    propertyTypes: 'Georgian and Victorian townhouses, Edwardian villas, stone-built cottages, and premium modern developments.',
+  },
+
+  // ─── Salisbury ──────────────────────────────────────────────────────────
+  {
+    slug: 'salisbury',
+    name: 'Salisbury',
+    county: 'Wiltshire',
+    region: 'south-west',
+    postcodeAreas: ['SP'],
+    postcodeExample: 'SP1 1AA',
+    population: '45,000',
+    heroDescription:
+      'Salisbury is a beautiful cathedral city in the heart of Wiltshire, where five rivers meet. With its medieval street plan, thriving market, and proximity to Stonehenge, Salisbury attracts families, retirees, and military personnel from nearby bases. The city\'s compact centre and surrounding rural villages make local knowledge invaluable when choosing a removal company.',
+    localInsights: [
+      'Salisbury\'s medieval street plan around the Cathedral Close has extremely tight access — some streets are barely wide enough for a transit van.',
+      'Several nearby military bases (Bulford, Tidworth, Larkhill) generate regular military family relocations.',
+      'The city sits at the confluence of five rivers and is prone to flooding in winter — some properties in Harnham and Fisherton need careful timing.',
+      'The A36 and A303 are the main road routes, but both are notoriously slow single-carriageway sections during peak times.',
+    ],
+    averageCostRange: '£200 – £650',
+    popularAreas: ['Harnham', 'Fisherton', 'Stratford-sub-Castle', 'Wilton', 'Laverstock', 'Old Sarum'],
+    movingTips: [
+      'The A303 near Stonehenge is one of the worst bottlenecks in southern England — avoid it during summer weekends and bank holidays.',
+      'If moving to the Cathedral Close or city centre, your removal company will need specialist knowledge of access restrictions.',
+    ],
+    nearbyCities: ['bournemouth', 'southampton', 'bath', 'swindon', 'portsmouth', 'exeter'],
+    propertyTypes: 'Medieval and Georgian properties near the Close, Victorian terraces, military housing, and rural cottages in surrounding villages.',
+  },
+
+  // ─── Maidstone ──────────────────────────────────────────────────────────
+  {
+    slug: 'maidstone',
+    name: 'Maidstone',
+    county: 'Kent',
+    region: 'south-east',
+    postcodeAreas: ['ME'],
+    postcodeExample: 'ME14 1AA',
+    population: '173,000',
+    heroDescription:
+      'Maidstone is the county town of Kent, strategically located on the River Medway with excellent road and rail links to London. As the administrative and commercial heart of the Garden of England, Maidstone offers a blend of town-centre living and access to some of Kent\'s most beautiful countryside. MoveFox matches you with Kent movers who handle everything from riverside apartments to village farmhouses.',
+    localInsights: [
+      'The M20 runs right past Maidstone, providing fast access to London and the Channel Tunnel, but Junction 7 congestion is a daily issue.',
+      'Maidstone East and Maidstone West stations offer different routes to London — journey times vary from 60 to 90 minutes depending on the service.',
+      'The town centre along the Medway has seen significant apartment development, with restricted parking and goods-lift requirements.',
+      'Surrounding villages like Bearsted, Loose, and Headcorn are in high demand with families, often with narrow Kent lanes for access.',
+    ],
+    averageCostRange: '£250 – £750',
+    popularAreas: ['Bearsted', 'Loose', 'Barming', 'Penenden Heath', 'Allington', 'Headcorn', 'Staplehurst'],
+    movingTips: [
+      'Kent lanes around surrounding villages can be very narrow — discuss vehicle size with your removal company before the move.',
+      'If commuting to London, choose your area carefully — Maidstone East line stations have faster services than Maidstone West.',
+    ],
+    nearbyCities: ['london', 'brighton', 'chelmsford', 'crawley', 'guildford', 'canterbury'],
+    propertyTypes: 'Oast house conversions, Victorian terraces, modern riverside apartments, and Kent village properties.',
+  },
+
+  // ─── Guildford ──────────────────────────────────────────────────────────
+  {
+    slug: 'guildford',
+    name: 'Guildford',
+    county: 'Surrey',
+    region: 'south-east',
+    postcodeAreas: ['GU'],
+    postcodeExample: 'GU1 1AA',
+    population: '82,000',
+    heroDescription:
+      'Guildford is Surrey\'s county town and one of the most desirable places to live in the South East, perched on steep hills above the River Wey. With a cobbled high street, excellent schools, the University of Surrey, and fast 35-minute trains to London Waterloo, Guildford commands premium property prices. MoveFox connects you with Surrey movers who handle the town\'s challenging terrain and high-value homes.',
+    localInsights: [
+      'Guildford\'s famous High Street is one of the steepest in England — properties in the town centre often have multiple levels built into the hillside.',
+      'Surrey property prices are among the highest outside London, meaning removal jobs tend to be larger and higher-value.',
+      'The A3 bypass carries heavy London-bound traffic, and the town centre gyratory can confuse drivers unfamiliar with Guildford.',
+      'The University of Surrey drives student removal demand in September and June, particularly around Stag Hill and Manor Park.',
+    ],
+    averageCostRange: '£300 – £900',
+    popularAreas: ['Merrow', 'Shalford', 'Cranleigh', 'Godalming', 'Ash', 'Worplesdon', 'Compton'],
+    movingTips: [
+      'Guildford\'s steep terrain means some properties have driveways on significant gradients — confirm your removal company\'s vehicle can handle this safely.',
+      'Premium properties in Merrow and Shalford often have long driveways and extensive contents — allow a full day for the move.',
+    ],
+    nearbyCities: ['london', 'reading', 'brighton', 'portsmouth', 'crawley', 'basingstoke'],
+    propertyTypes: 'Tudor and Georgian townhouses, Victorian villas, large Surrey stockbroker-belt homes, and modern university-area apartments.',
+  },
+
+  // ─── Basingstoke ────────────────────────────────────────────────────────
+  {
+    slug: 'basingstoke',
+    name: 'Basingstoke',
+    county: 'Hampshire',
+    region: 'south-east',
+    postcodeAreas: ['RG'],
+    postcodeExample: 'RG21 1AA',
+    population: '115,000',
+    heroDescription:
+      'Basingstoke has transformed from a small market town into one of Hampshire\'s largest and most dynamic business centres. With major employers including AA, Motorola, and numerous insurance companies, the town attracts a steady stream of corporate relocations. Excellent M3 motorway access and fast trains to London Waterloo make it a popular commuter choice. MoveFox helps you find Hampshire movers experienced with Basingstoke\'s extensive modern estates.',
+    localInsights: [
+      'Basingstoke expanded dramatically in the 1960s-80s as a London overspill town, meaning much of the housing stock is relatively modern and uniform.',
+      'The M3 Junction 6 and 7 provide excellent motorway access, but the A339/A340 ring road can be congested during peak hours.',
+      'The town centre has been extensively redeveloped with the Festival Place shopping centre and surrounding residential blocks.',
+      'Surrounding villages like Old Basing, Sherborne St John, and Hook offer a more rural feel while remaining within easy commuting distance.',
+    ],
+    averageCostRange: '£250 – £700',
+    popularAreas: ['Old Basing', 'Chineham', 'Brighton Hill', 'Kempshott', 'Sherborne St John', 'Hook'],
+    movingTips: [
+      'Most of Basingstoke\'s housing estates have good vehicle access and off-street parking, making removals straightforward compared to older towns.',
+      'If moving for work, many Basingstoke employers offer relocation packages — check whether your company has preferred removal suppliers.',
+    ],
+    nearbyCities: ['reading', 'southampton', 'guildford', 'portsmouth', 'swindon', 'london'],
+    propertyTypes: '1960s-80s estates, modern new-builds, and period properties in surrounding villages like Old Basing and Hook.',
+  },
+
+  // ─── Slough ─────────────────────────────────────────────────────────────
+  {
+    slug: 'slough',
+    name: 'Slough',
+    county: 'Berkshire',
+    region: 'south-east',
+    postcodeAreas: ['SL'],
+    postcodeExample: 'SL1 1AA',
+    population: '164,000',
+    heroDescription:
+      'Slough is one of the most economically productive towns in the UK, sitting on the M4 corridor just west of London with Heathrow Airport on its doorstep. The Slough Trading Estate is Europe\'s largest and drives enormous employment, while the town itself offers some of the most affordable housing this close to London. MoveFox connects you with Berkshire movers who handle the busy London-M4 corridor daily.',
+    localInsights: [
+      'Slough\'s proximity to Heathrow means constant aircraft noise in some areas — this doesn\'t affect your move but is worth considering when choosing a neighbourhood.',
+      'The Crossrail (Elizabeth Line) connection has transformed Slough\'s commuting options, making it even more attractive to London workers.',
+      'The Bath Road (A4) corridor through Slough is heavily congested at peak times — removal companies need to plan routes carefully.',
+      'Slough Trading Estate generates significant commercial and residential demand for removal services.',
+    ],
+    averageCostRange: '£250 – £750',
+    popularAreas: ['Langley', 'Burnham', 'Farnham Common', 'Cippenham', 'Chalvey', 'Upton Court'],
+    movingTips: [
+      'The Elizabeth Line has made Slough even more popular with London commuters — removal demand peaks around the start of new school terms.',
+      'Burnham and Farnham Common are premium areas bordering South Bucks — expect higher property values and larger removal jobs.',
+    ],
+    nearbyCities: ['reading', 'london', 'luton', 'guildford', 'oxford', 'basingstoke'],
+    propertyTypes: '1930s semis, Victorian terraces in central Slough, premium village properties in Burnham, and modern apartment developments.',
+  },
+
+  // ─── Watford ────────────────────────────────────────────────────────────
+  {
+    slug: 'watford',
+    name: 'Watford',
+    county: 'Hertfordshire',
+    region: 'south-east',
+    postcodeAreas: ['WD'],
+    postcodeExample: 'WD17 1AA',
+    population: '102,000',
+    heroDescription:
+      'Watford sits at the top of the Metropolitan Line and the M1, making it one of the most connected commuter towns in Hertfordshire. With the new Watford Riverwell development, excellent shopping at the Harlequin Centre and intu, and a diverse mix of period and modern housing, Watford attracts a constant flow of London leavers. MoveFox matches you with Hertfordshire movers who know every estate and crescent.',
+    localInsights: [
+      'Watford\'s Metropolitan Line Tube connection makes it unique among Hertfordshire towns — you can reach central London without changing trains.',
+      'The M1 Junction 5 and M25 Junction 19/20 provide motorway access, but both are notoriously congested — timing is critical for moving day.',
+      'Watford Junction offers fast trains to London Euston (just 16 minutes), making areas near the station particularly sought-after.',
+      'The town has seen significant development with Watford Riverwell and Clarendon Road residential schemes.',
+    ],
+    averageCostRange: '£250 – £750',
+    popularAreas: ['Cassiobury', 'Nascot Wood', 'Oxhey', 'Bushey', 'Croxley Green', 'Abbots Langley'],
+    movingTips: [
+      'Cassiobury and Nascot Wood are premium areas with large detached homes — allow a full day for removal and factor in higher quotes.',
+      'If moving from London, avoid the M1 on Friday afternoons — the journey from North London can take over 2 hours.',
+    ],
+    nearbyCities: ['london', 'luton', 'st-albans', 'reading', 'slough', 'chelmsford'],
+    propertyTypes: '1930s semis, Edwardian terraces, large detached homes in Cassiobury, and modern town-centre apartments.',
+  },
+
+  // ─── St Albans ──────────────────────────────────────────────────────────
+  {
+    slug: 'st-albans',
+    name: 'St Albans',
+    county: 'Hertfordshire',
+    region: 'south-east',
+    postcodeAreas: ['AL'],
+    postcodeExample: 'AL1 1AA',
+    population: '87,000',
+    heroDescription:
+      'St Albans is one of the most desirable places to live in the Home Counties, combining Roman and medieval history with a vibrant food and drink scene. With fast 20-minute trains to London St Pancras, excellent schools, and a charming city centre, St Albans commands premium property prices. MoveFox connects you with Hertfordshire movers experienced in handling the city\'s high-value period properties.',
+    localInsights: [
+      'St Albans property prices are among the highest in Hertfordshire — average house prices exceed the national average significantly, meaning larger removal jobs.',
+      'The city centre around the Clock Tower and Cathedral has narrow medieval streets with very limited vehicle access.',
+      'St Albans Thameslink offers direct trains to London, Brighton, and Cambridge, making it a desirable cross-network commuter hub.',
+      'The popular Saturday and Wednesday markets attract visitors from across the county, causing traffic congestion on market days.',
+    ],
+    averageCostRange: '£300 – £900',
+    popularAreas: ['Marshalswick', 'Jersey Farm', 'Bernards Heath', 'Fleetville', 'Clarence Park', 'Park Street'],
+    movingTips: [
+      'Avoid moving on Saturday (market day) — the city centre is gridlocked and parking is almost impossible.',
+      'Premium properties in Marshalswick and Bernards Heath often have extensive contents — book a large crew and allow a full day.',
+    ],
+    nearbyCities: ['london', 'luton', 'watford', 'cambridge', 'milton-keynes', 'chelmsford'],
+    propertyTypes: 'Medieval and Georgian properties near the Cathedral, Victorian terraces, 1930s family homes, and modern apartments.',
+  },
+
+  // ─── Canterbury ─────────────────────────────────────────────────────────
+  {
+    slug: 'canterbury',
+    name: 'Canterbury',
+    county: 'Kent',
+    region: 'south-east',
+    postcodeAreas: ['CT'],
+    postcodeExample: 'CT1 1AA',
+    population: '55,000',
+    heroDescription:
+      'Canterbury is one of England\'s most historic cities, dominated by its magnificent UNESCO World Heritage cathedral. With three universities, a medieval city centre, and high-speed rail links to London St Pancras in under an hour, Canterbury is a vibrant mix of students, tourists, and residents. MoveFox matches you with Kent movers who navigate the city\'s ancient streets with care.',
+    localInsights: [
+      'Canterbury\'s medieval city walls and narrow streets make the city centre extremely challenging for removal vehicles — many streets have width and weight restrictions.',
+      'Three universities (University of Kent, Canterbury Christ Church, and UCA) create massive student removal demand in September and June.',
+      'High-speed rail from Canterbury West reaches London St Pancras in 56 minutes, making it attractive for London commuters.',
+      'The city centre is largely pedestrianised during shopping hours, restricting removal access to early morning and evening.',
+    ],
+    averageCostRange: '£200 – £700',
+    popularAreas: ['Harbledown', 'Blean', 'Rough Common', 'Chartham', 'Bridge', 'Whitstable', 'Herne Bay'],
+    movingTips: [
+      'City centre removals often need to be completed before 10am due to pedestrianisation — discuss early morning starts with your removal company.',
+      'Whitstable and Herne Bay are within the Canterbury district and increasingly popular — the coastal premium adds to property values.',
+    ],
+    nearbyCities: ['maidstone', 'london', 'brighton', 'colchester', 'chelmsford', 'crawley'],
+    propertyTypes: 'Medieval timber-framed buildings, Georgian townhouses, Victorian terraces, and modern university-area developments.',
+  },
+
+  // ─── Eastbourne ─────────────────────────────────────────────────────────
+  {
+    slug: 'eastbourne',
+    name: 'Eastbourne',
+    county: 'East Sussex',
+    region: 'south-east',
+    postcodeAreas: ['BN'],
+    postcodeExample: 'BN21 1AA',
+    population: '103,000',
+    heroDescription:
+      'Eastbourne is a classic South Coast seaside town, consistently ranked among the sunniest places in Britain. Popular with retirees, families, and increasingly with remote workers seeking coastal living, Eastbourne offers a mix of grand seafront properties, Victorian terraces, and modern developments. MoveFox connects you with Sussex movers who handle the town\'s seafront access challenges and clifftop logistics.',
+    localInsights: [
+      'Eastbourne\'s seafront properties along the Grand Parade and King Edward\'s Parade are among the most prestigious on the South Coast, with correspondingly high removal costs.',
+      'The Beachy Head road and clifftop areas can be exposed to strong winds that may affect loading and unloading schedules.',
+      'The town has a large retirement population, meaning downsizing moves are very common — specialist services for antiques and fragile items are in demand.',
+      'The A259 coast road and A22 are the main routes in — neither is dual carriageway, so journey times can be longer than expected.',
+    ],
+    averageCostRange: '£200 – £700',
+    popularAreas: ['Meads', 'Old Town', 'Upperton', 'Hampden Park', 'Polegate', 'Pevensey Bay', 'Sovereign Harbour'],
+    movingTips: [
+      'Seafront properties often have no off-street parking — arrange a parking suspension with Eastbourne Borough Council well in advance.',
+      'If downsizing, many Eastbourne removal companies offer specialist packing for china, antiques, and art — ask MoveFox to match you with the right provider.',
+    ],
+    nearbyCities: ['brighton', 'hastings', 'maidstone', 'london', 'crawley', 'worthing'],
+    propertyTypes: 'Grand seafront villas, Victorian and Edwardian terraces, modern apartments at Sovereign Harbour, and 1930s semis.',
+  },
+
+  // ─── Hastings ───────────────────────────────────────────────────────────
+  {
+    slug: 'hastings',
+    name: 'Hastings',
+    county: 'East Sussex',
+    region: 'south-east',
+    postcodeAreas: ['TN'],
+    postcodeExample: 'TN34 1AA',
+    population: '92,000',
+    heroDescription:
+      'Hastings is a characterful coastal town with a thriving creative community, attractive Old Town, and some of the most affordable property on the South Coast. With direct rail links to London and a strong independent spirit, Hastings has become increasingly popular with London leavers and remote workers. MoveFox matches you with Sussex movers who handle the town\'s steep hillside streets and narrow Old Town lanes.',
+    localInsights: [
+      'Hastings is built on steep cliffs and hillsides — many residential streets have extreme gradients that demand experienced removal crews.',
+      'The Old Town has extremely narrow medieval streets and alleys (known locally as "twittens") where only small vehicles can operate.',
+      'St Leonards-on-Sea, adjoining Hastings to the west, has seen significant gentrification with converted Regency properties.',
+      'The A21 is the main route to London but is single carriageway for much of the journey, making long-distance moves time-consuming.',
+    ],
+    averageCostRange: '£200 – £650',
+    popularAreas: ['Old Town', 'St Leonards', 'Silverhill', 'Ore', 'West Hill', 'Fairlight', 'Battle'],
+    movingTips: [
+      'If moving to the Old Town or West Hill, your removal company will need a smaller van — discuss this at booking stage.',
+      'The steep hills mean stair-climbing equipment is essential for many Hastings properties — don\'t assume it\'s included as standard.',
+    ],
+    nearbyCities: ['eastbourne', 'brighton', 'maidstone', 'crawley', 'london', 'worthing'],
+    propertyTypes: 'Medieval Old Town cottages, Regency terraces in St Leonards, Victorian seafront properties, and suburban new-builds.',
+  },
+
+  // ─── Worthing ───────────────────────────────────────────────────────────
+  {
+    slug: 'worthing',
+    name: 'Worthing',
+    county: 'West Sussex',
+    region: 'south-east',
+    postcodeAreas: ['BN'],
+    postcodeExample: 'BN11 1AA',
+    population: '110,000',
+    heroDescription:
+      'Worthing has reinvented itself from a traditional retirement town into one of the South Coast\'s most exciting places to live, with a growing tech scene and vibrant food culture. Sitting between Brighton and Chichester with excellent rail links, Worthing offers a more relaxed and affordable alternative to its flashier neighbour. MoveFox connects you with West Sussex movers who know every street from the seafront to the Downs.',
+    localInsights: [
+      'Worthing is increasingly popular with Brighton professionals priced out of the city — the Worthing-Brighton removal corridor is one of the busiest on the South Coast.',
+      'The seafront properties along Marine Parade are premium but exposed to salt spray and wind — specialist packing may be needed for delicate items.',
+      'The A259 coast road is the main east-west route but is heavily congested through central Worthing — the A27 bypass is faster for through-traffic.',
+      'Worthing has a growing creative and tech community, attracting younger buyers and renters to previously overlooked areas.',
+    ],
+    averageCostRange: '£200 – £650',
+    popularAreas: ['Broadwater', 'Tarring', 'Goring-by-Sea', 'Findon Valley', 'Durrington', 'High Salvington'],
+    movingTips: [
+      'Seafront properties often have no off-street parking — arrange a temporary suspension with Worthing Borough Council.',
+      'If moving from Brighton, the A27 is faster than the coast road — allow at least an hour for a short-distance move to account for traffic.',
+    ],
+    nearbyCities: ['brighton', 'crawley', 'portsmouth', 'eastbourne', 'hastings', 'guildford'],
+    propertyTypes: 'Edwardian and Victorian seafront properties, 1930s semis, modern apartments, and homes backing onto the South Downs.',
+  },
+
+  // ─── Crawley ────────────────────────────────────────────────────────────
+  {
+    slug: 'crawley',
+    name: 'Crawley',
+    county: 'West Sussex',
+    region: 'south-east',
+    postcodeAreas: ['RH'],
+    postcodeExample: 'RH10 1AA',
+    population: '118,000',
+    heroDescription:
+      'Crawley is a planned New Town at the heart of the Gatwick Diamond, one of the UK\'s most economically dynamic areas. With Gatwick Airport as a major employer and the M23 providing fast London access, Crawley attracts aviation professionals, commuters, and families. The town\'s neighbourhood-based layout with distinct areas makes it a well-organised place to move to. MoveFox matches you with Sussex movers who cover the entire Gatwick corridor.',
+    localInsights: [
+      'Crawley\'s New Town layout means most residential areas have good road access and off-street parking, making removals straightforward.',
+      'Gatwick Airport generates constant employment-related relocations — many removal companies in the area specialise in corporate moves.',
+      'The M23 provides fast access to London and Brighton, but Junction 10 (for Crawley) can be congested during peak hours.',
+      'Each of Crawley\'s 13 neighbourhoods has its own character and centre — Pound Hill, Maidenbower, and Three Bridges are among the largest.',
+    ],
+    averageCostRange: '£200 – £650',
+    popularAreas: ['Pound Hill', 'Maidenbower', 'Three Bridges', 'Furnace Green', 'Tilgate', 'Ifield', 'Langley Green'],
+    movingTips: [
+      'Crawley\'s well-planned estate roads make most removals straightforward — this keeps prices competitive compared to older Sussex towns.',
+      'If relocating for a Gatwick-based job, many removal companies offer airport-corridor specialist packages.',
+    ],
+    nearbyCities: ['brighton', 'guildford', 'worthing', 'maidstone', 'london', 'eastbourne'],
+    propertyTypes: 'Post-war New Town housing, 1960s-80s estates, modern new-builds in Maidenbower, and older properties in surrounding villages.',
+  },
+
+  // ─── Newport ────────────────────────────────────────────────────────────
+  {
+    slug: 'newport',
+    name: 'Newport',
+    county: 'Gwent',
+    region: 'wales',
+    postcodeAreas: ['NP'],
+    postcodeExample: 'NP20 1AA',
+    population: '155,000',
+    heroDescription:
+      'Newport is Wales\'s third-largest city, strategically positioned on the M4 between Cardiff and Bristol with the Severn crossings providing fast access to England. Often overlooked in favour of Cardiff, Newport offers significantly more affordable housing and is undergoing major regeneration around the Riverfront and Friars Walk. MoveFox connects you with South Wales movers who cover both sides of the Severn.',
+    localInsights: [
+      'Newport\'s M4 access (Junctions 24-28) makes it one of the best-connected cities in South Wales, but the Brynglas Tunnels create a notorious bottleneck.',
+      'The Severn Bridge tolls were abolished in 2018, making Newport-Bristol moves much cheaper and boosting cross-border removal demand.',
+      'Newport\'s city centre is undergoing regeneration with Friars Walk and the Riverfront theatre, bringing new residential developments.',
+      'The surrounding areas of Caerleon, Rogerstone, and Bassaleg are popular family areas with larger properties.',
+    ],
+    averageCostRange: '£180 – £600',
+    popularAreas: ['Caerleon', 'Rogerstone', 'Bassaleg', 'Allt-yr-yn', 'Ridgeway', 'Langstone', 'Marshfield'],
+    movingTips: [
+      'The Brynglas Tunnels on the M4 are a major bottleneck — if moving across Newport, plan routes that avoid the motorway between Junctions 25A and 26.',
+      'Cross-border moves between Newport and Bristol are now toll-free and very competitive — compare quotes from both Welsh and English removal companies.',
+    ],
+    nearbyCities: ['cardiff', 'swansea', 'bristol', 'bath', 'gloucester', 'birmingham'],
+    propertyTypes: 'Victorian terraces, inter-war semis, modern Riverfront apartments, and larger family homes in Caerleon and Rogerstone.',
+  },
+
+  // ─── Wrexham ────────────────────────────────────────────────────────────
+  {
+    slug: 'wrexham',
+    name: 'Wrexham',
+    county: 'Clwyd',
+    region: 'wales',
+    postcodeAreas: ['LL'],
+    postcodeExample: 'LL11 1AA',
+    population: '65,000',
+    heroDescription:
+      'Wrexham is North Wales\'s largest town and newest city, gaining city status in 2022. Sitting close to the English border with excellent A483 and A55 access to Chester, Liverpool, and Manchester, Wrexham offers affordable Welsh housing with English city convenience. The town has gained international fame through its football club\'s remarkable rise, boosting local pride and investment. MoveFox matches you with North Wales movers who cross the border daily.',
+    localInsights: [
+      'Wrexham\'s proximity to Chester (12 miles) means many moves are cross-border between Wales and England — removal companies here are experienced with both.',
+      'The A483 bypass and A55 expressway provide fast road links, but the town centre can be congested around Regent Street and the one-way system.',
+      'Wrexham AFC\'s rise to prominence has brought new investment and attention to the town, with property prices starting to reflect this.',
+      'The surrounding countryside offers rural properties in the Ceiriog and Dee valleys, with narrow Welsh lanes for access.',
+    ],
+    averageCostRange: '£150 – £550',
+    popularAreas: ['Gresford', 'Marford', 'Rossett', 'Ruabon', 'Coedpoeth', 'Borras', 'Wrexham Town Centre'],
+    movingTips: [
+      'If moving between Wrexham and Chester/Liverpool, the A483/A55 route is fast and straightforward — removal pricing is very competitive on this corridor.',
+      'Rural properties in the Dee Valley may have limited vehicle access — discuss lane widths and turning space with your removal company.',
+    ],
+    nearbyCities: ['cardiff', 'swansea', 'liverpool', 'manchester', 'birmingham', 'stoke-on-trent'],
+    propertyTypes: 'Victorian and Edwardian terraces, modern town-centre apartments, rural stone cottages, and new-build estates in Gresford and Rossett.',
   },
 ];
 
