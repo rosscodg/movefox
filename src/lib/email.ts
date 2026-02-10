@@ -1,7 +1,16 @@
 import { Resend } from 'resend';
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
-const resend = new Resend(RESEND_API_KEY);
+
+// Lazy-init to avoid crashing at module-load when RESEND_API_KEY is not set
+let _resend: Resend | null = null;
+
+function getResend(): Resend {
+  if (!_resend) {
+    _resend = new Resend(RESEND_API_KEY || '');
+  }
+  return _resend;
+}
 
 const FROM_EMAIL = process.env.FROM_EMAIL || 'noreply@movecompare.co.uk';
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || 'MoveFox';
@@ -52,7 +61,7 @@ export async function sendLeadConfirmation(to: string, leadId: string) {
     </html>
   `;
 
-  const { data, error } = await resend.emails.send({
+  const { data, error } = await getResend().emails.send({
     from: `${APP_NAME} <${FROM_EMAIL}>`,
     to,
     subject: `Your removal quote request has been received - ${APP_NAME}`,
@@ -154,7 +163,7 @@ export async function sendNewLeadNotification(
     </html>
   `;
 
-  const { data, error } = await resend.emails.send({
+  const { data, error } = await getResend().emails.send({
     from: `${APP_NAME} <${FROM_EMAIL}>`,
     to,
     subject: `New removal lead available - ${APP_NAME}`,
@@ -221,7 +230,7 @@ export async function sendPartnerApprovalEmail(
     </html>
   `;
 
-  const { data, error } = await resend.emails.send({
+  const { data, error } = await getResend().emails.send({
     from: `${APP_NAME} <${FROM_EMAIL}>`,
     to,
     subject: `Welcome to ${APP_NAME} — Your application has been approved`,
@@ -281,7 +290,7 @@ export async function sendPartnerRejectionEmail(
     </html>
   `;
 
-  const { data, error } = await resend.emails.send({
+  const { data, error } = await getResend().emails.send({
     from: `${APP_NAME} <${FROM_EMAIL}>`,
     to,
     subject: `Application update - ${APP_NAME}`,
@@ -385,7 +394,7 @@ export async function sendNewPartnerNotification(details: NewPartnerDetails) {
     </html>
   `;
 
-  const { data, error } = await resend.emails.send({
+  const { data, error } = await getResend().emails.send({
     from: `${APP_NAME} <${FROM_EMAIL}>`,
     to: adminEmail,
     subject: `New partner application: ${details.companyName} — ${APP_NAME}`,
@@ -448,7 +457,7 @@ export async function sendLowCreditWarning(
     </html>
   `;
 
-  const { data, error } = await resend.emails.send({
+  const { data, error } = await getResend().emails.send({
     from: `${APP_NAME} <${FROM_EMAIL}>`,
     to,
     subject: `Low credit balance - ${APP_NAME}`,
