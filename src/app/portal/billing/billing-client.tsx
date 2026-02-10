@@ -171,59 +171,56 @@ export function BillingClient({
             return (
               <div
                 key={pack.name}
-                className={`relative bg-surface rounded-2xl p-6 transition-all duration-200 ${
+                className={`bg-surface rounded-2xl px-5 pb-5 pt-4 flex flex-col items-center text-center transition-all duration-200 ${
                   isPopular
-                    ? 'shadow-lg'
+                    ? 'border-2 border-solid border-[#7c3aed] shadow-lg shadow-primary/10'
                     : 'border border-border hover:border-border-light'
                 }`}
-                style={isPopular ? { boxShadow: 'inset 0 0 0 2px #7c3aed, 0 10px 15px -3px rgba(124,58,237,0.1)' } : undefined}
               >
-                {highlight && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
-                    <Badge variant={isPopular ? 'primary' : 'success'}>
-                      {highlight}
-                    </Badge>
-                  </div>
+                {highlight ? (
+                  <Badge variant={isPopular ? 'primary' : 'success'} className="mb-4">
+                    {highlight}
+                  </Badge>
+                ) : (
+                  <div className="h-6 mb-4" />
                 )}
-                <div className="text-center pt-2">
-                  <div
-                    className={`w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 ${
-                      isPopular
-                        ? 'bg-primary/15 text-primary-light'
-                        : isBestValue
-                        ? 'bg-accent/15 text-accent'
-                        : 'bg-surface-alt text-text-secondary'
-                    }`}
-                  >
-                    {PACK_ICONS[pack.name]}
-                  </div>
-                  <h3 className="text-lg font-bold text-text-primary">
-                    {pack.name}
-                  </h3>
-                  <p className="text-3xl font-bold text-text-primary mt-3">
-                    {pack.credits}
-                    <span className="text-sm font-normal text-text-muted ml-1">
-                      credits
-                    </span>
-                  </p>
-                  <div className="mt-3 pt-3 border-t border-border">
-                    <p className="text-2xl font-bold text-primary-light">
-                      £{pack.priceGbp}
-                    </p>
-                    <p className="text-xs text-text-muted mt-1">
-                      £{pack.perCredit} per credit
-                    </p>
-                  </div>
-                  <Button
-                    onClick={() => handleBuyCredits(pack.name)}
-                    loading={purchasingPack === pack.name}
-                    disabled={purchasingPack !== null}
-                    variant={isPopular ? 'primary' : 'outline'}
-                    className="w-full mt-5"
-                  >
-                    Buy {pack.name}
-                  </Button>
+                <div
+                  className={`w-12 h-12 rounded-xl flex items-center justify-center mb-3 ${
+                    isPopular
+                      ? 'bg-primary/15 text-primary-light'
+                      : isBestValue
+                      ? 'bg-accent/15 text-accent'
+                      : 'bg-surface-alt text-text-secondary'
+                  }`}
+                >
+                  {PACK_ICONS[pack.name]}
                 </div>
+                <h3 className="text-lg font-bold text-text-primary">
+                  {pack.name}
+                </h3>
+                <p className="text-3xl font-bold text-text-primary mt-2">
+                  {pack.credits}
+                  <span className="text-sm font-normal text-text-muted ml-1">
+                    credits
+                  </span>
+                </p>
+                <div className="w-full mt-3 pt-3 border-t border-border">
+                  <p className="text-2xl font-bold text-primary-light">
+                    £{pack.priceGbp}
+                  </p>
+                  <p className="text-xs text-text-muted mt-1">
+                    £{pack.perCredit} per credit
+                  </p>
+                </div>
+                <Button
+                  onClick={() => handleBuyCredits(pack.name)}
+                  loading={purchasingPack === pack.name}
+                  disabled={purchasingPack !== null}
+                  variant={isPopular ? 'primary' : 'outline'}
+                  className="w-full mt-4"
+                >
+                  Buy {pack.name}
+                </Button>
               </div>
             );
           })}
