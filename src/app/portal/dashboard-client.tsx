@@ -252,6 +252,7 @@ export function DashboardClient({
           <div className="space-y-3">
             {filteredAssignments.map((assignment) => {
               const lead = assignment.leads;
+              if (!lead) return null;
               const statusConf = STATUS_CONFIG[assignment.status];
               const isRevealed = assignment.revealed_at !== null;
 
