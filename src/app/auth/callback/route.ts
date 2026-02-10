@@ -67,6 +67,11 @@ export async function GET(request: NextRequest) {
     return '/portal';
   }
 
+  // Log incoming params for debugging
+  const cookieNames = request.cookies.getAll().map((c) => c.name);
+  console.log('[auth/callback] Params:', { code: !!code, token_hash: !!token_hash, type, redirectTo });
+  console.log('[auth/callback] Cookies present:', cookieNames);
+
   // Handle PKCE flow (code exchange)
   if (code) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
@@ -76,7 +81,7 @@ export async function GET(request: NextRequest) {
       return createRedirect(path);
     }
 
-    console.error('[auth/callback] Code exchange failed:', error.message);
+    console.error('[auth/callback] Code exchange failed:', error.message, error);
   }
 
   // Handle magic link / OTP token hash verification
@@ -91,7 +96,12 @@ export async function GET(request: NextRequest) {
       return createRedirect(path);
     }
 
-    console.error('[auth/callback] OTP verification failed:', error.message);
+    console.error('[auth/callback] OTP verification failed:', error.message, error);
+  }
+
+  // No code or token_hash provided, or exchange failed
+  if (!code && !token_hash) {
+    console.error('[auth/callback] No code or token_hash in request');
   }
 
   // Something went wrong — redirect to login with error

@@ -13,8 +13,8 @@ export async function middleware(request: NextRequest) {
     if (code || tokenHash) {
       const url = request.nextUrl.clone();
       url.pathname = '/auth/callback';
-      // Preserve all search params (code, token_hash, type, redirect, etc.)
-      return NextResponse.redirect(url);
+      // Rewrite (not redirect) to preserve cookies and avoid an extra round-trip
+      return NextResponse.rewrite(url);
     }
   }
 
