@@ -11,7 +11,7 @@ function getStripe() {
   if (!key) {
     throw new Error('STRIPE_SECRET_KEY is not configured');
   }
-  return new Stripe(key, { apiVersion: '2025-12-18.acacia' as Stripe.LatestApiVersion });
+  return new Stripe(key);
 }
 
 const checkoutRequestSchema = z.union([
