@@ -13,7 +13,6 @@ import {
   RefreshCw,
   Receipt,
 } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import type { CreditLedger, CreditReason } from '@/types/database';
@@ -117,43 +116,41 @@ export function BillingClient({
       </div>
 
       {/* Current balance */}
-      <Card variant="elevated">
-        <CardContent>
-          <div className="flex flex-col sm:flex-row items-center gap-6 py-4">
-            <div className="w-20 h-20 rounded-2xl bg-primary/15 flex items-center justify-center">
-              <Coins className="w-10 h-10 text-primary-light" />
-            </div>
-            <div className="text-center sm:text-left">
-              <p className="text-sm font-medium text-text-muted uppercase tracking-wide">
-                Current Balance
-              </p>
-              <p className="text-5xl font-bold text-text-primary mt-1">
-                {creditBalance}
-              </p>
-              <p className="text-sm text-text-secondary mt-1">credits remaining</p>
-            </div>
+      <div className="bg-surface border border-border rounded-2xl p-6 shadow-xl shadow-black/20">
+        <div className="flex flex-col sm:flex-row items-center gap-6">
+          <div className="w-20 h-20 rounded-2xl bg-primary/15 flex items-center justify-center">
+            <Coins className="w-10 h-10 text-primary-light" />
           </div>
-        </CardContent>
-      </Card>
+          <div className="text-center sm:text-left">
+            <p className="text-sm font-medium text-text-muted uppercase tracking-wide">
+              Current Balance
+            </p>
+            <p className="text-5xl font-bold text-text-primary mt-1">
+              {creditBalance}
+            </p>
+            <p className="text-sm text-text-secondary mt-1">credits remaining</p>
+          </div>
+        </div>
+      </div>
 
       {/* Credit packs */}
       <div>
         <h2 className="text-lg font-semibold text-text-primary mb-4">
           Buy Credits
         </h2>
-        <div className="grid sm:grid-cols-3 gap-4">
+        <div className="grid sm:grid-cols-3 gap-5">
           {creditPacks.map((pack) => {
             const highlight = PACK_HIGHLIGHTS[pack.name];
             const isPopular = highlight === 'Most Popular';
             const isBestValue = highlight === 'Best Value';
 
             return (
-              <Card
+              <div
                 key={pack.name}
-                className={`relative ${
+                className={`relative bg-surface border rounded-2xl p-6 transition-all duration-200 ${
                   isPopular
-                    ? 'border-primary ring-1 ring-primary/30'
-                    : ''
+                    ? 'border-primary ring-1 ring-primary/30 shadow-lg shadow-primary/10'
+                    : 'border-border hover:border-border-light'
                 }`}
               >
                 {highlight && (
@@ -163,46 +160,46 @@ export function BillingClient({
                     </Badge>
                   </div>
                 )}
-                <CardContent>
-                  <div className="text-center py-4">
-                    <div
-                      className={`w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 ${
-                        isPopular
-                          ? 'bg-primary/15 text-primary-light'
-                          : isBestValue
-                          ? 'bg-accent/15 text-accent'
-                          : 'bg-surface-alt text-text-secondary'
-                      }`}
-                    >
-                      {PACK_ICONS[pack.name]}
-                    </div>
-                    <h3 className="text-lg font-bold text-text-primary">
-                      {pack.name}
-                    </h3>
-                    <p className="text-3xl font-bold text-text-primary mt-2">
-                      {pack.credits}
-                      <span className="text-sm font-normal text-text-muted ml-1">
-                        credits
-                      </span>
-                    </p>
-                    <p className="text-2xl font-bold text-primary-light mt-1">
-                      &pound;{pack.priceGbp}
+                <div className="text-center pt-2">
+                  <div
+                    className={`w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 ${
+                      isPopular
+                        ? 'bg-primary/15 text-primary-light'
+                        : isBestValue
+                        ? 'bg-accent/15 text-accent'
+                        : 'bg-surface-alt text-text-secondary'
+                    }`}
+                  >
+                    {PACK_ICONS[pack.name]}
+                  </div>
+                  <h3 className="text-lg font-bold text-text-primary">
+                    {pack.name}
+                  </h3>
+                  <p className="text-3xl font-bold text-text-primary mt-3">
+                    {pack.credits}
+                    <span className="text-sm font-normal text-text-muted ml-1">
+                      credits
+                    </span>
+                  </p>
+                  <div className="mt-3 pt-3 border-t border-border">
+                    <p className="text-2xl font-bold text-primary-light">
+                      £{pack.priceGbp}
                     </p>
                     <p className="text-xs text-text-muted mt-1">
-                      &pound;{pack.perCredit} per credit
+                      £{pack.perCredit} per credit
                     </p>
-                    <Button
-                      onClick={() => handleBuyCredits(pack.name)}
-                      loading={purchasingPack === pack.name}
-                      disabled={purchasingPack !== null}
-                      variant={isPopular ? 'primary' : 'outline'}
-                      className="w-full mt-4"
-                    >
-                      Buy {pack.name}
-                    </Button>
                   </div>
-                </CardContent>
-              </Card>
+                  <Button
+                    onClick={() => handleBuyCredits(pack.name)}
+                    loading={purchasingPack === pack.name}
+                    disabled={purchasingPack !== null}
+                    variant={isPopular ? 'primary' : 'outline'}
+                    className="w-full mt-5"
+                  >
+                    Buy {pack.name}
+                  </Button>
+                </div>
+              </div>
             );
           })}
         </div>
@@ -213,83 +210,84 @@ export function BillingClient({
         <h2 className="text-lg font-semibold text-text-primary mb-4">
           Transaction History
         </h2>
-        <Card>
-          <CardContent className="p-0">
-            {ledger.length === 0 ? (
-              <div className="text-center py-12">
-                <Receipt className="w-10 h-10 text-text-muted mx-auto mb-3" />
-                <p className="text-text-secondary">No transactions yet</p>
-              </div>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b border-border">
-                      <th className="text-left text-xs font-medium text-text-muted uppercase tracking-wide px-6 py-3">
-                        Date
-                      </th>
-                      <th className="text-left text-xs font-medium text-text-muted uppercase tracking-wide px-6 py-3">
-                        Description
-                      </th>
-                      <th className="text-left text-xs font-medium text-text-muted uppercase tracking-wide px-6 py-3">
-                        Type
-                      </th>
-                      <th className="text-right text-xs font-medium text-text-muted uppercase tracking-wide px-6 py-3">
-                        Credits
-                      </th>
-                      <th className="text-right text-xs font-medium text-text-muted uppercase tracking-wide px-6 py-3">
-                        Balance
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {ledger.map((entry) => {
-                      const config = REASON_CONFIG[entry.reason];
-                      const isPositive = entry.delta > 0;
+        <div className="bg-surface border border-border rounded-2xl overflow-hidden">
+          {ledger.length === 0 ? (
+            <div className="text-center py-12">
+              <Receipt className="w-10 h-10 text-text-muted mx-auto mb-3" />
+              <p className="text-text-secondary">No transactions yet</p>
+              <p className="text-sm text-text-muted mt-1">
+                Your purchase and credit history will appear here.
+              </p>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-border bg-surface-alt/50">
+                    <th className="text-left text-xs font-medium text-text-muted uppercase tracking-wide px-6 py-3">
+                      Date
+                    </th>
+                    <th className="text-left text-xs font-medium text-text-muted uppercase tracking-wide px-6 py-3">
+                      Description
+                    </th>
+                    <th className="text-left text-xs font-medium text-text-muted uppercase tracking-wide px-6 py-3">
+                      Type
+                    </th>
+                    <th className="text-right text-xs font-medium text-text-muted uppercase tracking-wide px-6 py-3">
+                      Credits
+                    </th>
+                    <th className="text-right text-xs font-medium text-text-muted uppercase tracking-wide px-6 py-3">
+                      Balance
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {ledger.map((entry) => {
+                    const config = REASON_CONFIG[entry.reason];
+                    const isPositive = entry.delta > 0;
 
-                      return (
-                        <tr
-                          key={entry.id}
-                          className="border-b border-border last:border-0 hover:bg-surface-alt/50 transition-colors"
-                        >
-                          <td className="px-6 py-3 text-sm text-text-secondary whitespace-nowrap">
-                            {formatDate(entry.created_at)}
-                          </td>
-                          <td className="px-6 py-3 text-sm text-text-primary">
-                            {entry.description ?? '-'}
-                          </td>
-                          <td className="px-6 py-3">
-                            <Badge variant={config.variant}>
-                              {config.label}
-                            </Badge>
-                          </td>
-                          <td className="px-6 py-3 text-right">
-                            <span
-                              className={`text-sm font-semibold flex items-center justify-end gap-1 ${
-                                isPositive ? 'text-accent' : 'text-danger'
-                              }`}
-                            >
-                              {isPositive ? (
-                                <TrendingUp className="w-3.5 h-3.5" />
-                              ) : (
-                                <TrendingDown className="w-3.5 h-3.5" />
-                              )}
-                              {isPositive ? '+' : ''}
-                              {entry.delta}
-                            </span>
-                          </td>
-                          <td className="px-6 py-3 text-right text-sm text-text-secondary font-medium">
-                            {entry.balance_after}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+                    return (
+                      <tr
+                        key={entry.id}
+                        className="border-b border-border last:border-0 hover:bg-surface-alt/50 transition-colors"
+                      >
+                        <td className="px-6 py-3 text-sm text-text-secondary whitespace-nowrap">
+                          {formatDate(entry.created_at)}
+                        </td>
+                        <td className="px-6 py-3 text-sm text-text-primary">
+                          {entry.description ?? '-'}
+                        </td>
+                        <td className="px-6 py-3">
+                          <Badge variant={config.variant}>
+                            {config.label}
+                          </Badge>
+                        </td>
+                        <td className="px-6 py-3 text-right">
+                          <span
+                            className={`text-sm font-semibold flex items-center justify-end gap-1 ${
+                              isPositive ? 'text-accent' : 'text-danger'
+                            }`}
+                          >
+                            {isPositive ? (
+                              <TrendingUp className="w-3.5 h-3.5" />
+                            ) : (
+                              <TrendingDown className="w-3.5 h-3.5" />
+                            )}
+                            {isPositive ? '+' : ''}
+                            {entry.delta}
+                          </span>
+                        </td>
+                        <td className="px-6 py-3 text-right text-sm text-text-secondary font-medium">
+                          {entry.balance_after}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
