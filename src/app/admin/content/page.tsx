@@ -48,7 +48,7 @@ const FALLBACK_content: CmsContent[] = [
   },
   {
     id: 'cms4',
-    slug: 'what-is-movecompare',
+    slug: 'what-is-movefox',
     content_type: 'faq',
     title: 'What is MoveFox?',
     body: 'MoveFox is a free comparison platform that connects you with up to 5 trusted removal companies for your home move.',

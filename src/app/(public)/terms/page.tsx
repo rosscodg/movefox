@@ -271,10 +271,10 @@ export default function TermsPage() {
               <p className="text-sm text-text-secondary mt-1">
                 Email:{' '}
                 <a
-                  href="mailto:legal@movecompare.co.uk"
+                  href="mailto:legal@movefox.co.uk"
                   className="text-primary hover:text-primary-light transition-colors"
                 >
-                  legal@movecompare.co.uk
+                  legal@movefox.co.uk
                 </a>
               </p>
             </div>

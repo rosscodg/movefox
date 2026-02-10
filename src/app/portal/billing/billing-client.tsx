@@ -11,7 +11,8 @@ import {
   Star,
   Crown,
   RefreshCw,
-  Receipt,
+  ClipboardList,
+  History,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -63,7 +64,7 @@ const REASON_CONFIG: Record<
   },
   adjustment: {
     label: 'Adjustment',
-    icon: <Receipt className="w-4 h-4" />,
+    icon: <ClipboardList className="w-4 h-4" />,
     variant: 'warning',
   },
 };
@@ -74,23 +75,39 @@ export function BillingClient({
   ledger,
 }: BillingClientProps) {
   const [purchasingPack, setPurchasingPack] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleBuyCredits(packName: string) {
     setPurchasingPack(packName);
+    setError(null);
 
-    // TODO: POST to /api/stripe/checkout to create a Stripe Checkout session
-    // const response = await fetch('/api/stripe/checkout', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({ pack: packName }),
-    // });
-    // const { url } = await response.json();
-    // window.location.href = url;
+    try {
+      const pack = creditPacks.find((p) => p.name === packName);
+      if (!pack) throw new Error('Pack not found');
 
-    // Mock delay
-    await new Promise((r) => setTimeout(r, 2000));
-    setPurchasingPack(null);
-    alert(`Stripe checkout would open for ${packName} pack`);
+      const response = await fetch('/api/stripe/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          credits: pack.credits,
+          priceGbp: pack.priceGbp,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to start checkout');
+      }
+
+      if (data.url) {
+        window.location.href = data.url;
+      }
+    } catch (err) {
+      console.error('[billing] Checkout error:', err);
+      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
+      setPurchasingPack(null);
+    }
   }
 
   function formatDate(dateStr: string): string {
@@ -133,9 +150,16 @@ export function BillingClient({
         </div>
       </div>
 
+      {/* Error message */}
+      {error && (
+        <div className="bg-danger/10 border border-danger/30 rounded-xl px-4 py-3 text-sm text-danger">
+          {error}
+        </div>
+      )}
+
       {/* Credit packs */}
       <div>
-        <h2 className="text-lg font-semibold text-text-primary mb-4">
+        <h2 className="text-lg font-semibold text-text-primary mb-5">
           Buy Credits
         </h2>
         <div className="grid sm:grid-cols-3 gap-5">
@@ -154,7 +178,7 @@ export function BillingClient({
                 }`}
               >
                 {highlight && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
                     <Badge variant={isPopular ? 'primary' : 'success'}>
                       {highlight}
                     </Badge>
@@ -213,7 +237,7 @@ export function BillingClient({
         <div className="bg-surface border border-border rounded-2xl overflow-hidden">
           {ledger.length === 0 ? (
             <div className="text-center py-12">
-              <Receipt className="w-10 h-10 text-text-muted mx-auto mb-3" />
+              <History className="w-10 h-10 text-text-muted mx-auto mb-3" />
               <p className="text-text-secondary">No transactions yet</p>
               <p className="text-sm text-text-muted mt-1">
                 Your purchase and credit history will appear here.

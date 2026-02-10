@@ -64,10 +64,10 @@ export default function PrivacyPage() {
               data. If you have any questions about this policy or how we handle
               your data, please contact us at{' '}
               <a
-                href="mailto:privacy@movecompare.co.uk"
+                href="mailto:privacy@movefox.co.uk"
                 className="text-primary hover:text-primary-light transition-colors"
               >
-                privacy@movecompare.co.uk
+                privacy@movefox.co.uk
               </a>
               .
             </p>
@@ -251,10 +251,10 @@ export default function PrivacyPage() {
             <p className="mt-4 text-text-secondary leading-relaxed">
               To exercise any of these rights, please contact us at{' '}
               <a
-                href="mailto:privacy@movecompare.co.uk"
+                href="mailto:privacy@movefox.co.uk"
                 className="text-primary hover:text-primary-light transition-colors"
               >
-                privacy@movecompare.co.uk
+                privacy@movefox.co.uk
               </a>
               .
             </p>
@@ -300,10 +300,10 @@ export default function PrivacyPage() {
               <p className="text-sm text-text-secondary mt-1">
                 Email:{' '}
                 <a
-                  href="mailto:privacy@movecompare.co.uk"
+                  href="mailto:privacy@movefox.co.uk"
                   className="text-primary hover:text-primary-light transition-colors"
                 >
-                  privacy@movecompare.co.uk
+                  privacy@movefox.co.uk
                 </a>
               </p>
               <p className="text-sm text-text-secondary mt-1">

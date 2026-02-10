@@ -4,7 +4,7 @@ import Stripe from 'stripe';
 import { createClient } from '@/lib/supabase/server';
 import { CREDIT_PACKS } from '@/lib/constants';
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://movecompare.co.uk';
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://www.movefox.co.uk';
 
 function getStripe() {
   const key = process.env.STRIPE_SECRET_KEY;

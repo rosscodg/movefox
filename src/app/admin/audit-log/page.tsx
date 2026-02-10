@@ -19,7 +19,7 @@ const FALLBACK_auditLogs: (AdminAuditLog & { actorEmail: string })[] = [
     before_data: { status: 'pending' },
     after_data: { status: 'approved' },
     created_at: '2025-01-28T14:30:00Z',
-    actorEmail: 'admin@movecompare.co.uk',
+    actorEmail: 'admin@movefox.co.uk',
   },
   {
     id: 'al2',
@@ -30,7 +30,7 @@ const FALLBACK_auditLogs: (AdminAuditLog & { actorEmail: string })[] = [
     before_data: { status: 'pending', name: 'QuickShift Removals' },
     after_data: { status: 'rejected' },
     created_at: '2025-01-28T14:25:00Z',
-    actorEmail: 'admin@movecompare.co.uk',
+    actorEmail: 'admin@movefox.co.uk',
   },
   {
     id: 'al3',
@@ -41,7 +41,7 @@ const FALLBACK_auditLogs: (AdminAuditLog & { actorEmail: string })[] = [
     before_data: { base_price: 4.5, short_notice_surcharge: 1.5 },
     after_data: { base_price: 5.0, short_notice_surcharge: 2.0 },
     created_at: '2025-01-27T10:00:00Z',
-    actorEmail: 'admin@movecompare.co.uk',
+    actorEmail: 'admin@movefox.co.uk',
   },
   {
     id: 'al4',
@@ -52,7 +52,7 @@ const FALLBACK_auditLogs: (AdminAuditLog & { actorEmail: string })[] = [
     before_data: null,
     after_data: { company_id: '3', delta: 10, reason: 'Goodwill adjustment for duplicate lead' },
     created_at: '2025-01-26T16:00:00Z',
-    actorEmail: 'admin@movecompare.co.uk',
+    actorEmail: 'admin@movefox.co.uk',
   },
   {
     id: 'al5',
@@ -63,7 +63,7 @@ const FALLBACK_auditLogs: (AdminAuditLog & { actorEmail: string })[] = [
     before_data: null,
     after_data: { title: 'The Ultimate Moving Checklist for 2025', content_type: 'blog', published: true },
     created_at: '2025-01-25T12:00:00Z',
-    actorEmail: 'admin@movecompare.co.uk',
+    actorEmail: 'admin@movefox.co.uk',
   },
   {
     id: 'al6',
@@ -74,7 +74,7 @@ const FALLBACK_auditLogs: (AdminAuditLog & { actorEmail: string })[] = [
     before_data: { title: 'About Us', published: true },
     after_data: { title: 'About Us', published: true, body: 'Updated body content...' },
     created_at: '2025-01-24T14:30:00Z',
-    actorEmail: 'admin@movecompare.co.uk',
+    actorEmail: 'admin@movefox.co.uk',
   },
   {
     id: 'al7',
@@ -85,7 +85,7 @@ const FALLBACK_auditLogs: (AdminAuditLog & { actorEmail: string })[] = [
     before_data: { status: 'approved', name: 'SafeHands Moving' },
     after_data: { status: 'suspended', paused: true },
     created_at: '2025-01-20T16:00:00Z',
-    actorEmail: 'ops@movecompare.co.uk',
+    actorEmail: 'ops@movefox.co.uk',
   },
   {
     id: 'al8',
@@ -96,7 +96,7 @@ const FALLBACK_auditLogs: (AdminAuditLog & { actorEmail: string })[] = [
     before_data: null,
     after_data: { company_id: '4', delta: 7, reason: 'Refund for invalid lead' },
     created_at: '2025-01-19T11:00:00Z',
-    actorEmail: 'admin@movecompare.co.uk',
+    actorEmail: 'admin@movefox.co.uk',
   },
   {
     id: 'al9',
@@ -107,7 +107,7 @@ const FALLBACK_auditLogs: (AdminAuditLog & { actorEmail: string })[] = [
     before_data: { name: 'Growth', credits: 50, price_gbp: 190 },
     after_data: { name: 'Growth', credits: 50, price_gbp: 200 },
     created_at: '2025-01-18T09:00:00Z',
-    actorEmail: 'admin@movecompare.co.uk',
+    actorEmail: 'admin@movefox.co.uk',
   },
   {
     id: 'al10',
@@ -118,7 +118,7 @@ const FALLBACK_auditLogs: (AdminAuditLog & { actorEmail: string })[] = [
     before_data: { status: 'pending', name: 'Premier Moving Co' },
     after_data: { status: 'approved' },
     created_at: '2025-01-15T10:00:00Z',
-    actorEmail: 'admin@movecompare.co.uk',
+    actorEmail: 'admin@movefox.co.uk',
   },
   {
     id: 'al11',
@@ -129,7 +129,7 @@ const FALLBACK_auditLogs: (AdminAuditLog & { actorEmail: string })[] = [
     before_data: { title: 'What is MoveFox?', published: false },
     after_data: { title: 'What is MoveFox?', published: true },
     created_at: '2025-01-15T10:00:00Z',
-    actorEmail: 'ops@movecompare.co.uk',
+    actorEmail: 'ops@movefox.co.uk',
   },
   {
     id: 'al12',
@@ -140,7 +140,7 @@ const FALLBACK_auditLogs: (AdminAuditLog & { actorEmail: string })[] = [
     before_data: { status: 'pending', name: 'Careful Carriers' },
     after_data: { status: 'approved' },
     created_at: '2025-01-12T14:00:00Z',
-    actorEmail: 'admin@movecompare.co.uk',
+    actorEmail: 'admin@movefox.co.uk',
   },
   // Add more to fill out pagination testing
   ...Array.from({ length: 38 }, (_, i) => ({
@@ -152,7 +152,7 @@ const FALLBACK_auditLogs: (AdminAuditLog & { actorEmail: string })[] = [
     before_data: { status: 'before' },
     after_data: { status: 'after' },
     created_at: new Date(2025, 0, 10 - Math.floor(i / 3), 10, 0, 0).toISOString(),
-    actorEmail: 'admin@movecompare.co.uk',
+    actorEmail: 'admin@movefox.co.uk',
   })),
 ];
 
@@ -182,7 +182,7 @@ export default async function AuditLogPage() {
 
     resolvedLogs = logs.map((log) => ({
       ...log,
-      actorEmail: emailMap.get(log.actor_user_id) ?? 'unknown@movecompare.co.uk',
+      actorEmail: emailMap.get(log.actor_user_id) ?? 'unknown@movefox.co.uk',
     }));
   } else {
     resolvedLogs = FALLBACK_auditLogs;

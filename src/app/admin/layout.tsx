@@ -27,7 +27,7 @@ export default async function AdminLayout({
   if (!profile || profile.role !== 'admin') redirect('/login');
 
   const adminUser = {
-    email: profile.email ?? user.email ?? 'admin@movecompare.co.uk',
+    email: profile.email ?? user.email ?? 'admin@movefox.co.uk',
     full_name: profile.full_name ?? 'Admin User',
   };
 

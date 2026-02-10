@@ -17,8 +17,8 @@ const contactInfo = [
   {
     icon: Mail,
     label: 'Email',
-    value: 'hello@movecompare.co.uk',
-    href: 'mailto:hello@movecompare.co.uk',
+    value: 'hello@movefox.co.uk',
+    href: 'mailto:hello@movefox.co.uk',
   },
   {
     icon: Phone,

@@ -330,10 +330,10 @@ export default function CookiesPage() {
               <p className="text-sm text-text-secondary mt-1">
                 Email:{' '}
                 <a
-                  href="mailto:privacy@movecompare.co.uk"
+                  href="mailto:privacy@movefox.co.uk"
                   className="text-primary hover:text-primary-light transition-colors"
                 >
-                  privacy@movecompare.co.uk
+                  privacy@movefox.co.uk
                 </a>
               </p>
             </div>

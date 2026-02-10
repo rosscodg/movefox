@@ -12,9 +12,9 @@ function getResend(): Resend {
   return _resend;
 }
 
-const FROM_EMAIL = process.env.FROM_EMAIL || 'noreply@movecompare.co.uk';
+const FROM_EMAIL = process.env.FROM_EMAIL || 'noreply@movefox.co.uk';
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || 'MoveFox';
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://movecompare.co.uk';
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://www.movefox.co.uk';
 
 /** Returns true when Resend is properly configured (not a placeholder key) */
 export function isResendConfigured(): boolean {
