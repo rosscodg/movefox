@@ -17,38 +17,42 @@ export default async function BillingPage() {
   let creditBalance = 0;
   let ledger: CreditLedger[] = [];
 
-  // Fetch company
-  const { data: companyUser } = await supabase
-    .from('company_users')
-    .select('company_id')
-    .eq('user_id', user.id)
-    .single();
-
-  if (companyUser) {
-    // Fetch credit balance
-    const { data: balanceData } = await supabase
-      .from('credit_ledger')
-      .select('balance_after')
-      .eq('company_id', companyUser.company_id)
-      .order('created_at', { ascending: false })
-      .limit(1)
+  try {
+    // Fetch company
+    const { data: companyUser } = await supabase
+      .from('company_users')
+      .select('company_id')
+      .eq('user_id', user.id)
       .single();
 
-    if (balanceData) {
-      creditBalance = balanceData.balance_after;
-    }
+    if (companyUser) {
+      // Fetch credit balance
+      const { data: balanceData } = await supabase
+        .from('credit_ledger')
+        .select('balance_after')
+        .eq('company_id', companyUser.company_id)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
 
-    // Fetch ledger history
-    const { data: ledgerData } = await supabase
-      .from('credit_ledger')
-      .select('*')
-      .eq('company_id', companyUser.company_id)
-      .order('created_at', { ascending: false })
-      .limit(50);
+      if (balanceData) {
+        creditBalance = balanceData.balance_after;
+      }
 
-    if (ledgerData && ledgerData.length > 0) {
-      ledger = ledgerData;
+      // Fetch ledger history
+      const { data: ledgerData } = await supabase
+        .from('credit_ledger')
+        .select('*')
+        .eq('company_id', companyUser.company_id)
+        .order('created_at', { ascending: false })
+        .limit(50);
+
+      if (ledgerData && ledgerData.length > 0) {
+        ledger = ledgerData;
+      }
     }
+  } catch (error) {
+    console.error('[portal/billing] Failed to fetch billing data:', error);
   }
 
   const creditPacks = CREDIT_PACKS.map((pack) => ({

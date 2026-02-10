@@ -21,36 +21,40 @@ export default async function PortalLayout({
   let companyName = 'Your Company';
   let creditBalance = 0;
 
-  // Fetch company for this user
-  const { data: companyUser } = await supabase
-    .from('company_users')
-    .select('company_id')
-    .eq('user_id', user.id)
-    .single();
-
-  if (companyUser) {
-    const { data: companyData } = await supabase
-      .from('companies')
-      .select('name')
-      .eq('id', companyUser.company_id)
+  try {
+    // Fetch company for this user
+    const { data: companyUser } = await supabase
+      .from('company_users')
+      .select('company_id')
+      .eq('user_id', user.id)
       .single();
 
-    if (companyData) {
-      companyName = companyData.name;
-    }
+    if (companyUser) {
+      const { data: companyData } = await supabase
+        .from('companies')
+        .select('name')
+        .eq('id', companyUser.company_id)
+        .single();
 
-    // Fetch credit balance (latest ledger entry)
-    const { data: ledger } = await supabase
-      .from('credit_ledger')
-      .select('balance_after')
-      .eq('company_id', companyUser.company_id)
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .single();
+      if (companyData) {
+        companyName = companyData.name;
+      }
 
-    if (ledger) {
-      creditBalance = ledger.balance_after;
+      // Fetch credit balance (latest ledger entry)
+      const { data: ledger } = await supabase
+        .from('credit_ledger')
+        .select('balance_after')
+        .eq('company_id', companyUser.company_id)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
+
+      if (ledger) {
+        creditBalance = ledger.balance_after;
+      }
     }
+  } catch (error) {
+    console.error('[portal/layout] Failed to fetch company data:', error);
   }
 
   return (

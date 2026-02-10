@@ -16,23 +16,27 @@ export default async function ProfilePage() {
 
   let company: Company | null = null;
 
-  // Fetch company
-  const { data: companyUser } = await supabase
-    .from('company_users')
-    .select('company_id')
-    .eq('user_id', user.id)
-    .single();
-
-  if (companyUser) {
-    const { data: companyData } = await supabase
-      .from('companies')
-      .select('*')
-      .eq('id', companyUser.company_id)
+  try {
+    // Fetch company
+    const { data: companyUser } = await supabase
+      .from('company_users')
+      .select('company_id')
+      .eq('user_id', user.id)
       .single();
 
-    if (companyData) {
-      company = companyData;
+    if (companyUser) {
+      const { data: companyData } = await supabase
+        .from('companies')
+        .select('*')
+        .eq('id', companyUser.company_id)
+        .single();
+
+      if (companyData) {
+        company = companyData;
+      }
     }
+  } catch (error) {
+    console.error('[portal/profile] Failed to fetch company data:', error);
   }
 
   if (!company) {

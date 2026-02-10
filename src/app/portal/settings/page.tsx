@@ -16,34 +16,38 @@ export default async function SettingsPage() {
   let company: Company | null = null;
   let postcodes: PostcodeCoverage[] = [];
 
-  // Fetch company
-  const { data: companyUser } = await supabase
-    .from('company_users')
-    .select('company_id')
-    .eq('user_id', user.id)
-    .single();
-
-  if (companyUser) {
-    const { data: companyData } = await supabase
-      .from('companies')
-      .select('*')
-      .eq('id', companyUser.company_id)
+  try {
+    // Fetch company
+    const { data: companyUser } = await supabase
+      .from('company_users')
+      .select('company_id')
+      .eq('user_id', user.id)
       .single();
 
-    if (companyData) {
-      company = companyData;
-    }
+    if (companyUser) {
+      const { data: companyData } = await supabase
+        .from('companies')
+        .select('*')
+        .eq('id', companyUser.company_id)
+        .single();
 
-    // Fetch postcode coverage
-    const { data: postcodeData } = await supabase
-      .from('postcode_coverage')
-      .select('*')
-      .eq('company_id', companyUser.company_id)
-      .order('postcode_prefix');
+      if (companyData) {
+        company = companyData;
+      }
 
-    if (postcodeData && postcodeData.length > 0) {
-      postcodes = postcodeData;
+      // Fetch postcode coverage
+      const { data: postcodeData } = await supabase
+        .from('postcode_coverage')
+        .select('*')
+        .eq('company_id', companyUser.company_id)
+        .order('postcode_prefix');
+
+      if (postcodeData && postcodeData.length > 0) {
+        postcodes = postcodeData;
+      }
     }
+  } catch (error) {
+    console.error('[portal/settings] Failed to fetch settings data:', error);
   }
 
   if (!company) {

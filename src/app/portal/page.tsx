@@ -20,49 +20,53 @@ export default async function PortalDashboard() {
   let assignments: LeadAssignmentWithLead[] = [];
   let creditBalance = 0;
 
-  if (user) {
-    // Fetch company
-    const { data: companyUser } = await supabase
-      .from('company_users')
-      .select('company_id')
-      .eq('user_id', user.id)
-      .single();
-
-    if (companyUser) {
-      const { data: company } = await supabase
-        .from('companies')
-        .select('*')
-        .eq('id', companyUser.company_id)
+  try {
+    if (user) {
+      // Fetch company
+      const { data: companyUser } = await supabase
+        .from('company_users')
+        .select('company_id')
+        .eq('user_id', user.id)
         .single();
 
-      if (company) {
-        companyName = company.name;
-      }
+      if (companyUser) {
+        const { data: company } = await supabase
+          .from('companies')
+          .select('*')
+          .eq('id', companyUser.company_id)
+          .single();
 
-      // Fetch lead assignments with lead data
-      const { data: assignmentData } = await supabase
-        .from('lead_assignments')
-        .select('*, leads(*)')
-        .eq('company_id', companyUser.company_id)
-        .order('assigned_at', { ascending: false });
+        if (company) {
+          companyName = company.name;
+        }
 
-      if (assignmentData && assignmentData.length > 0) {
-        assignments = assignmentData;
-      }
+        // Fetch lead assignments with lead data
+        const { data: assignmentData } = await supabase
+          .from('lead_assignments')
+          .select('*, leads(*)')
+          .eq('company_id', companyUser.company_id)
+          .order('assigned_at', { ascending: false });
 
-      // Fetch credit balance
-      const { data: ledger } = await supabase
-        .from('credit_ledger')
-        .select('balance_after')
-        .eq('company_id', companyUser.company_id)
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .single();
+        if (assignmentData && assignmentData.length > 0) {
+          assignments = assignmentData;
+        }
 
-      if (ledger) {
-        creditBalance = ledger.balance_after;
+        // Fetch credit balance
+        const { data: ledger } = await supabase
+          .from('credit_ledger')
+          .select('balance_after')
+          .eq('company_id', companyUser.company_id)
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .single();
+
+        if (ledger) {
+          creditBalance = ledger.balance_after;
+        }
       }
     }
+  } catch (error) {
+    console.error('[portal/dashboard] Failed to fetch dashboard data:', error);
   }
 
   // Compute stats
