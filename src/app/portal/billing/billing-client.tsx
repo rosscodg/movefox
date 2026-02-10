@@ -173,9 +173,10 @@ export function BillingClient({
                 key={pack.name}
                 className={`bg-surface rounded-2xl px-5 pb-5 pt-4 flex flex-col items-center text-center transition-all duration-200 ${
                   isPopular
-                    ? 'border-2 border-solid border-[#7c3aed] shadow-lg shadow-primary/10'
+                    ? 'shadow-lg shadow-primary/10'
                     : 'border border-border hover:border-border-light'
                 }`}
+                style={isPopular ? { border: '2px solid #7c3aed' } : undefined}
               >
                 {highlight ? (
                   <Badge variant={isPopular ? 'primary' : 'success'} className="mb-4">

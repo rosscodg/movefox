@@ -162,6 +162,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const message = error instanceof Error ? error.message : '';
+    if (message.includes('STRIPE_SECRET_KEY')) {
+      return NextResponse.json(
+        { error: 'Payment processing is not yet configured. Please contact support.' },
+        { status: 503 }
+      );
+    }
+
     return NextResponse.json(
       { error: 'Failed to create checkout session. Please try again.' },
       { status: 500 }
