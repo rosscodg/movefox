@@ -171,10 +171,10 @@ export function BillingClient({
             return (
               <div
                 key={pack.name}
-                className={`relative bg-surface border rounded-2xl p-6 transition-all duration-200 ${
+                className={`relative bg-surface rounded-2xl p-6 transition-all duration-200 ${
                   isPopular
-                    ? 'border-primary ring-1 ring-primary/30 shadow-lg shadow-primary/10'
-                    : 'border-border hover:border-border-light'
+                    ? 'border-2 border-primary shadow-lg shadow-primary/10'
+                    : 'border border-border hover:border-border-light'
                 }`}
               >
                 {highlight && (
