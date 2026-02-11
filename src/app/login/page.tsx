@@ -80,26 +80,32 @@ export default function LoginPage() {
     setLoading(true);
     setError(null);
 
-    const callbackUrl = new URL('/auth/callback', window.location.origin);
-    if (redirectTo) {
-      callbackUrl.searchParams.set('redirect', redirectTo);
-    }
+    try {
+      const callbackUrl = new URL('/auth/callback', window.location.origin);
+      if (redirectTo) {
+        callbackUrl.searchParams.set('redirect', redirectTo);
+      }
 
-    const { error: authError } = await supabase.auth.signInWithOtp({
-      email,
-      options: {
-        emailRedirectTo: callbackUrl.toString(),
-      },
-    });
+      const { error: authError } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo: callbackUrl.toString(),
+        },
+      });
 
-    if (authError) {
-      setError(authError.message);
+      if (authError) {
+        setError(authError.message);
+        setLoading(false);
+        return;
+      }
+
+      setMagicSent(true);
       setLoading(false);
-      return;
+    } catch (err) {
+      console.error('[login] Magic link error:', err);
+      setError('Unable to send magic link. Please try again or use password login.');
+      setLoading(false);
     }
-
-    setMagicSent(true);
-    setLoading(false);
   }
 
   // ------------------------------------------------------------------
