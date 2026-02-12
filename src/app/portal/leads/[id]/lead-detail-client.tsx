@@ -33,6 +33,7 @@ import type {
   LeadContactDetails,
   LeadAssignmentStatus,
 } from '@/types/database';
+import { formatDate, formatDateTime } from '@/lib/dates';
 
 interface LeadDetailClientProps {
   lead: Lead;
@@ -82,30 +83,6 @@ export function LeadDetailClient({
 
   function getPropertyLabel(value: string): string {
     return propertySizes.find((p) => p.value === value)?.label ?? value;
-  }
-
-  function formatDate(dateStr: string | null): string {
-    if (!dateStr) return 'Not set';
-    return new Date(dateStr).toLocaleDateString('en-GB', {
-      weekday: 'long',
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-    });
-  }
-
-  function formatDateTime(dateStr: string): string {
-    const d = new Date(dateStr);
-    const date = d.toLocaleDateString('en-GB', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
-    });
-    const time = d.toLocaleTimeString('en-GB', {
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-    return `${date}, ${time}`;
   }
 
   async function handleReveal() {

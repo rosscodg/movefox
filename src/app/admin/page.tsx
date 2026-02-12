@@ -14,6 +14,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { createClient } from '@/lib/supabase/server';
 import type { Lead, Company } from '@/types/database';
+import { formatDate } from '@/lib/dates';
 
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -210,14 +211,6 @@ async function getDashboardData() {
       recentCompanies: FALLBACK_COMPANIES,
     };
   }
-}
-
-function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  });
 }
 
 function statusBadgeVariant(status: string) {

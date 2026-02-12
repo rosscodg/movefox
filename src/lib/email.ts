@@ -408,7 +408,6 @@ export async function sendNewPartnerNotification(details: NewPartnerDetails) {
     return null;
   }
 
-  console.log('[email] Admin notified of new partner registration:', details.companyName);
   return data;
 }
 

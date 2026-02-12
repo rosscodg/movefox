@@ -7,19 +7,12 @@ import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import type { Lead } from '@/types/database';
 import { PROPERTY_SIZES } from '@/lib/constants';
+import { formatDate } from '@/lib/dates';
 
 type LeadRow = Lead & { assignedCount: number; revealedCount: number };
 
 interface LeadsTableProps {
   leads: LeadRow[];
-}
-
-function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  });
 }
 
 function propertySizeLabel(value: string) {

@@ -132,8 +132,6 @@ export async function approveCompany(
   if (result.success && emailOptions?.sendEmail) {
     try {
       const supabase = await createAdminClient();
-      console.log('[admin/actions] Company approved, attempting to send email for:', companyId);
-
       // Find the primary user for this company to get their auth email
       const { data: companyUser, error: cuError } = await supabase
         .from('company_users')
@@ -147,8 +145,6 @@ export async function approveCompany(
       }
 
       if (companyUser) {
-        console.log('[admin/actions] Found primary user:', companyUser.user_id);
-
         // Get the user's auth email
         const { data: userData, error: userLookupError } = await supabase.auth.admin.getUserById(
           companyUser.user_id
@@ -159,7 +155,6 @@ export async function approveCompany(
         }
 
         const userEmail = userData?.user?.email;
-        console.log('[admin/actions] User auth email:', userEmail || 'NOT FOUND');
 
         if (userEmail) {
           const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://movecompare.co.uk';
@@ -192,8 +187,6 @@ export async function approveCompany(
             const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
             const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
-            console.log('[admin/actions] Resend not configured, sending magic link via Supabase to:', userEmail);
-
             const response = await fetch(`${supabaseUrl}/auth/v1/otp`, {
               method: 'POST',
               headers: {
@@ -223,7 +216,6 @@ export async function approveCompany(
               }
             } else {
               emailSent = true;
-              console.log('[admin/actions] Magic link email sent via Supabase to:', userEmail);
             }
           }
         } else {

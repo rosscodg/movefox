@@ -6,6 +6,7 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import type { AdminAuditLog } from '@/types/database';
+import { formatDateTime } from '@/lib/dates';
 
 type AuditLogRow = AdminAuditLog & { actorEmail: string };
 
@@ -36,21 +37,6 @@ const entityTypes = [
   'credit_pack',
   'cms_content',
 ];
-
-function formatDateTime(dateStr: string) {
-  const d = new Date(dateStr);
-  const date = d.toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  });
-  const time = d.toLocaleTimeString('en-GB', {
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-  });
-  return `${date}, ${time}`;
-}
 
 function actionBadgeVariant(action: string) {
   if (action.includes('approve') || action.includes('create')) return 'success' as const;

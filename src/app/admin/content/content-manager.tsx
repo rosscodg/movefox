@@ -16,6 +16,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import type { CmsContent } from '@/types/database';
+import { formatDate } from '@/lib/dates';
 
 interface ContentManagerProps {
   content: CmsContent[];
@@ -28,14 +29,6 @@ const tabs: { value: ContentTab; label: string; icon: React.ComponentType<{ clas
   { value: 'faq', label: 'FAQs', icon: HelpCircle },
   { value: 'blog', label: 'Blog Posts', icon: BookOpen },
 ];
-
-function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  });
-}
 
 export function ContentManager({ content }: ContentManagerProps) {
   const [activeTab, setActiveTab] = useState<ContentTab>('page');

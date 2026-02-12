@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
     try {
       data = JSON.parse(authBody);
     } catch {
-      console.error('[api/auth/login] Failed to parse auth response. Status:', authRes.status, 'Body:', authBody.substring(0, 500));
+      console.error('[api/auth/login] Non-JSON auth response, status:', authRes.status);
       return NextResponse.json(
         { error: 'Authentication service error. Please try again.' },
         { status: 500 }

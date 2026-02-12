@@ -95,7 +95,7 @@ export default function GetQuotesPage() {
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   // Track transition direction for animation
-  const [direction, setDirection] = useState<'forward' | 'backward'>('forward');
+  const [, setDirection] = useState<'forward' | 'backward'>('forward');
   const [animating, setAnimating] = useState(false);
 
   // ------------------------------------------------------------------

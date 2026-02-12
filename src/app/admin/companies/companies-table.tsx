@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import type { Company, CompanyStatus } from '@/types/database';
+import { formatDate } from '@/lib/dates';
 
 type CompanyRow = Company & {
   leadsAssigned: number;
@@ -34,14 +35,6 @@ function statusBadgeVariant(status: CompanyStatus) {
     case 'suspended': return 'danger' as const;
     default: return 'default' as const;
   }
-}
-
-function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  });
 }
 
 export function CompaniesTable({ companies }: CompaniesTableProps) {

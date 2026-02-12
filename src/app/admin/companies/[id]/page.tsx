@@ -23,6 +23,7 @@ import type {
   CreditReason,
   LeadAssignmentStatus,
 } from '@/types/database';
+import { formatDate, formatDateTime } from '@/lib/dates';
 import { CompanyActions } from './company-actions';
 
 export const metadata: Metadata = {
@@ -115,24 +116,6 @@ const FALLBACK_USERS: (CompanyUser & { fullName: string; email: string })[] = [
   { id: 'cu1', company_id: '3', user_id: 'u1', is_primary: true, created_at: '2025-01-20T12:00:00Z', fullName: 'James Harper', email: 'james@carefulcarriers.co.uk' },
   { id: 'cu2', company_id: '3', user_id: 'u2', is_primary: false, created_at: '2025-01-22T08:00:00Z', fullName: 'Sarah Mitchell', email: 'sarah@carefulcarriers.co.uk' },
 ];
-
-function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  });
-}
-
-function formatDateTime(dateStr: string) {
-  return new Date(dateStr).toLocaleString('en-GB', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
-}
 
 function statusBadgeVariant(status: CompanyStatus) {
   switch (status) {

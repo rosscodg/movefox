@@ -17,6 +17,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import type { CreditLedger, CreditReason } from '@/types/database';
+import { formatDateTime } from '@/lib/dates';
 
 interface CreditPackDisplay {
   name: string;
@@ -105,16 +106,6 @@ export function BillingClient({
       alert('Unable to connect to payment service. Please try again.');
       setPurchasingPack(null);
     }
-  }
-
-  function formatDate(dateStr: string): string {
-    return new Date(dateStr).toLocaleDateString('en-GB', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
   }
 
   return (
@@ -266,7 +257,7 @@ export function BillingClient({
                           className="border-b border-border last:border-0 hover:bg-surface-alt/50 transition-colors"
                         >
                           <td className="px-6 py-3 text-sm text-text-secondary whitespace-nowrap">
-                            {formatDate(entry.created_at)}
+                            {formatDateTime(entry.created_at)}
                           </td>
                           <td className="px-6 py-3 text-sm text-text-primary">
                             {entry.description ?? '-'}

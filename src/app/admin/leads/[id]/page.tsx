@@ -24,6 +24,7 @@ import type {
   LeadAssignmentStatus,
 } from '@/types/database';
 import { PROPERTY_SIZES } from '@/lib/constants';
+import { formatDate, formatDateTime } from '@/lib/dates';
 import { LeadAssignmentActions } from './lead-assignment-actions';
 
 export const metadata: Metadata = {
@@ -152,24 +153,6 @@ async function getLeadData(id: string) {
       assignments: FALLBACK_ASSIGNMENTS,
     };
   }
-}
-
-function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  });
-}
-
-function formatDateTime(dateStr: string) {
-  return new Date(dateStr).toLocaleString('en-GB', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
 }
 
 function propertySizeLabel(value: string) {

@@ -20,6 +20,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import type { LeadAssignmentWithLead, LeadAssignmentStatus } from '@/types/database';
+import { formatDate, timeAgo } from '@/lib/dates';
 
 interface DashboardClientProps {
   companyName: string;
@@ -32,7 +33,6 @@ interface DashboardClientProps {
   };
   lowCreditThreshold: number;
   propertySizes: { value: string; label: string }[];
-  serverTime: number;
 }
 
 const STATUS_CONFIG: Record<
@@ -63,10 +63,8 @@ export function DashboardClient({
   stats,
   lowCreditThreshold,
   propertySizes,
-  serverTime,
 }: DashboardClientProps) {
   const [statusFilter, setStatusFilter] = useState('all');
-  const now = serverTime;
 
   const filteredAssignments =
     statusFilter === 'all'
@@ -75,25 +73,6 @@ export function DashboardClient({
 
   function getPropertyLabel(value: string): string {
     return propertySizes.find((p) => p.value === value)?.label ?? value;
-  }
-
-  function formatDate(dateStr: string | null): string {
-    if (!dateStr) return 'Flexible';
-    return new Date(dateStr).toLocaleDateString('en-GB', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
-    });
-  }
-
-  function timeAgo(dateStr: string): string {
-    const diff = now - new Date(dateStr).getTime();
-    const mins = Math.floor(diff / 60000);
-    if (mins < 60) return `${mins}m ago`;
-    const hours = Math.floor(mins / 60);
-    if (hours < 24) return `${hours}h ago`;
-    const days = Math.floor(hours / 24);
-    return `${days}d ago`;
   }
 
   return (
@@ -252,7 +231,6 @@ export function DashboardClient({
           <div className="space-y-3">
             {filteredAssignments.map((assignment) => {
               const lead = assignment.leads;
-              if (!lead) return null;
               const statusConf = STATUS_CONFIG[assignment.status];
               const isRevealed = assignment.revealed_at !== null;
 
