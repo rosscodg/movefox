@@ -178,9 +178,10 @@ async function getDashboardData() {
       .order('created_at', { ascending: false })
       .limit(5);
 
-    const recentLeads: (Lead & { assignedCount: number; revealedCount: number })[] = dbLeads && dbLeads.length > 0
-      ? dbLeads.map((l) => ({
-          ...(l as Lead),
+    const recentLeads = dbLeads && dbLeads.length > 0
+      ? dbLeads.map((l: Record<string, unknown>) => ({
+          ...l,
+          lead_assignments: undefined,
           assignedCount: (l.lead_assignments as unknown[])?.length ?? 0,
           revealedCount: (l.lead_assignments as { revealed_at: string | null }[])?.filter(
             (a) => a.revealed_at !== null

@@ -4,15 +4,11 @@ import Stripe from 'stripe';
 import { createClient } from '@/lib/supabase/server';
 import { CREDIT_PACKS } from '@/lib/constants';
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://www.movefox.co.uk';
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2026-01-28.clover',
+});
 
-function getStripe() {
-  const key = process.env.STRIPE_SECRET_KEY;
-  if (!key) {
-    throw new Error('STRIPE_SECRET_KEY is not configured');
-  }
-  return new Stripe(key);
-}
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://movefox.co.uk';
 
 const checkoutRequestSchema = z.union([
   z.object({
@@ -123,7 +119,6 @@ export async function POST(request: NextRequest) {
       .single();
 
     // Create Stripe checkout session
-    const stripe = getStripe();
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       mode: 'payment',
@@ -159,14 +154,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: 'Invalid JSON in request body' },
         { status: 400 }
-      );
-    }
-
-    const message = error instanceof Error ? error.message : '';
-    if (message.includes('STRIPE_SECRET_KEY')) {
-      return NextResponse.json(
-        { error: 'Payment processing is not yet configured. Please contact support.' },
-        { status: 503 }
       );
     }
 

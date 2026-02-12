@@ -10,10 +10,12 @@ import { createServerClient } from '@supabase/ssr';
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = request.nextUrl;
   const code = searchParams.get('code');
+  const token_hash = searchParams.get('token_hash');
+  const type = searchParams.get('type');
   const next = searchParams.get('next') ?? searchParams.get('redirect');
 
-  if (!code) {
-    // No code provided - redirect to login with error
+  if (!code && !token_hash) {
+    // No code or token_hash provided - redirect to login with error
     const url = request.nextUrl.clone();
     url.pathname = '/login';
     url.searchParams.set('error', 'missing_code');
@@ -42,11 +44,19 @@ export async function GET(request: NextRequest) {
     }
   );
 
-  // Exchange code for session
-  const { error } = await supabase.auth.exchangeCodeForSession(code);
+  // Exchange code for session (PKCE flow) or verify OTP token hash (magic link)
+  let error;
+  if (code) {
+    ({ error } = await supabase.auth.exchangeCodeForSession(code));
+  } else if (token_hash && type) {
+    ({ error } = await supabase.auth.verifyOtp({
+      token_hash,
+      type: type as 'magiclink' | 'email',
+    }));
+  }
 
   if (error) {
-    console.error('[auth/callback] Failed to exchange code for session:', error);
+    console.error('[auth/callback] Auth verification failed:', error);
     const url = request.nextUrl.clone();
     url.pathname = '/login';
     url.searchParams.set('error', 'auth_failed');

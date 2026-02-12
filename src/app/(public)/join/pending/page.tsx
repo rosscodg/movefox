@@ -36,7 +36,7 @@ export default function PendingApprovalPage() {
           <Badge variant="info" className="mb-4">Application Submitted</Badge>
 
           <h1 className="text-2xl font-bold text-text-primary mb-3">
-            Thank you for applying.
+            Thank you for applying!
           </h1>
 
           <p className="text-text-secondary leading-relaxed mb-6">

@@ -11,29 +11,24 @@ import { Card } from '@/components/ui/card';
 
 type AuthMode = 'password' | 'magic';
 
-const AUTH_ERROR_MESSAGES: Record<string, string> = {
-  auth_callback_error: 'Sign-in failed. Please try again.',
-  auth_failed: 'Authentication failed. Please try again.',
-  missing_code: 'Invalid sign-in link. Please request a new one.',
-};
-
 export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const supabase = createClient();
-
   const redirectTo = searchParams.get('redirect');
-  const urlError = searchParams.get('error');
 
-  const [mode, setMode] = useState<AuthMode>('password');
+  // Show error from callback redirect (e.g. /login?error=auth_failed)
+  const urlError = searchParams.get('error');
+  const initialError = urlError === 'auth_failed'
+    ? 'Sign-in link has expired or already been used. Please request a new one.'
+    : urlError === 'missing_code'
+      ? 'Invalid sign-in link. Please request a new one.'
+      : null;
+
+  const [mode, setMode] = useState<AuthMode>(urlError ? 'magic' : 'password');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(
-    urlError
-      ? (AUTH_ERROR_MESSAGES[urlError] ?? 'An error occurred. Please try again.')
-      : null
-  );
+  const [error, setError] = useState<string | null>(initialError);
   const [magicSent, setMagicSent] = useState(false);
 
   // ------------------------------------------------------------------
@@ -45,33 +40,50 @@ export default function LoginPage() {
     setLoading(true);
     setError(null);
 
-    const { data, error: authError } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
 
-    if (authError) {
-      setError(authError.message);
-      setLoading(false);
-      return;
-    }
+      console.log('[login] Response status:', res.status, 'type:', res.type, 'ok:', res.ok);
+      console.log('[login] Response headers:', Object.fromEntries(res.headers.entries()));
 
-    // Determine redirect based on user role (or use redirect param)
-    const userId = data.user?.id;
-    if (userId) {
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('role')
-        .eq('user_id', userId)
-        .single();
+      // Read body as text first so we can debug empty responses
+      const text = await res.text();
+      console.log('[login] Response body length:', text.length, 'body:', text.substring(0, 500));
 
-      if (profile?.role === 'admin') {
-        router.push(redirectTo ?? '/admin');
-      } else {
-        router.push(redirectTo ?? '/portal');
+      if (!text) {
+        setError('Server returned an empty response. Please try again.');
+        setLoading(false);
+        return;
       }
-    } else {
-      router.push(redirectTo ?? '/portal');
+
+      let result: Record<string, unknown>;
+      try {
+        result = JSON.parse(text);
+      } catch (parseErr) {
+        console.error('[login] JSON parse error:', parseErr, 'raw text:', text);
+        setError('Unexpected response from server. Please try again.');
+        setLoading(false);
+        return;
+      }
+
+      if (!res.ok || result.error) {
+        setError((result.error as string) || 'Invalid login credentials');
+        setLoading(false);
+        return;
+      }
+
+      // Honour redirect param from middleware, otherwise use role-based redirect
+      router.push(redirectTo ?? (result.redirectTo as string) ?? '/portal');
+    } catch (err) {
+      console.error('[login] Password sign-in failed:', err);
+      setError(
+        'Unable to connect to the authentication service. Please check your connection and try again.'
+      );
+      setLoading(false);
     }
   }
 
@@ -81,7 +93,11 @@ export default function LoginPage() {
     setError(null);
 
     try {
-      const callbackUrl = new URL('/auth/callback', window.location.origin);
+      // Magic link must be sent from the browser client so the PKCE
+      // code verifier is stored in localStorage for the callback.
+      const supabase = createClient();
+
+      const callbackUrl = new URL('/api/auth/callback', window.location.origin);
       if (redirectTo) {
         callbackUrl.searchParams.set('redirect', redirectTo);
       }
@@ -102,8 +118,10 @@ export default function LoginPage() {
       setMagicSent(true);
       setLoading(false);
     } catch (err) {
-      console.error('[login] Magic link error:', err);
-      setError('Unable to send magic link. Please try again or use password login.');
+      console.error('[login] Magic link request failed:', err);
+      setError(
+        'Unable to connect to the authentication service. Please check your connection and try again.'
+      );
       setLoading(false);
     }
   }

@@ -23,7 +23,7 @@ interface CompanyActionsProps {
   currentStatus: CompanyStatus;
 }
 
-const DEFAULT_APPROVAL_MESSAGE = `Congratulations. Your application to join MoveFox has been approved.
+const DEFAULT_APPROVAL_MESSAGE = `Congratulations! Your application to join MoveFox has been approved.
 
 You can now log in to your partner portal to manage your company profile, set your coverage areas, and start receiving removal leads from customers in your area.
 

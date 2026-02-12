@@ -65,55 +65,6 @@ const STEPS = [
 
 const LONDON_PREFIXES = ['E', 'EC', 'N', 'NW', 'SE', 'SW', 'W', 'WC'];
 
-// ─── Step Indicator ─────────────────────────────────────────────────────────
-
-function StepIndicator({ step }: { step: number }) {
-  return (
-    <div className="flex items-center justify-center mt-4 mb-8">
-      {STEPS.map((s, i) => {
-        const Icon = s.icon;
-        const isActive = i === step;
-        const isComplete = i < step;
-        return (
-          <div key={s.label} className="flex items-center">
-            <div className="flex flex-col items-center">
-              <div
-                className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 ${
-                  isComplete
-                    ? 'bg-accent text-white'
-                    : isActive
-                      ? 'bg-primary text-white'
-                      : 'bg-surface-alt text-text-muted'
-                }`}
-              >
-                {isComplete ? (
-                  <Check className="w-4 h-4" />
-                ) : (
-                  <Icon className="w-4 h-4" />
-                )}
-              </div>
-              <span
-                className={`text-xs mt-1.5 font-medium ${
-                  isActive ? 'text-text-primary' : 'text-text-muted'
-                }`}
-              >
-                {s.label}
-              </span>
-            </div>
-            {i < STEPS.length - 1 && (
-              <div
-                className={`w-12 sm:w-20 h-0.5 mx-2 mb-5 ${
-                  i < step ? 'bg-accent' : 'bg-border'
-                }`}
-              />
-            )}
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
 // ─── Component ──────────────────────────────────────────────────────────────
 
 export function RegistrationForm() {
@@ -209,8 +160,8 @@ export function RegistrationForm() {
       } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.company_email)) {
         errs.company_email = 'Please enter a valid email address';
       }
-      if (form.company_website && !/^(https?:\/\/)?[\w-]+(\.[\w-]+)+/.test(form.company_website)) {
-        errs.company_website = 'Please enter a valid website address';
+      if (form.company_website && !/^https?:\/\/.+\..+/.test(form.company_website)) {
+        errs.company_website = 'Please enter a valid URL (starting with http:// or https://)';
       }
       if (!form.address_line1.trim()) errs.address_line1 = 'Address is required';
       if (!form.city.trim()) errs.city = 'City is required';
@@ -263,12 +214,6 @@ export function RegistrationForm() {
     setLoading(true);
 
     try {
-      // Normalize website URL (add https:// if missing)
-      let normalizedWebsite = form.company_website?.trim();
-      if (normalizedWebsite && !/^https?:\/\//i.test(normalizedWebsite)) {
-        normalizedWebsite = `https://${normalizedWebsite}`;
-      }
-
       // Call server action to create user + company + link + coverage
       // User creation uses admin API (no confirmation email sent)
       const result = await registerPartner({
@@ -278,7 +223,7 @@ export function RegistrationForm() {
         companyName: form.company_name,
         companyPhone: form.company_phone,
         companyEmail: form.company_email,
-        companyWebsite: normalizedWebsite || undefined,
+        companyWebsite: form.company_website || undefined,
         addressLine1: form.address_line1,
         addressLine2: form.address_line2 || undefined,
         city: form.city,
@@ -312,11 +257,60 @@ export function RegistrationForm() {
       )
     : UK_POSTCODE_PREFIXES;
 
+  // ── Step indicator ───────────────────────────────────────────────────────
+
+  function StepIndicator() {
+    return (
+      <div className="flex items-center justify-center mb-8">
+        {STEPS.map((s, i) => {
+          const Icon = s.icon;
+          const isActive = i === step;
+          const isComplete = i < step;
+          return (
+            <div key={s.label} className="flex items-center">
+              <div className="flex flex-col items-center">
+                <div
+                  className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 ${
+                    isComplete
+                      ? 'bg-accent text-white'
+                      : isActive
+                        ? 'bg-primary text-white'
+                        : 'bg-surface-alt text-text-muted'
+                  }`}
+                >
+                  {isComplete ? (
+                    <Check className="w-5 h-5" />
+                  ) : (
+                    <Icon className="w-5 h-5" />
+                  )}
+                </div>
+                <span
+                  className={`text-xs mt-1.5 font-medium ${
+                    isActive ? 'text-text-primary' : 'text-text-muted'
+                  }`}
+                >
+                  {s.label}
+                </span>
+              </div>
+              {i < STEPS.length - 1 && (
+                <div
+                  className={`w-12 sm:w-20 h-0.5 mx-2 mb-5 ${
+                    i < step ? 'bg-accent' : 'bg-border'
+                  }`}
+                />
+              )}
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+
   // ── Render steps ─────────────────────────────────────────────────────────
 
   return (
     <div>
-      <StepIndicator step={step} />
+      <StepIndicator />
 
       {/* Global error */}
       {errors.general && (
@@ -441,8 +435,8 @@ export function RegistrationForm() {
                 <Input
                   id="company_website"
                   label="Website (optional)"
-                  type="text"
-                  placeholder="www.company.com"
+                  type="url"
+                  placeholder="https://www.company.com"
                   value={form.company_website}
                   onChange={(e) => updateField('company_website', e.target.value)}
                   error={errors.company_website}

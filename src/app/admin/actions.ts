@@ -162,7 +162,7 @@ export async function approveCompany(
         console.log('[admin/actions] User auth email:', userEmail || 'NOT FOUND');
 
         if (userEmail) {
-          const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.movefox.co.uk';
+          const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://movecompare.co.uk';
 
           if (isResendConfigured()) {
             // Resend is configured — generate magic link and send branded email
