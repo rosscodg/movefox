@@ -14,12 +14,15 @@ import {
   CheckCircle2,
   HeartHandshake,
   Star,
+  HelpCircle,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { FadeIn } from '@/components/ui/fade-in';
 import { CITIES } from '@/data/cities';
+import { JsonLd } from '@/components/seo/json-ld';
+import { FAQItem } from './faqs/faq-accordion';
 
 export const metadata: Metadata = {
   title: 'Compare UK Removal Companies — Get Free Quotes',
@@ -99,9 +102,69 @@ const features = [
   },
 ];
 
+const homeFaqs = [
+  {
+    q: 'How does MoveFox work?',
+    a: 'MoveFox is a free comparison service for UK home movers. Submit your move details through our short online form and we match you with up to 5 verified removal companies. They provide competitive quotes so you can compare prices, services, and reviews before choosing.',
+  },
+  {
+    q: 'Is MoveFox really free to use?',
+    a: 'Yes, MoveFox is completely free for homeowners. We never charge fees and there is no obligation to accept any quotes. Our service is funded by removal companies who pay a small fee when matched with your move.',
+  },
+  {
+    q: 'Are the removal companies verified?',
+    a: 'Every removal company on MoveFox goes through a verification process. We check public liability insurance, goods in transit insurance, business registration, and customer reviews. Only companies meeting our quality standards can quote on the platform.',
+  },
+  {
+    q: 'How many quotes will I receive?',
+    a: 'You can receive up to 5 quotes from verified removal companies. The exact number depends on availability in your area for your chosen dates. In most cases, you will receive multiple quotes within 24 to 48 hours.',
+  },
+  {
+    q: 'What types of moves do you cover?',
+    a: 'We cover local moves, long-distance moves across the UK, flat and house moves of all sizes, office relocations, student moves, and single-item deliveries. Include any specific requirements in your quote request.',
+  },
+  {
+    q: 'How is my data protected?',
+    a: 'All personal information is processed in accordance with UK GDPR regulations. Your data is encrypted, stored securely, and only shared with matched removal companies for providing quotes. We never sell your data to third parties.',
+  },
+];
+
 export default function HomePage() {
+  // JSON-LD: FAQPage schema for homepage FAQs
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: homeFaqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.q,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.a,
+      },
+    })),
+  };
+
+  // JSON-LD: HowTo schema for the "How It Works" section
+  const howToSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: 'How to Compare Removal Quotes on MoveFox',
+    description:
+      'Get up to 5 free quotes from verified UK removal companies in 4 simple steps.',
+    totalTime: 'PT2M',
+    step: steps.map((s, i) => ({
+      '@type': 'HowToStep',
+      name: s.title,
+      text: s.description,
+      position: i + 1,
+    })),
+  };
+
   return (
     <>
+      <JsonLd data={faqSchema} />
+      <JsonLd data={howToSchema} />
+
       {/* Hero Section */}
       <section className="relative overflow-hidden">
         {/* Background gradient effects */}
@@ -324,6 +387,43 @@ export default function HomePage() {
               <ArrowRight className="ml-2 w-4 h-4" />
             </Button>
           </Link>
+        </div>
+      </section>
+
+      {/* Homepage FAQs */}
+      <section className="bg-surface/50 border-y border-border">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+          <FadeIn>
+            <div className="text-center mb-12">
+              <Badge variant="primary" className="mb-4">
+                <HelpCircle className="w-3 h-3 mr-1" />
+                FAQs
+              </Badge>
+              <h2 className="text-3xl sm:text-4xl font-bold text-text-primary">
+                Common questions about MoveFox
+              </h2>
+              <p className="mt-4 text-text-secondary max-w-2xl mx-auto">
+                Everything you need to know about comparing removal quotes.
+              </p>
+            </div>
+          </FadeIn>
+
+          <FadeIn delay={100}>
+            <div className="bg-surface border border-border rounded-2xl px-6">
+              {homeFaqs.map((faq) => (
+                <FAQItem key={faq.q} question={faq.q} answer={faq.a} />
+              ))}
+            </div>
+          </FadeIn>
+
+          <div className="text-center mt-8">
+            <Link href="/faqs">
+              <Button variant="outline">
+                View All FAQs
+                <ArrowRight className="ml-2 w-4 h-4" />
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
 

@@ -88,6 +88,41 @@ export default async function CityPage({ params }: PageProps) {
     },
   };
 
+  // JSON-LD: HowTo schema for the city-specific How It Works section
+  const howToSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: `How to Get Removal Quotes in ${city.name}`,
+    description: `Get up to 5 free quotes from verified removal companies in ${city.name} in 4 simple steps.`,
+    totalTime: 'PT2M',
+    step: [
+      {
+        '@type': 'HowToStep',
+        name: 'Tell Us About Your Move',
+        text: `Fill in a few details about your move from ${city.name} — where you're going, your move date, and what needs moving.`,
+        position: 1,
+      },
+      {
+        '@type': 'HowToStep',
+        name: 'We Match You With Movers',
+        text: `We instantly match you with up to 5 verified removal companies covering ${city.name} and your destination area.`,
+        position: 2,
+      },
+      {
+        '@type': 'HowToStep',
+        name: 'Compare Quotes',
+        text: 'Receive competitive quotes from trusted movers. Compare prices, services, and reviews side by side.',
+        position: 3,
+      },
+      {
+        '@type': 'HowToStep',
+        name: 'Book Your Move',
+        text: "Choose the removal company that's right for you and book directly. No middleman fees, no obligation.",
+        position: 4,
+      },
+    ],
+  };
+
   // JSON-LD: FAQ schema
   const faqSchema = {
     '@context': 'https://schema.org',
@@ -105,6 +140,7 @@ export default async function CityPage({ params }: PageProps) {
   return (
     <>
       <JsonLd data={serviceSchema} />
+      <JsonLd data={howToSchema} />
       <JsonLd data={faqSchema} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">

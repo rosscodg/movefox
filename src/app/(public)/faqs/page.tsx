@@ -4,6 +4,7 @@ import { ArrowRight, HelpCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { FAQItem } from './faq-accordion';
+import { JsonLd } from '@/components/seo/json-ld';
 
 export const metadata: Metadata = {
   title: 'FAQs',
@@ -95,8 +96,26 @@ const faqs = [
 ];
 
 export default function FAQsPage() {
+  // Flatten all FAQs for the JSON-LD schema
+  const allFaqs = faqs.flatMap((section) => section.questions);
+
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: allFaqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.q,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.a,
+      },
+    })),
+  };
+
   return (
     <>
+      <JsonLd data={faqSchema} />
+
       {/* Hero */}
       <section className="relative overflow-hidden">
         <div

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
+import { JsonLd } from '@/components/seo/json-ld';
 import './globals.css';
 
 const inter = Inter({
@@ -31,6 +32,30 @@ const themeScript = `
 })();
 `;
 
+// Organization / LocalBusiness schema — rendered on every page
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: 'MoveFox',
+  url: 'https://movefox.co.uk',
+  logo: 'https://movefox.co.uk/logo-dark.svg',
+  description:
+    'Compare trusted UK removal companies and get up to 5 free, no-obligation quotes for your home move.',
+  areaServed: {
+    '@type': 'Country',
+    name: 'United Kingdom',
+  },
+  serviceType: 'Moving Services Comparison',
+  priceRange: 'Free',
+  sameAs: [],
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'customer service',
+    url: 'https://movefox.co.uk/contact',
+    availableLanguage: 'English',
+  },
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -40,6 +65,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <JsonLd data={organizationSchema} />
       </head>
       <body className={`${inter.variable} font-sans antialiased`} suppressHydrationWarning>
         <ThemeProvider>{children}</ThemeProvider>
