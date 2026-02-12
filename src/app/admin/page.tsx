@@ -179,14 +179,16 @@ async function getDashboardData() {
       .limit(5);
 
     const recentLeads = dbLeads && dbLeads.length > 0
-      ? dbLeads.map((l: Record<string, unknown>) => ({
-          ...l,
-          lead_assignments: undefined,
-          assignedCount: (l.lead_assignments as unknown[])?.length ?? 0,
-          revealedCount: (l.lead_assignments as { revealed_at: string | null }[])?.filter(
-            (a) => a.revealed_at !== null
-          ).length ?? 0,
-        }))
+      ? dbLeads.map((l) => {
+          const { lead_assignments, ...rest } = l as Lead & { lead_assignments: { id: string; revealed_at: string | null }[] };
+          return {
+            ...(rest as Lead),
+            assignedCount: lead_assignments?.length ?? 0,
+            revealedCount: lead_assignments?.filter(
+              (a) => a.revealed_at !== null
+            ).length ?? 0,
+          };
+        })
       : FALLBACK_LEADS;
 
     // Recent companies
