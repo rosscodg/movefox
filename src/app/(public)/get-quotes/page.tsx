@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback, type FormEvent } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import {
   MapPin,
   Calendar,
@@ -87,23 +87,15 @@ const INITIAL_VALUES: QuoteFormData = {
 
 export default function GetQuotesPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const [currentStep, setCurrentStep] = useState(0);
-  const [formData, setFormData] = useState<QuoteFormData>(() => {
-    const from = searchParams.get('from');
-    return {
-      ...INITIAL_VALUES,
-      consent: false as unknown as true,
-      ...(from ? { from_postcode: from.toUpperCase() } : {}),
-    };
-  });
+  const [formData, setFormData] = useState<QuoteFormData>({ ...INITIAL_VALUES, consent: false as unknown as true });
   const [errors, setErrors] = useState<FieldErrors>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   // Track transition direction for animation
-  const [, setDirection] = useState<'forward' | 'backward'>('forward');
+  const [direction, setDirection] = useState<'forward' | 'backward'>('forward');
   const [animating, setAnimating] = useState(false);
 
   // ------------------------------------------------------------------
@@ -289,7 +281,7 @@ export default function GetQuotesPage() {
                 {/* Connector line */}
                 {idx < STEPS.length - 1 && (
                   <div
-                    className={`w-10 sm:w-16 h-0.5 mx-1 sm:mx-2 mb-5 sm:mb-5 transition-colors duration-300 ${
+                    className={`w-10 sm:w-16 h-0.5 mx-1 sm:mx-2 sm:mb-5 transition-colors duration-300 ${
                       idx < currentStep ? 'bg-primary' : 'bg-border'
                     }`}
                   />
