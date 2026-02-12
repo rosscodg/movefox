@@ -25,25 +25,49 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // ── Verify env vars are set ─────────────────────────────────────
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    if (!supabaseUrl || !supabaseKey) {
+      console.error('[api/auth/login] Missing env vars:', {
+        hasUrl: !!supabaseUrl,
+        hasKey: !!supabaseKey,
+      });
+      return NextResponse.json(
+        { error: 'Server configuration error. Please contact support.' },
+        { status: 500 }
+      );
+    }
+
     // ── Call Supabase REST API directly ─────────────────────────────
-    const authRes = await fetch(
-      `${process.env.NEXT_PUBLIC_SUPABASE_URL}/auth/v1/token?grant_type=password`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-        },
-        body: JSON.stringify({ email, password }),
-      }
-    );
+    let authRes: Response;
+    try {
+      authRes = await fetch(
+        `${supabaseUrl}/auth/v1/token?grant_type=password`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            apikey: supabaseKey,
+          },
+          body: JSON.stringify({ email, password }),
+        }
+      );
+    } catch (fetchErr) {
+      console.error('[api/auth/login] Fetch to Supabase failed:', fetchErr);
+      return NextResponse.json(
+        { error: 'Unable to reach authentication service. Please try again.' },
+        { status: 502 }
+      );
+    }
 
     const authBody = await authRes.text();
     let data: Record<string, unknown>;
     try {
       data = JSON.parse(authBody);
     } catch {
-      console.error('[api/auth/login] Failed to parse auth response:', authBody);
+      console.error('[api/auth/login] Failed to parse auth response. Status:', authRes.status, 'Body:', authBody.substring(0, 500));
       return NextResponse.json(
         { error: 'Authentication service error. Please try again.' },
         { status: 500 }
@@ -62,8 +86,8 @@ export async function POST(request: NextRequest) {
     const response = NextResponse.json({ success: true });
 
     const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      supabaseUrl,
+      supabaseKey,
       {
         cookies: {
           getAll() {
