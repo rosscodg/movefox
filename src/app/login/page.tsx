@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type FormEvent } from 'react';
+import { Suspense, useState, type FormEvent } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { LogIn, Mail, ArrowRight, Sparkles } from 'lucide-react';
@@ -12,6 +12,20 @@ import { Card } from '@/components/ui/card';
 type AuthMode = 'password' | 'magic';
 
 export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center px-4 py-16 bg-background">
+          <div className="w-full max-w-md text-center text-text-muted">Loading...</div>
+        </div>
+      }
+    >
+      <LoginForm />
+    </Suspense>
+  );
+}
+
+function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get('redirect');
