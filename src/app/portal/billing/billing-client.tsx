@@ -170,7 +170,7 @@ export function BillingClient({
                 }`}
               >
                 {highlight && (
-                  <div className="absolute top-3 left-1/2 -translate-x-1/2">
+                  <div className="absolute top-1.5 left-1/2 -translate-x-1/2">
                     <Badge variant={isPopular ? 'primary' : 'success'}>
                       {highlight}
                     </Badge>
