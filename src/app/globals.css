@@ -88,6 +88,27 @@ html {
   background: var(--border-light);
 }
 
+/* Pointer cursor on all interactive elements */
+a,
+button,
+select,
+summary,
+label[for],
+input[type="checkbox"],
+input[type="radio"],
+input[type="submit"],
+input[type="reset"],
+input[type="button"],
+input[type="file"],
+[role="button"],
+[role="tab"],
+[role="link"],
+[role="menuitem"],
+[role="option"],
+[tabindex]:not([tabindex="-1"]) {
+  cursor: pointer;
+}
+
 /* Focus styles */
 *:focus-visible {
   outline: 2px solid #7c3aed;
@@ -97,4 +118,32 @@ html {
 /* Form input base styles */
 input, textarea, select {
   font-family: inherit;
+}
+
+/* ── Animations ── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
