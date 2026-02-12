@@ -209,8 +209,16 @@ export function RegistrationForm() {
       } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.company_email)) {
         errs.company_email = 'Please enter a valid email address';
       }
-      if (form.company_website && !/^https?:\/\/.+\..+/.test(form.company_website)) {
-        errs.company_website = 'Please enter a valid URL (starting with http:// or https://)';
+      if (form.company_website) {
+        // Auto-prepend https:// if the user omitted a protocol
+        let url = form.company_website.trim();
+        if (url && !/^https?:\/\//i.test(url)) {
+          url = `https://${url}`;
+          updateField('company_website', url);
+        }
+        if (!/^https?:\/\/.+\..+/.test(url)) {
+          errs.company_website = 'Please enter a valid website (e.g. example.com)';
+        }
       }
       if (!form.address_line1.trim()) errs.address_line1 = 'Address is required';
       if (!form.city.trim()) errs.city = 'City is required';

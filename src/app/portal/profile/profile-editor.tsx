@@ -86,7 +86,9 @@ export function ProfileEditor({
         postcode: form.postcode || null,
         phone: form.phone || null,
         email: form.email || null,
-        website: form.website || null,
+        website: form.website
+          ? (/^https?:\/\//i.test(form.website) ? form.website : `https://${form.website}`)
+          : null,
         services: form.services,
         insurance_details: form.insurance_details || null,
         accreditations: form.accreditations,

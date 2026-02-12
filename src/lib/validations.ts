@@ -2,6 +2,18 @@ import { z } from 'zod';
 
 const ukPostcodeRegex = /^[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}$/i;
 
+/** Accepts URLs with or without a protocol; auto-prepends https:// */
+const websiteSchema = z
+  .string()
+  .transform((val) => {
+    const trimmed = val.trim();
+    if (!trimmed) return '';
+    return /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+  })
+  .pipe(
+    z.string().url('Please enter a valid website (e.g. example.com)').or(z.literal(''))
+  );
+
 export const quoteFormSchema = z.object({
   from_postcode: z
     .string()
@@ -45,7 +57,7 @@ export const companyProfileSchema = z.object({
   postcode: z.string().regex(ukPostcodeRegex).nullable(),
   phone: z.string().max(20).nullable(),
   email: z.string().email().nullable(),
-  website: z.string().url().nullable(),
+  website: websiteSchema.nullable(),
   services: z.array(z.string()),
   insurance_details: z.string().max(1000).nullable(),
   accreditations: z.array(z.string()),
@@ -70,7 +82,7 @@ export const partnerRegistrationSchema = z.object({
   company_name: z.string().min(2, 'Company name is required').max(200),
   company_phone: z.string().min(10, 'Please enter a valid phone number').max(20).regex(/^[\d\s+()-]+$/, 'Please enter a valid phone number'),
   company_email: z.string().email('Please enter a valid company email'),
-  company_website: z.string().url('Please enter a valid URL').or(z.literal('')).optional(),
+  company_website: websiteSchema.optional(),
   address_line1: z.string().min(1, 'Address is required').max(200),
   address_line2: z.string().max(200).optional(),
   city: z.string().min(1, 'City is required').max(100),
