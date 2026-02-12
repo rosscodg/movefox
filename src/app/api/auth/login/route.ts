@@ -69,7 +69,14 @@ export async function POST(request: NextRequest) {
     } catch {
       console.error('[api/auth/login] Failed to parse auth response. Status:', authRes.status, 'Body:', authBody.substring(0, 500));
       return NextResponse.json(
-        { error: 'Authentication service error. Please try again.' },
+        {
+          error: 'Authentication service error. Please try again.',
+          _debug: {
+            status: authRes.status,
+            bodyPreview: authBody.substring(0, 200),
+            url: supabaseUrl?.substring(0, 30) + '...',
+          },
+        },
         { status: 500 }
       );
     }
@@ -131,7 +138,10 @@ export async function POST(request: NextRequest) {
   } catch (err) {
     console.error('[api/auth/login] Unexpected error:', err);
     return NextResponse.json(
-      { error: 'An unexpected error occurred. Please try again.' },
+      {
+        error: 'An unexpected error occurred. Please try again.',
+        _debug: { message: String(err) },
+      },
       { status: 500 }
     );
   }
