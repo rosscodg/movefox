@@ -1,15 +1,25 @@
 import { Resend } from 'resend';
 
-const RESEND_API_KEY = process.env.RESEND_API_KEY;
-const resend = new Resend(RESEND_API_KEY);
+function getResend() {
+  return new Resend(process.env.RESEND_API_KEY);
+}
 
-const FROM_EMAIL = process.env.FROM_EMAIL || 'noreply@movecompare.co.uk';
-const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || 'MoveFox';
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://movecompare.co.uk';
+function getFromEmail() {
+  return process.env.FROM_EMAIL || 'noreply@movecompare.co.uk';
+}
+
+function getAppName() {
+  return process.env.NEXT_PUBLIC_APP_NAME || 'MoveFox';
+}
+
+function getAppUrl() {
+  return process.env.NEXT_PUBLIC_APP_URL || 'https://movecompare.co.uk';
+}
 
 /** Returns true when Resend is properly configured (not a placeholder key) */
 export function isResendConfigured(): boolean {
-  return !!RESEND_API_KEY && RESEND_API_KEY !== 're_placeholder' && RESEND_API_KEY.startsWith('re_');
+  const key = process.env.RESEND_API_KEY;
+  return !!key && key !== 're_placeholder' && key.startsWith('re_');
 }
 
 // ─── Lead confirmation email (sent to the mover) ─────────────────────────────
@@ -25,7 +35,7 @@ export async function sendLeadConfirmation(to: string, leadId: string) {
     <body style="margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background-color:#f9fafb;">
       <div style="max-width:560px;margin:40px auto;background:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
         <div style="background:#1e3a5f;padding:24px 32px;">
-          <h1 style="margin:0;color:#ffffff;font-size:20px;font-weight:600;">${APP_NAME}</h1>
+          <h1 style="margin:0;color:#ffffff;font-size:20px;font-weight:600;">${getAppName()}</h1>
         </div>
         <div style="padding:32px;">
           <h2 style="margin:0 0 16px;font-size:18px;color:#111827;">Your Quote Request Has Been Received</h2>
@@ -39,12 +49,12 @@ export async function sendLeadConfirmation(to: string, leadId: string) {
             <p style="margin:0;font-size:13px;color:#6b7280;">Reference: <strong style="color:#111827;">${leadId}</strong></p>
           </div>
           <p style="margin:0;font-size:14px;line-height:1.6;color:#4b5563;">
-            If you have any questions, please don't hesitate to <a href="${APP_URL}/contact" style="color:#1e3a5f;">contact us</a>.
+            If you have any questions, please don't hesitate to <a href="${getAppUrl()}/contact" style="color:#1e3a5f;">contact us</a>.
           </p>
         </div>
         <div style="padding:16px 32px;border-top:1px solid #e5e7eb;background:#f9fafb;">
           <p style="margin:0;font-size:12px;color:#9ca3af;text-align:center;">
-            &copy; ${new Date().getFullYear()} ${APP_NAME}. All rights reserved.
+            &copy; ${new Date().getFullYear()} ${getAppName()}. All rights reserved.
           </p>
         </div>
       </div>
@@ -52,10 +62,10 @@ export async function sendLeadConfirmation(to: string, leadId: string) {
     </html>
   `;
 
-  const { data, error } = await resend.emails.send({
-    from: `${APP_NAME} <${FROM_EMAIL}>`,
+  const { data, error } = await getResend().emails.send({
+    from: `${getAppName()} <${getFromEmail()}>`,
     to,
-    subject: `Your removal quote request has been received - ${APP_NAME}`,
+    subject: `Your removal quote request has been received - ${getAppName()}`,
     html,
   });
 
@@ -105,7 +115,7 @@ export async function sendNewLeadNotification(
     <body style="margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background-color:#f9fafb;">
       <div style="max-width:560px;margin:40px auto;background:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
         <div style="background:#1e3a5f;padding:24px 32px;">
-          <h1 style="margin:0;color:#ffffff;font-size:20px;font-weight:600;">${APP_NAME}</h1>
+          <h1 style="margin:0;color:#ffffff;font-size:20px;font-weight:600;">${getAppName()}</h1>
         </div>
         <div style="padding:32px;">
           <h2 style="margin:0 0 16px;font-size:18px;color:#111827;">New Lead Available</h2>
@@ -140,13 +150,13 @@ export async function sendNewLeadNotification(
           <p style="margin:0 0 24px;font-size:14px;line-height:1.6;color:#4b5563;">
             Log in to your portal to reveal the contact details and get in touch with this customer.
           </p>
-          <a href="${APP_URL}/portal" style="display:inline-block;background:#1e3a5f;color:#ffffff;font-size:14px;font-weight:500;text-decoration:none;padding:12px 24px;border-radius:6px;">
+          <a href="${getAppUrl()}/portal" style="display:inline-block;background:#1e3a5f;color:#ffffff;font-size:14px;font-weight:500;text-decoration:none;padding:12px 24px;border-radius:6px;">
             View Lead
           </a>
         </div>
         <div style="padding:16px 32px;border-top:1px solid #e5e7eb;background:#f9fafb;">
           <p style="margin:0;font-size:12px;color:#9ca3af;text-align:center;">
-            &copy; ${new Date().getFullYear()} ${APP_NAME}. All rights reserved.
+            &copy; ${new Date().getFullYear()} ${getAppName()}. All rights reserved.
           </p>
         </div>
       </div>
@@ -154,10 +164,10 @@ export async function sendNewLeadNotification(
     </html>
   `;
 
-  const { data, error } = await resend.emails.send({
-    from: `${APP_NAME} <${FROM_EMAIL}>`,
+  const { data, error } = await getResend().emails.send({
+    from: `${getAppName()} <${getFromEmail()}>`,
     to,
-    subject: `New removal lead available - ${APP_NAME}`,
+    subject: `New removal lead available - ${getAppName()}`,
     html,
   });
 
@@ -194,7 +204,7 @@ export async function sendPartnerApprovalEmail(
     <body style="margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background-color:#f9fafb;">
       <div style="max-width:560px;margin:40px auto;background:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
         <div style="background:linear-gradient(135deg, #10b981, #1e3a5f);padding:32px;">
-          <h1 style="margin:0 0 8px;color:#ffffff;font-size:24px;font-weight:700;">Welcome to ${APP_NAME}!</h1>
+          <h1 style="margin:0 0 8px;color:#ffffff;font-size:24px;font-weight:700;">Welcome to ${getAppName()}!</h1>
           <p style="margin:0;color:rgba(255,255,255,0.85);font-size:14px;">Your application has been approved</p>
         </div>
         <div style="padding:32px;">
@@ -208,12 +218,12 @@ export async function sendPartnerApprovalEmail(
             </a>
           </div>
           <p style="margin:0 0 8px;font-size:12px;color:#9ca3af;text-align:center;">
-            This link will expire in 24 hours. If it expires, you can request a new one from the <a href="${APP_URL}/login" style="color:#1e3a5f;">login page</a>.
+            This link will expire in 24 hours. If it expires, you can request a new one from the <a href="${getAppUrl()}/login" style="color:#1e3a5f;">login page</a>.
           </p>
         </div>
         <div style="padding:16px 32px;border-top:1px solid #e5e7eb;background:#f9fafb;">
           <p style="margin:0;font-size:12px;color:#9ca3af;text-align:center;">
-            &copy; ${new Date().getFullYear()} ${APP_NAME}. All rights reserved.
+            &copy; ${new Date().getFullYear()} ${getAppName()}. All rights reserved.
           </p>
         </div>
       </div>
@@ -221,10 +231,10 @@ export async function sendPartnerApprovalEmail(
     </html>
   `;
 
-  const { data, error } = await resend.emails.send({
-    from: `${APP_NAME} <${FROM_EMAIL}>`,
+  const { data, error } = await getResend().emails.send({
+    from: `${getAppName()} <${getFromEmail()}>`,
     to,
-    subject: `Welcome to ${APP_NAME} — Your application has been approved!`,
+    subject: `Welcome to ${getAppName()} — Your application has been approved!`,
     html,
   });
 
@@ -259,7 +269,7 @@ export async function sendPartnerRejectionEmail(
     <body style="margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background-color:#f9fafb;">
       <div style="max-width:560px;margin:40px auto;background:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
         <div style="background:#1e3a5f;padding:24px 32px;">
-          <h1 style="margin:0;color:#ffffff;font-size:20px;font-weight:600;">${APP_NAME}</h1>
+          <h1 style="margin:0;color:#ffffff;font-size:20px;font-weight:600;">${getAppName()}</h1>
         </div>
         <div style="padding:32px;">
           <h2 style="margin:0 0 16px;font-size:18px;color:#111827;">Application Update</h2>
@@ -268,12 +278,12 @@ export async function sendPartnerRejectionEmail(
           </p>
           ${messageHtml}
           <p style="margin:24px 0 0;font-size:14px;line-height:1.6;color:#4b5563;">
-            If you have any questions, please <a href="${APP_URL}/contact" style="color:#1e3a5f;">get in touch</a>.
+            If you have any questions, please <a href="${getAppUrl()}/contact" style="color:#1e3a5f;">get in touch</a>.
           </p>
         </div>
         <div style="padding:16px 32px;border-top:1px solid #e5e7eb;background:#f9fafb;">
           <p style="margin:0;font-size:12px;color:#9ca3af;text-align:center;">
-            &copy; ${new Date().getFullYear()} ${APP_NAME}. All rights reserved.
+            &copy; ${new Date().getFullYear()} ${getAppName()}. All rights reserved.
           </p>
         </div>
       </div>
@@ -281,10 +291,10 @@ export async function sendPartnerRejectionEmail(
     </html>
   `;
 
-  const { data, error } = await resend.emails.send({
-    from: `${APP_NAME} <${FROM_EMAIL}>`,
+  const { data, error } = await getResend().emails.send({
+    from: `${getAppName()} <${getFromEmail()}>`,
     to,
-    subject: `Application update - ${APP_NAME}`,
+    subject: `Application update - ${getAppName()}`,
     html,
   });
 
@@ -317,7 +327,7 @@ export async function sendNewPartnerNotification(details: NewPartnerDetails) {
     return null;
   }
 
-  const reviewUrl = `${APP_URL}/admin/companies/${details.companyId}`;
+  const reviewUrl = `${getAppUrl()}/admin/companies/${details.companyId}`;
 
   const servicesList = details.services.length > 0
     ? details.services.map((s) => s.replace(/_/g, ' ')).join(', ')
@@ -333,7 +343,7 @@ export async function sendNewPartnerNotification(details: NewPartnerDetails) {
     <body style="margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background-color:#f9fafb;">
       <div style="max-width:560px;margin:40px auto;background:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
         <div style="background:linear-gradient(135deg, #7c3aed, #1e3a5f);padding:24px 32px;">
-          <h1 style="margin:0 0 4px;color:#ffffff;font-size:20px;font-weight:600;">${APP_NAME} Admin</h1>
+          <h1 style="margin:0 0 4px;color:#ffffff;font-size:20px;font-weight:600;">${getAppName()} Admin</h1>
           <p style="margin:0;color:rgba(255,255,255,0.8);font-size:13px;">New partner application</p>
         </div>
         <div style="padding:32px;">
@@ -377,7 +387,7 @@ export async function sendNewPartnerNotification(details: NewPartnerDetails) {
         </div>
         <div style="padding:16px 32px;border-top:1px solid #e5e7eb;background:#f9fafb;">
           <p style="margin:0;font-size:12px;color:#9ca3af;text-align:center;">
-            &copy; ${new Date().getFullYear()} ${APP_NAME}. All rights reserved.
+            &copy; ${new Date().getFullYear()} ${getAppName()}. All rights reserved.
           </p>
         </div>
       </div>
@@ -385,10 +395,10 @@ export async function sendNewPartnerNotification(details: NewPartnerDetails) {
     </html>
   `;
 
-  const { data, error } = await resend.emails.send({
-    from: `${APP_NAME} <${FROM_EMAIL}>`,
+  const { data, error } = await getResend().emails.send({
+    from: `${getAppName()} <${getFromEmail()}>`,
     to: adminEmail,
-    subject: `New partner application: ${details.companyName} — ${APP_NAME}`,
+    subject: `New partner application: ${details.companyName} — ${getAppName()}`,
     html,
   });
 
@@ -419,7 +429,7 @@ export async function sendLowCreditWarning(
     <body style="margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background-color:#f9fafb;">
       <div style="max-width:560px;margin:40px auto;background:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
         <div style="background:#1e3a5f;padding:24px 32px;">
-          <h1 style="margin:0;color:#ffffff;font-size:20px;font-weight:600;">${APP_NAME}</h1>
+          <h1 style="margin:0;color:#ffffff;font-size:20px;font-weight:600;">${getAppName()}</h1>
         </div>
         <div style="padding:32px;">
           <h2 style="margin:0 0 16px;font-size:18px;color:#111827;">Low Credit Balance</h2>
@@ -434,13 +444,13 @@ export async function sendLowCreditWarning(
           <p style="margin:0 0 24px;font-size:14px;line-height:1.6;color:#4b5563;">
             Without enough credits, you won't be able to reveal new lead contact details. Top up now to avoid missing out on potential customers.
           </p>
-          <a href="${APP_URL}/portal/billing" style="display:inline-block;background:#1e3a5f;color:#ffffff;font-size:14px;font-weight:500;text-decoration:none;padding:12px 24px;border-radius:6px;">
+          <a href="${getAppUrl()}/portal/billing" style="display:inline-block;background:#1e3a5f;color:#ffffff;font-size:14px;font-weight:500;text-decoration:none;padding:12px 24px;border-radius:6px;">
             Buy Credits
           </a>
         </div>
         <div style="padding:16px 32px;border-top:1px solid #e5e7eb;background:#f9fafb;">
           <p style="margin:0;font-size:12px;color:#9ca3af;text-align:center;">
-            &copy; ${new Date().getFullYear()} ${APP_NAME}. All rights reserved.
+            &copy; ${new Date().getFullYear()} ${getAppName()}. All rights reserved.
           </p>
         </div>
       </div>
@@ -448,10 +458,10 @@ export async function sendLowCreditWarning(
     </html>
   `;
 
-  const { data, error } = await resend.emails.send({
-    from: `${APP_NAME} <${FROM_EMAIL}>`,
+  const { data, error } = await getResend().emails.send({
+    from: `${getAppName()} <${getFromEmail()}>`,
     to,
-    subject: `Low credit balance - ${APP_NAME}`,
+    subject: `Low credit balance - ${getAppName()}`,
     html,
   });
 
