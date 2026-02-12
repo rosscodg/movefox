@@ -8,6 +8,7 @@ import { ThemeToggle } from '@/components/theme-toggle';
 
 const navLinks = [
   { href: '/how-it-works', label: 'How It Works' },
+  { href: '/removals', label: 'Locations' },
   { href: '/get-quotes', label: 'Get Quotes' },
   { href: '/faqs', label: 'FAQs' },
   { href: '/contact', label: 'Contact' },
@@ -36,7 +37,7 @@ export function Nav() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="px-4 py-2 text-sm text-text-secondary hover:text-text-primary transition-colors rounded-lg hover:bg-surface-alt"
+                className="relative px-4 py-2 text-sm text-text-secondary hover:text-text-primary transition-colors rounded-lg hover:bg-surface-alt after:absolute after:bottom-0 after:left-2 after:right-2 after:h-0.5 after:bg-primary after:rounded-full after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-200 after:origin-left"
               >
                 {link.label}
               </Link>
@@ -63,43 +64,71 @@ export function Nav() {
             <ThemeToggle />
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="p-2 text-text-secondary hover:text-text-primary"
+              className="relative w-10 h-10 flex items-center justify-center text-text-secondary hover:text-text-primary"
               aria-label="Toggle menu"
+              aria-expanded={mobileOpen}
             >
-              {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+              <Menu
+                size={24}
+                className={`absolute transition-all duration-300 ${
+                  mobileOpen ? 'opacity-0 rotate-90 scale-75' : 'opacity-100 rotate-0 scale-100'
+                }`}
+              />
+              <X
+                size={24}
+                className={`absolute transition-all duration-300 ${
+                  mobileOpen ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-75'
+                }`}
+              />
             </button>
           </div>
         </div>
 
-        {/* Mobile menu */}
-        {mobileOpen && (
-          <div className="md:hidden pb-4 border-t border-border mt-2 pt-4">
-            <div className="flex flex-col gap-1">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="px-4 py-3 text-text-secondary hover:text-text-primary hover:bg-surface-alt rounded-lg transition-colors"
+        {/* Mobile menu — always in DOM, animated with grid-rows */}
+        <div
+          className={`md:hidden grid transition-[grid-template-rows] duration-300 ease-out ${
+            mobileOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+          }`}
+          aria-hidden={!mobileOpen}
+        >
+          <div className="overflow-hidden min-h-0">
+            <div className="pb-4 border-t border-border mt-2 pt-4">
+              <div className="flex flex-col gap-1">
+                {navLinks.map((link, i) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setMobileOpen(false)}
+                    className={`px-4 py-3 text-text-secondary hover:text-text-primary hover:bg-surface-alt rounded-lg transition-[opacity,translate] duration-300 ease-out ${
+                      mobileOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
+                    }`}
+                    style={{ transitionDelay: mobileOpen ? `${i * 50}ms` : '0ms' }}
+                    tabIndex={mobileOpen ? 0 : -1}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+                <div
+                  className={`flex flex-col gap-2 mt-4 px-4 transition-[opacity,translate] duration-300 ease-out ${
+                    mobileOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
+                  }`}
+                  style={{ transitionDelay: mobileOpen ? `${navLinks.length * 50}ms` : '0ms' }}
                 >
-                  {link.label}
-                </Link>
-              ))}
-              <div className="flex flex-col gap-2 mt-4 px-4">
-                <Link href="/login">
-                  <Button variant="outline" className="w-full">
-                    Partner Login
-                  </Button>
-                </Link>
-                <Link href="/get-quotes">
-                  <Button className="w-full">
-                    Get Free Quotes →
-                  </Button>
-                </Link>
+                  <Link href="/login" tabIndex={mobileOpen ? 0 : -1}>
+                    <Button variant="outline" className="w-full">
+                      Partner Login
+                    </Button>
+                  </Link>
+                  <Link href="/get-quotes" tabIndex={mobileOpen ? 0 : -1}>
+                    <Button className="w-full">
+                      Get Free Quotes →
+                    </Button>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
-        )}
+        </div>
       </nav>
     </header>
   );
