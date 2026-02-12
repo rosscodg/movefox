@@ -1,14 +1,14 @@
 import Image from 'next/image';
 
 interface LogoProps {
-  /** Height in pixels — width scales proportionally (logo aspect ratio ~4:3) */
+  /** Height in pixels — width scales proportionally (logo aspect ratio 5:1) */
   height?: number;
   className?: string;
 }
 
 export function Logo({ height = 32, className }: LogoProps) {
-  // Original SVG is 1024×768 → aspect ratio ~1.333
-  const width = Math.round(height * (1024 / 768));
+  // Cropped SVG viewBox is 800×160 → aspect ratio 5:1
+  const width = Math.round(height * (800 / 160));
 
   return (
     <>
