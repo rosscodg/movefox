@@ -69,7 +69,7 @@ const LONDON_PREFIXES = ['E', 'EC', 'N', 'NW', 'SE', 'SW', 'W', 'WC'];
 
 function StepIndicator({ step }: { step: number }) {
   return (
-    <div className="flex justify-center mb-8">
+    <div className="flex justify-center mt-8 mb-8">
       {STEPS.map((s, i) => {
         const Icon = s.icon;
         const isActive = i === step;
