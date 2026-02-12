@@ -76,7 +76,7 @@ function StepIndicator({ step }: { step: number }) {
         const isComplete = i < step;
         return (
           <div key={s.label} className="flex items-center">
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center mt-[5px]">
               <div
                 className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 ${
                   isComplete
