@@ -61,12 +61,7 @@ function LoginForm() {
         body: JSON.stringify({ email, password }),
       });
 
-      console.log('[login] Response status:', res.status, 'type:', res.type, 'ok:', res.ok);
-      console.log('[login] Response headers:', Object.fromEntries(res.headers.entries()));
-
-      // Read body as text first so we can debug empty responses
       const text = await res.text();
-      console.log('[login] Response body length:', text.length, 'body:', text.substring(0, 500));
 
       if (!text) {
         setError('Server returned an empty response. Please try again.');
@@ -77,8 +72,7 @@ function LoginForm() {
       let result: Record<string, unknown>;
       try {
         result = JSON.parse(text);
-      } catch (parseErr) {
-        console.error('[login] JSON parse error:', parseErr, 'raw text:', text);
+      } catch {
         setError('Unexpected response from server. Please try again.');
         setLoading(false);
         return;
