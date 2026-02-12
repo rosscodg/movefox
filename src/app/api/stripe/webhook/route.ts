@@ -3,19 +3,9 @@ import Stripe from 'stripe';
 import { createAdminClient } from '@/lib/supabase/server';
 
 function getStripe() {
-  const key = process.env.STRIPE_SECRET_KEY;
-  if (!key) {
-    throw new Error('STRIPE_SECRET_KEY is not configured');
-  }
-  return new Stripe(key);
-}
-
-function getWebhookSecret() {
-  const secret = process.env.STRIPE_WEBHOOK_SECRET;
-  if (!secret) {
-    throw new Error('STRIPE_WEBHOOK_SECRET is not configured');
-  }
-  return secret;
+  return new Stripe(process.env.STRIPE_SECRET_KEY!, {
+    apiVersion: '2026-01-28.clover',
+  });
 }
 
 // ─── POST /api/stripe/webhook ────────────────────────────────────────────────
@@ -37,8 +27,7 @@ export async function POST(request: NextRequest) {
 
     // Verify webhook signature
     try {
-      const stripe = getStripe();
-      event = stripe.webhooks.constructEvent(body, signature, getWebhookSecret());
+      event = getStripe().webhooks.constructEvent(body, signature, process.env.STRIPE_WEBHOOK_SECRET!);
     } catch (err) {
       console.error('[stripe/webhook] Signature verification failed:', err);
       return NextResponse.json(
