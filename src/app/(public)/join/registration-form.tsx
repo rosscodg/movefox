@@ -69,14 +69,14 @@ const LONDON_PREFIXES = ['E', 'EC', 'N', 'NW', 'SE', 'SW', 'W', 'WC'];
 
 function StepIndicator({ step }: { step: number }) {
   return (
-    <div className="flex items-center justify-center mb-8">
+    <div className="flex justify-center mb-8">
       {STEPS.map((s, i) => {
         const Icon = s.icon;
         const isActive = i === step;
         const isComplete = i < step;
         return (
-          <div key={s.label} className="flex items-center">
-            <div className="flex flex-col items-center mt-[5px]">
+          <div key={s.label} className="flex items-start">
+            <div className="flex flex-col items-center">
               <div
                 className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 ${
                   isComplete
@@ -101,11 +101,13 @@ function StepIndicator({ step }: { step: number }) {
               </span>
             </div>
             {i < STEPS.length - 1 && (
-              <div
-                className={`w-12 sm:w-20 h-0.5 mx-2 mb-5 ${
-                  i < step ? 'bg-accent' : 'bg-border'
-                }`}
-              />
+              <div className="h-10 flex items-center">
+                <div
+                  className={`w-12 sm:w-20 h-0.5 mx-2 ${
+                    i < step ? 'bg-accent' : 'bg-border'
+                  }`}
+                />
+              </div>
             )}
           </div>
         );
