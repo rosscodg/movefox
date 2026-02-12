@@ -14,6 +14,7 @@ import {
   Newspaper,
   ClipboardList,
 } from 'lucide-react';
+import { Logo } from '@/components/ui/logo';
 
 interface AdminTopBarProps {
   user: {
@@ -85,11 +86,8 @@ export function AdminTopBar({ user }: AdminTopBarProps) {
             className="w-64 h-full bg-surface border-r border-border p-4"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center gap-2 mb-6 px-3">
-              <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-                <span className="text-white font-bold text-sm">MC</span>
-              </div>
-              <span className="text-text-primary font-semibold text-lg">MoveFox</span>
+            <div className="flex items-center mb-6 px-3">
+              <Logo height={32} />
             </div>
             <nav className="space-y-1">
               {mobileNavItems.map((item) => {

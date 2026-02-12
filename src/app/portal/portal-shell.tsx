@@ -16,6 +16,7 @@ import {
   User,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { Logo } from '@/components/ui/logo';
 
 interface PortalShellProps {
   companyName: string;
@@ -66,13 +67,8 @@ export function PortalShell({
       >
         {/* Logo area */}
         <div className="h-16 flex items-center justify-between px-5 border-b border-border">
-          <Link href="/portal" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-              <Building2 className="w-4 h-4 text-white" />
-            </div>
-            <span className="text-lg font-bold text-text-primary">
-              Lead Manager
-            </span>
+          <Link href="/portal" className="flex items-center">
+            <Logo height={32} />
           </Link>
           <button
             className="lg:hidden text-text-muted hover:text-text-primary"

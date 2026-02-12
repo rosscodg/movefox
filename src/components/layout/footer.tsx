@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { Logo } from '@/components/ui/logo';
 
 const footerLinks = {
   company: [
@@ -24,13 +27,8 @@ export function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand */}
           <div>
-            <Link href="/" className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-                <span className="text-white font-bold text-sm">M</span>
-              </div>
-              <span className="text-lg font-bold text-text-primary">
-                Move<span className="text-primary">Fox</span>
-              </span>
+            <Link href="/" className="flex items-center mb-4">
+              <Logo height={32} />
             </Link>
             <p className="text-sm text-text-secondary leading-relaxed">
               Compare trusted UK removal companies and get up to 5 free quotes for your home move.

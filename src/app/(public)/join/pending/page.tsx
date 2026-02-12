@@ -4,6 +4,7 @@ import { Clock, Mail, ArrowRight, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Logo } from '@/components/ui/logo';
 
 export const metadata: Metadata = {
   title: 'Application Submitted',
@@ -16,13 +17,8 @@ export default function PendingApprovalPage() {
       <div className="w-full max-w-lg">
         {/* Logo */}
         <div className="flex justify-center mb-8">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center">
-              <span className="text-white font-bold text-base">M</span>
-            </div>
-            <span className="text-xl font-bold text-text-primary">
-              Move<span className="text-primary">Fox</span>
-            </span>
+          <Link href="/">
+            <Logo height={40} />
           </Link>
         </div>
 

@@ -10,6 +10,7 @@ import {
   Newspaper,
   ClipboardList,
 } from 'lucide-react';
+import { Logo } from '@/components/ui/logo';
 
 const navItems = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
@@ -32,10 +33,7 @@ export function AdminSidebar() {
     <aside className="hidden lg:flex lg:w-64 lg:flex-col bg-surface border-r border-border">
       {/* Logo / Brand */}
       <div className="flex h-16 items-center gap-2 px-6 border-b border-border">
-        <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-          <span className="text-white font-bold text-sm">MC</span>
-        </div>
-        <span className="text-text-primary font-semibold text-lg">MoveFox</span>
+        <Logo height={32} />
       </div>
 
       {/* Navigation */}
