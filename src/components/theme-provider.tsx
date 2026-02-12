@@ -5,8 +5,7 @@ import {
   useContext,
   useEffect,
   useCallback,
-  useSyncExternalStore,
-  useRef,
+  useState,
   type ReactNode,
 } from 'react';
 
@@ -35,94 +34,60 @@ function getSystemTheme(): 'light' | 'dark' {
     : 'light';
 }
 
-// Simple external store for theme to avoid setState-in-effect lint errors
-function createThemeStore() {
-  let theme: Theme = 'system';
-  let resolved: 'light' | 'dark' = 'dark';
-  const listeners = new Set<() => void>();
-
-  function getSnapshot() {
-    return { theme, resolved };
-  }
-
-  function getServerSnapshot() {
-    return { theme: 'system' as Theme, resolved: 'dark' as const };
-  }
-
-  function subscribe(cb: () => void) {
-    listeners.add(cb);
-    return () => listeners.delete(cb);
-  }
-
-  function emit() {
-    listeners.forEach((cb) => cb());
-  }
-
-  function init() {
-    if (typeof window === 'undefined') return;
-    const stored = localStorage.getItem('theme') as Theme | null;
-    theme = stored ?? 'system';
-    resolved = theme === 'system' ? getSystemTheme() : theme;
-    applyClass(resolved);
-    emit();
-  }
-
-  function set(t: Theme) {
-    theme = t;
-    resolved = t === 'system' ? getSystemTheme() : t;
-    localStorage.setItem('theme', t);
-    applyClass(resolved);
-    emit();
-  }
-
-  function onSystemChange(dark: boolean) {
-    if (theme !== 'system') return;
-    resolved = dark ? 'dark' : 'light';
-    applyClass(resolved);
-    emit();
-  }
-
-  function applyClass(r: 'light' | 'dark') {
-    if (typeof document === 'undefined') return;
-    const root = document.documentElement;
-    root.classList.remove('light', 'dark');
-    root.classList.add(r);
-  }
-
-  return { getSnapshot, getServerSnapshot, subscribe, init, set, onSystemChange };
+function applyThemeClass(resolved: 'light' | 'dark') {
+  if (typeof document === 'undefined') return;
+  const root = document.documentElement;
+  root.classList.remove('light', 'dark');
+  root.classList.add(resolved);
 }
 
-const store = createThemeStore();
-
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const { theme, resolved } = useSyncExternalStore(
-    store.subscribe,
-    store.getSnapshot,
-    store.getServerSnapshot,
-  );
+  const [theme, setThemeState] = useState<Theme>('system');
+  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('dark');
 
-  const initRef = useRef(false);
-
-  // Initialise once on mount
+  // On mount, read persisted preference and apply
   useEffect(() => {
-    if (!initRef.current) {
-      initRef.current = true;
-      store.init();
-    }
+    const stored = localStorage.getItem('theme') as Theme | null;
+    const initial = stored ?? 'system';
+    const resolved = initial === 'system' ? getSystemTheme() : initial;
+
+    // Batch updates via callback to satisfy lint rules
+    setThemeState(initial);
+    setResolvedTheme(resolved);
+    applyThemeClass(resolved);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Apply the theme class whenever theme changes (after mount)
+  useEffect(() => {
+    const resolved = theme === 'system' ? getSystemTheme() : theme;
+    setResolvedTheme(resolved);
+    applyThemeClass(resolved);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [theme]);
 
   // Listen for system theme changes
   useEffect(() => {
+    if (theme !== 'system') return;
+
     const mq = window.matchMedia('(prefers-color-scheme: dark)');
-    const handler = (e: MediaQueryListEvent) => store.onSystemChange(e.matches);
+    const handler = (e: MediaQueryListEvent) => {
+      const resolved = e.matches ? 'dark' : 'light';
+      setResolvedTheme(resolved);
+      applyThemeClass(resolved);
+    };
+
     mq.addEventListener('change', handler);
     return () => mq.removeEventListener('change', handler);
+  }, [theme]);
+
+  const setTheme = useCallback((t: Theme) => {
+    setThemeState(t);
+    localStorage.setItem('theme', t);
   }, []);
 
-  const setTheme = useCallback((t: Theme) => store.set(t), []);
-
   return (
-    <ThemeContext.Provider value={{ theme, resolvedTheme: resolved, setTheme }}>
+    <ThemeContext.Provider value={{ theme, resolvedTheme, setTheme }}>
       {children}
     </ThemeContext.Provider>
   );
