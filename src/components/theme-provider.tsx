@@ -4,7 +4,9 @@ import {
   createContext,
   useContext,
   useEffect,
-  useState,
+  useCallback,
+  useSyncExternalStore,
+  useRef,
   type ReactNode,
 } from 'react';
 
@@ -33,55 +35,94 @@ function getSystemTheme(): 'light' | 'dark' {
     : 'light';
 }
 
-export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>('system');
-  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('dark');
-  const [mounted, setMounted] = useState(false);
+// Simple external store for theme to avoid setState-in-effect lint errors
+function createThemeStore() {
+  let theme: Theme = 'system';
+  let resolved: 'light' | 'dark' = 'dark';
+  const listeners = new Set<() => void>();
 
-  // On mount, read persisted preference
-  useEffect(() => {
+  function getSnapshot() {
+    return { theme, resolved };
+  }
+
+  function getServerSnapshot() {
+    return { theme: 'system' as Theme, resolved: 'dark' as const };
+  }
+
+  function subscribe(cb: () => void) {
+    listeners.add(cb);
+    return () => listeners.delete(cb);
+  }
+
+  function emit() {
+    listeners.forEach((cb) => cb());
+  }
+
+  function init() {
+    if (typeof window === 'undefined') return;
     const stored = localStorage.getItem('theme') as Theme | null;
-    const initial = stored ?? 'system';
-    setThemeState(initial);
-    setMounted(true);
-  }, []);
+    theme = stored ?? 'system';
+    resolved = theme === 'system' ? getSystemTheme() : theme;
+    applyClass(resolved);
+    emit();
+  }
 
-  // Apply the theme class whenever theme changes
-  useEffect(() => {
-    if (!mounted) return;
+  function set(t: Theme) {
+    theme = t;
+    resolved = t === 'system' ? getSystemTheme() : t;
+    localStorage.setItem('theme', t);
+    applyClass(resolved);
+    emit();
+  }
 
-    const resolved = theme === 'system' ? getSystemTheme() : theme;
-    setResolvedTheme(resolved);
+  function onSystemChange(dark: boolean) {
+    if (theme !== 'system') return;
+    resolved = dark ? 'dark' : 'light';
+    applyClass(resolved);
+    emit();
+  }
 
+  function applyClass(r: 'light' | 'dark') {
+    if (typeof document === 'undefined') return;
     const root = document.documentElement;
     root.classList.remove('light', 'dark');
-    root.classList.add(resolved);
-  }, [theme, mounted]);
+    root.classList.add(r);
+  }
+
+  return { getSnapshot, getServerSnapshot, subscribe, init, set, onSystemChange };
+}
+
+const store = createThemeStore();
+
+export function ThemeProvider({ children }: { children: ReactNode }) {
+  const { theme, resolved } = useSyncExternalStore(
+    store.subscribe,
+    store.getSnapshot,
+    store.getServerSnapshot,
+  );
+
+  const initRef = useRef(false);
+
+  // Initialise once on mount
+  useEffect(() => {
+    if (!initRef.current) {
+      initRef.current = true;
+      store.init();
+    }
+  }, []);
 
   // Listen for system theme changes
   useEffect(() => {
-    if (theme !== 'system') return;
-
     const mq = window.matchMedia('(prefers-color-scheme: dark)');
-    const handler = (e: MediaQueryListEvent) => {
-      const resolved = e.matches ? 'dark' : 'light';
-      setResolvedTheme(resolved);
-      const root = document.documentElement;
-      root.classList.remove('light', 'dark');
-      root.classList.add(resolved);
-    };
-
+    const handler = (e: MediaQueryListEvent) => store.onSystemChange(e.matches);
     mq.addEventListener('change', handler);
     return () => mq.removeEventListener('change', handler);
-  }, [theme]);
+  }, []);
 
-  function setTheme(t: Theme) {
-    setThemeState(t);
-    localStorage.setItem('theme', t);
-  }
+  const setTheme = useCallback((t: Theme) => store.set(t), []);
 
   return (
-    <ThemeContext.Provider value={{ theme, resolvedTheme, setTheme }}>
+    <ThemeContext.Provider value={{ theme, resolvedTheme: resolved, setTheme }}>
       {children}
     </ThemeContext.Provider>
   );

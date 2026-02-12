@@ -6,7 +6,6 @@ import {
   CreditCard,
   TrendingUp,
   TrendingDown,
-  ArrowUpRight,
   ArrowDownRight,
   Zap,
   Star,
@@ -14,7 +13,7 @@ import {
   RefreshCw,
   Receipt,
 } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import type { CreditLedger, CreditReason } from '@/types/database';
@@ -96,7 +95,7 @@ export function BillingClient({
       }
 
       if (data.url) {
-        window.location.href = data.url;
+        globalThis.location.assign(data.url);
       } else {
         alert('No checkout URL returned. Please try again.');
         setPurchasingPack(null);
