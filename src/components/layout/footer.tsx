@@ -31,7 +31,7 @@ export function Footer() {
               <Logo height={32} />
             </Link>
             <p className="text-sm text-text-secondary leading-relaxed">
-              Compare trusted UK removal companies and get up to 5 free quotes for your home move.
+              Compare trusted UK removal companies and get up to 5 free quotes for your home move. MoveFox is a division of Just Move In.
             </p>
           </div>
 
