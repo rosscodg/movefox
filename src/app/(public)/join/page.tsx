@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
-import { Building2 } from 'lucide-react';
+import { Building2, Gift } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { WELCOME_CREDITS } from '@/lib/constants';
 import { RegistrationFormLoader } from './registration-form-loader';
 
 export const metadata: Metadata = {
@@ -32,6 +33,12 @@ export default function JoinPage() {
               customers in your area. Register your company in just a few
               minutes.
             </p>
+            {WELCOME_CREDITS > 0 && (
+              <p className="mt-4 inline-flex items-center gap-1.5 text-sm text-text-secondary">
+                <Gift className="w-4 h-4 text-accent" />
+                Get {WELCOME_CREDITS} free credits when approved — no subscription required.
+              </p>
+            )}
           </div>
         </div>
       </section>

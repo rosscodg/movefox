@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { createClient, createAdminClient } from '@/lib/supabase/server';
 import { pricingRuleSchema } from '@/lib/validations';
 import { sendPartnerApprovalEmail, sendPartnerRejectionEmail, isResendConfigured } from '@/lib/email';
+import { WELCOME_CREDITS } from '@/lib/constants';
 import type { CompanyStatus } from '@/types/database';
 
 interface EmailOptions {
@@ -128,6 +129,70 @@ export async function approveCompany(
 
   let emailSent = false;
   let emailError: string | undefined;
+
+  // Grant welcome credits (idempotent — skips if already granted)
+  if (result.success && WELCOME_CREDITS > 0) {
+    try {
+      const supabaseForCredits = await createAdminClient();
+
+      // Idempotency: check if welcome credits were already granted
+      const { data: existingWelcome } = await supabaseForCredits
+        .from('credit_ledger')
+        .select('id')
+        .eq('company_id', companyId)
+        .eq('reference_type', 'welcome_credits')
+        .eq('reference_id', companyId)
+        .limit(1)
+        .maybeSingle();
+
+      if (!existingWelcome) {
+        // Get current balance
+        const { data: latestLedger } = await supabaseForCredits
+          .from('credit_ledger')
+          .select('balance_after')
+          .eq('company_id', companyId)
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .single();
+
+        const currentBalance = Number(latestLedger?.balance_after ?? 0);
+        const newBalance = currentBalance + WELCOME_CREDITS;
+
+        const { error: ledgerError } = await supabaseForCredits.from('credit_ledger').insert({
+          company_id: companyId,
+          delta: WELCOME_CREDITS,
+          balance_after: newBalance,
+          reason: 'adjustment',
+          reference_type: 'welcome_credits',
+          reference_id: companyId,
+          description: `Welcome credits for newly approved partner (${WELCOME_CREDITS} credits)`,
+        });
+
+        if (ledgerError) {
+          console.error('[admin/actions] Failed to grant welcome credits:', ledgerError);
+        } else {
+          // Audit log for welcome credits — use the admin user from verifyAdmin via updateCompanyStatus
+          // We need the actor ID; fetch it here since we're outside that scope
+          const adminClient = await createClient();
+          const { data: { user: adminUser } } = await adminClient.auth.getUser();
+          if (adminUser) {
+            await insertAuditLog(
+              supabaseForCredits,
+              adminUser.id,
+              'welcome_credits_granted',
+              'company',
+              companyId,
+              { balance: currentBalance },
+              { balance: newBalance, delta: WELCOME_CREDITS }
+            );
+          }
+        }
+      }
+    } catch (err) {
+      // Non-fatal: company was already approved, credits are a bonus
+      console.error('[admin/actions] Failed to process welcome credits:', err);
+    }
+  }
 
   if (result.success && emailOptions?.sendEmail) {
     try {

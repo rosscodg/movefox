@@ -59,3 +59,5 @@ export const CREDIT_PACKS = [
 ] as const;
 
 export const LOW_CREDIT_THRESHOLD = 5;
+
+export const WELCOME_CREDITS = 10;

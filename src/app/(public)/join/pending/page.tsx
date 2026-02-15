@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Clock, Mail, ArrowRight, Home } from 'lucide-react';
+import { Clock, Mail, ArrowRight, Home, Gift } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Logo } from '@/components/ui/logo';
+import { WELCOME_CREDITS } from '@/lib/constants';
 
 export const metadata: Metadata = {
   title: 'Application Submitted',
@@ -54,6 +55,12 @@ export default function PendingApprovalPage() {
                   Once approved, you can log in and start receiving move
                   requests in your area.
                 </p>
+                {WELCOME_CREDITS > 0 && (
+                  <p className="text-sm text-text-secondary mt-2 flex items-center gap-1.5">
+                    <Gift className="w-3.5 h-3.5 text-accent shrink-0" />
+                    You&apos;ll receive {WELCOME_CREDITS} free credits to get started.
+                  </p>
+                )}
               </div>
             </div>
           </div>
