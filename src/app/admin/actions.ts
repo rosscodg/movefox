@@ -591,7 +591,7 @@ export async function updateContent(
     }
 
     // Build update payload (only allow specific fields)
-    const allowedFields = ['title', 'body', 'meta_description', 'published', 'sort_order', 'slug', 'content_type', 'author', 'category', 'featured_image_url', 'read_time_minutes', 'excerpt'];
+    const allowedFields = ['title', 'body', 'meta_description', 'published', 'sort_order', 'slug', 'content_type', 'author', 'category', 'featured_image_url', 'read_time_minutes', 'excerpt', 'faqs'];
     const updateData: Record<string, unknown> = { updated_at: new Date().toISOString() };
 
     for (const field of allowedFields) {
@@ -673,6 +673,7 @@ export async function createContent(
       featured_image_url: (data.featured_image_url as string) ?? null,
       read_time_minutes: (data.read_time_minutes as number) ?? null,
       excerpt: (data.excerpt as string) ?? null,
+      faqs: (data.faqs as { question: string; answer: string }[]) ?? null,
     };
 
     const { data: created, error: insertError } = await supabase

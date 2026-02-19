@@ -61,6 +61,7 @@ export function ContentManager({ content }: ContentManagerProps) {
   const [formExcerpt, setFormExcerpt] = useState('');
   const [formFeaturedImageUrl, setFormFeaturedImageUrl] = useState('');
   const [formReadTimeMinutes, setFormReadTimeMinutes] = useState<number | ''>('');
+  const [formFaqs, setFormFaqs] = useState<{ question: string; answer: string }[]>([]);
 
   const filtered = useMemo(() => {
     return content.filter((c) => c.content_type === activeTab);
@@ -81,6 +82,7 @@ export function ContentManager({ content }: ContentManagerProps) {
     setFormExcerpt(item.excerpt ?? '');
     setFormFeaturedImageUrl(item.featured_image_url ?? '');
     setFormReadTimeMinutes(item.read_time_minutes ?? '');
+    setFormFaqs(item.faqs ?? []);
   }
 
   function startCreate() {
@@ -98,6 +100,7 @@ export function ContentManager({ content }: ContentManagerProps) {
     setFormExcerpt('');
     setFormFeaturedImageUrl('');
     setFormReadTimeMinutes('');
+    setFormFaqs([]);
   }
 
   function cancelEdit() {
@@ -123,6 +126,7 @@ export function ContentManager({ content }: ContentManagerProps) {
       excerpt: formExcerpt || null,
       featured_image_url: formFeaturedImageUrl || null,
       read_time_minutes: formReadTimeMinutes === '' ? null : Number(formReadTimeMinutes),
+      faqs: formFaqs.length > 0 ? formFaqs.filter(f => f.question && f.answer) : null,
     } : {};
 
     startTransition(async () => {
@@ -410,6 +414,65 @@ export function ContentManager({ content }: ContentManagerProps) {
                       </div>
                     </div>
                   </>
+                )}
+
+                {/* FAQ Editor (blog only) */}
+                {activeTab === 'blog' && (
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <label className="block text-sm font-medium text-text-primary">
+                        FAQs <span className="text-text-muted font-normal">(for AEO/GEO schema)</span>
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => setFormFaqs([...formFaqs, { question: '', answer: '' }])}
+                        className="text-xs text-primary hover:text-primary-hover font-medium flex items-center gap-1"
+                      >
+                        <Plus className="h-3 w-3" />
+                        Add FAQ
+                      </button>
+                    </div>
+                    {formFaqs.map((faq, idx) => (
+                      <div key={idx} className="p-3 bg-surface-alt rounded-xl border border-border space-y-2">
+                        <div className="flex items-start gap-2">
+                          <div className="flex-1 space-y-2">
+                            <input
+                              type="text"
+                              value={faq.question}
+                              onChange={(e) => {
+                                const updated = [...formFaqs];
+                                updated[idx] = { ...updated[idx], question: e.target.value };
+                                setFormFaqs(updated);
+                              }}
+                              className="w-full px-3 py-2 bg-surface border border-border rounded-lg text-text-primary placeholder:text-text-muted focus:border-primary focus:ring-1 focus:ring-primary transition-colors text-sm"
+                              placeholder="Question..."
+                            />
+                            <textarea
+                              rows={2}
+                              value={faq.answer}
+                              onChange={(e) => {
+                                const updated = [...formFaqs];
+                                updated[idx] = { ...updated[idx], answer: e.target.value };
+                                setFormFaqs(updated);
+                              }}
+                              className="w-full px-3 py-2 bg-surface border border-border rounded-lg text-text-primary placeholder:text-text-muted focus:border-primary focus:ring-1 focus:ring-primary transition-colors text-sm resize-y"
+                              placeholder="Answer..."
+                            />
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => setFormFaqs(formFaqs.filter((_, i) => i !== idx))}
+                            className="text-text-muted hover:text-danger transition-colors mt-1"
+                          >
+                            <X className="h-4 w-4" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                    {formFaqs.length === 0 && (
+                      <p className="text-xs text-text-muted">No FAQs added. Add Q&amp;A pairs to generate FAQPage schema for AI search engines.</p>
+                    )}
+                  </div>
                 )}
 
                 <div className="space-y-1.5">

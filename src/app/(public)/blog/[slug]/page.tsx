@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { Clock, User, Calendar, ArrowLeft } from 'lucide-react';
+import { Clock, User, Calendar, ArrowLeft, ChevronDown } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -82,9 +82,25 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     },
   };
 
+  // FAQPage JSON-LD for AEO/GEO optimisation
+  const faqs = Array.isArray(post.faqs) ? post.faqs : [];
+  const faqJsonLd = faqs.length > 0 ? {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((faq: { question: string; answer: string }) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer,
+      },
+    })),
+  } : null;
+
   return (
     <>
       <JsonLd data={blogPostingJsonLd} />
+      {faqJsonLd && <JsonLd data={faqJsonLd} />}
 
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16 sm:pt-20 sm:pb-24">
         {/* Breadcrumbs */}
@@ -151,6 +167,31 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           className="mt-10 prose prose-lg dark:prose-invert max-w-none prose-headings:text-text-primary prose-p:text-text-secondary prose-a:text-primary prose-strong:text-text-primary"
           dangerouslySetInnerHTML={{ __html: post.body }}
         />
+
+        {/* FAQ Section */}
+        {faqs.length > 0 && (
+          <section className="mt-12 pt-8 border-t border-border">
+            <h2 className="text-2xl font-bold text-text-primary mb-6">
+              Frequently Asked Questions
+            </h2>
+            <div className="space-y-3">
+              {faqs.map((faq: { question: string; answer: string }, idx: number) => (
+                <details
+                  key={idx}
+                  className="group bg-surface border border-border rounded-xl overflow-hidden"
+                >
+                  <summary className="flex items-center justify-between px-6 py-4 cursor-pointer hover:bg-surface-alt/50 transition-colors">
+                    <span className="text-text-primary font-medium pr-4">{faq.question}</span>
+                    <ChevronDown className="w-5 h-5 text-text-muted shrink-0 transition-transform group-open:rotate-180" />
+                  </summary>
+                  <div className="px-6 pb-4 text-text-secondary leading-relaxed">
+                    {faq.answer}
+                  </div>
+                </details>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Back to blog */}
         <div className="mt-12 pt-8 border-t border-border">

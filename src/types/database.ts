@@ -154,6 +154,7 @@ export interface CmsContent {
   featured_image_url: string | null;
   read_time_minutes: number | null;
   excerpt: string | null;
+  faqs: { question: string; answer: string }[] | null;
   created_at: string;
   updated_at: string;
 }
