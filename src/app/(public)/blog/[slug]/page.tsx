@@ -48,12 +48,8 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   };
 }
 
-// Blog posts are rendered on-demand (not statically generated at build time)
-// because createClient() depends on cookies() which isn't available during build.
-// Posts are cached after first request via Next.js default caching.
-export async function generateStaticParams() {
-  return [];
-}
+// Render on-demand — createClient() depends on cookies() so SSG is not possible
+export const dynamic = 'force-dynamic';
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params;
