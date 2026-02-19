@@ -591,7 +591,7 @@ export async function updateContent(
     }
 
     // Build update payload (only allow specific fields)
-    const allowedFields = ['title', 'body', 'meta_description', 'published', 'sort_order', 'slug', 'content_type'];
+    const allowedFields = ['title', 'body', 'meta_description', 'published', 'sort_order', 'slug', 'content_type', 'author', 'category', 'featured_image_url', 'read_time_minutes', 'excerpt'];
     const updateData: Record<string, unknown> = { updated_at: new Date().toISOString() };
 
     for (const field of allowedFields) {
@@ -623,6 +623,7 @@ export async function updateContent(
 
     revalidatePath('/admin');
     revalidatePath('/admin/content');
+    revalidatePath('/blog');
     return { success: true };
   } catch (error) {
     const message = error instanceof Error ? error.message : 'An unexpected error occurred';
@@ -667,6 +668,11 @@ export async function createContent(
       meta_description: (data.meta_description as string) ?? null,
       published: (data.published as boolean) ?? false,
       sort_order: (data.sort_order as number) ?? 0,
+      author: (data.author as string) ?? null,
+      category: (data.category as string) ?? null,
+      featured_image_url: (data.featured_image_url as string) ?? null,
+      read_time_minutes: (data.read_time_minutes as number) ?? null,
+      excerpt: (data.excerpt as string) ?? null,
     };
 
     const { data: created, error: insertError } = await supabase
@@ -693,6 +699,7 @@ export async function createContent(
 
     revalidatePath('/admin');
     revalidatePath('/admin/content');
+    revalidatePath('/blog');
     return { success: true, contentId: created.id };
   } catch (error) {
     const message = error instanceof Error ? error.message : 'An unexpected error occurred';

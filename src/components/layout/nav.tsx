@@ -12,6 +12,7 @@ const navLinks = [
   { href: '/removals', label: 'Locations' },
   { href: '/get-quotes', label: 'Get Quotes' },
   { href: '/faqs', label: 'FAQs' },
+  { href: '/blog', label: 'Blog' },
   { href: '/contact', label: 'Contact' },
 ];
 

@@ -149,6 +149,11 @@ export interface CmsContent {
   meta_description: string | null;
   published: boolean;
   sort_order: number;
+  author: string | null;
+  category: string | null;
+  featured_image_url: string | null;
+  read_time_minutes: number | null;
+  excerpt: string | null;
   created_at: string;
   updated_at: string;
 }

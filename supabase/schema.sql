@@ -491,3 +491,12 @@ create policy "Company users can upload to own folder"
 create policy "Anyone can view company assets"
   on storage.objects for select
   using (bucket_id = 'company-assets');
+
+-- ============================================================
+-- Migration: Add blog-specific columns to cms_content
+-- ============================================================
+alter table public.cms_content add column if not exists author text;
+alter table public.cms_content add column if not exists category text;
+alter table public.cms_content add column if not exists featured_image_url text;
+alter table public.cms_content add column if not exists read_time_minutes integer;
+alter table public.cms_content add column if not exists excerpt text;

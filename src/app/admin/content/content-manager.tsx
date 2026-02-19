@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useTransition } from 'react';
 import {
   Plus,
   Pencil,
@@ -11,12 +11,14 @@ import {
   BookOpen,
   Eye,
   EyeOff,
+  Loader2,
 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import type { CmsContent } from '@/types/database';
 import { formatDate } from '@/lib/dates';
+import { updateContent, createContent } from '@/app/admin/actions';
 
 interface ContentManagerProps {
   content: CmsContent[];
@@ -30,16 +32,35 @@ const tabs: { value: ContentTab; label: string; icon: React.ComponentType<{ clas
   { value: 'blog', label: 'Blog Posts', icon: BookOpen },
 ];
 
+const BLOG_CATEGORIES = ['Moving Tips', 'Guides', 'Industry News', 'Checklists'];
+
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
 export function ContentManager({ content }: ContentManagerProps) {
   const [activeTab, setActiveTab] = useState<ContentTab>('page');
   const [editingItem, setEditingItem] = useState<CmsContent | null>(null);
   const [isCreating, setIsCreating] = useState(false);
+  const [isPending, startTransition] = useTransition();
+  const [saveError, setSaveError] = useState<string | null>(null);
 
-  // Form state for editing/creating
+  // Form state
   const [formTitle, setFormTitle] = useState('');
   const [formBody, setFormBody] = useState('');
   const [formPublished, setFormPublished] = useState(false);
   const [formSortOrder, setFormSortOrder] = useState(0);
+  const [formSlug, setFormSlug] = useState('');
+  const [formMetaDescription, setFormMetaDescription] = useState('');
+  // Blog-specific fields
+  const [formAuthor, setFormAuthor] = useState('');
+  const [formCategory, setFormCategory] = useState('');
+  const [formExcerpt, setFormExcerpt] = useState('');
+  const [formFeaturedImageUrl, setFormFeaturedImageUrl] = useState('');
+  const [formReadTimeMinutes, setFormReadTimeMinutes] = useState<number | ''>('');
 
   const filtered = useMemo(() => {
     return content.filter((c) => c.content_type === activeTab);
@@ -48,51 +69,95 @@ export function ContentManager({ content }: ContentManagerProps) {
   function startEdit(item: CmsContent) {
     setEditingItem(item);
     setIsCreating(false);
+    setSaveError(null);
     setFormTitle(item.title);
     setFormBody(item.body);
     setFormPublished(item.published);
     setFormSortOrder(item.sort_order);
+    setFormSlug(item.slug);
+    setFormMetaDescription(item.meta_description ?? '');
+    setFormAuthor(item.author ?? '');
+    setFormCategory(item.category ?? '');
+    setFormExcerpt(item.excerpt ?? '');
+    setFormFeaturedImageUrl(item.featured_image_url ?? '');
+    setFormReadTimeMinutes(item.read_time_minutes ?? '');
   }
 
   function startCreate() {
     setEditingItem(null);
     setIsCreating(true);
+    setSaveError(null);
     setFormTitle('');
     setFormBody('');
     setFormPublished(false);
     setFormSortOrder(filtered.length + 1);
+    setFormSlug('');
+    setFormMetaDescription('');
+    setFormAuthor('');
+    setFormCategory('');
+    setFormExcerpt('');
+    setFormFeaturedImageUrl('');
+    setFormReadTimeMinutes('');
   }
 
   function cancelEdit() {
     setEditingItem(null);
     setIsCreating(false);
+    setSaveError(null);
+  }
+
+  function handleTitleChange(value: string) {
+    setFormTitle(value);
+    // Auto-generate slug for new items
+    if (isCreating) {
+      setFormSlug(slugify(value));
+    }
   }
 
   function handleSave() {
-    if (editingItem) {
-      // In production:
-      // await supabase.from('cms_content').update({
-      //   title: formTitle,
-      //   body: formBody,
-      //   published: formPublished,
-      //   sort_order: formSortOrder,
-      //   updated_at: new Date().toISOString(),
-      // }).eq('id', editingItem.id);
-      alert(`Updated content item: ${editingItem.id} — wire up server action`);
-    } else if (isCreating) {
-      // In production:
-      // const slug = formTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-      // await supabase.from('cms_content').insert({
-      //   slug,
-      //   content_type: activeTab,
-      //   title: formTitle,
-      //   body: formBody,
-      //   published: formPublished,
-      //   sort_order: formSortOrder,
-      // });
-      alert(`Create new ${activeTab} — wire up server action`);
-    }
-    cancelEdit();
+    setSaveError(null);
+
+    const blogFields = activeTab === 'blog' ? {
+      author: formAuthor || null,
+      category: formCategory || null,
+      excerpt: formExcerpt || null,
+      featured_image_url: formFeaturedImageUrl || null,
+      read_time_minutes: formReadTimeMinutes === '' ? null : Number(formReadTimeMinutes),
+    } : {};
+
+    startTransition(async () => {
+      if (editingItem) {
+        const result = await updateContent(editingItem.id, {
+          title: formTitle,
+          body: formBody,
+          published: formPublished,
+          sort_order: formSortOrder,
+          slug: formSlug,
+          meta_description: formMetaDescription || null,
+          ...blogFields,
+        });
+        if (!result.success) {
+          setSaveError(result.error ?? 'Failed to save');
+          return;
+        }
+      } else if (isCreating) {
+        const result = await createContent({
+          slug: formSlug || slugify(formTitle),
+          content_type: activeTab,
+          title: formTitle,
+          body: formBody,
+          published: formPublished,
+          sort_order: formSortOrder,
+          meta_description: formMetaDescription || null,
+          ...blogFields,
+        });
+        if (!result.success) {
+          setSaveError(result.error ?? 'Failed to create');
+          return;
+        }
+      }
+      cancelEdit();
+    });
   }
 
   const showForm = editingItem !== null || isCreating;
@@ -217,6 +282,12 @@ export function ContentManager({ content }: ContentManagerProps) {
                 </button>
               </div>
 
+              {saveError && (
+                <div className="mb-4 p-3 bg-danger/10 border border-danger/20 rounded-xl text-sm text-danger">
+                  {saveError}
+                </div>
+              )}
+
               <div className="space-y-4">
                 <div className="space-y-1.5">
                   <label htmlFor="content-title" className="block text-sm font-medium text-text-primary">
@@ -226,11 +297,120 @@ export function ContentManager({ content }: ContentManagerProps) {
                     id="content-title"
                     type="text"
                     value={formTitle}
-                    onChange={(e) => setFormTitle(e.target.value)}
+                    onChange={(e) => handleTitleChange(e.target.value)}
                     className="w-full px-4 py-3 bg-surface border border-border rounded-xl text-text-primary placeholder:text-text-muted focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
                     placeholder="Content title..."
                   />
                 </div>
+
+                <div className="space-y-1.5">
+                  <label htmlFor="content-slug" className="block text-sm font-medium text-text-primary">
+                    Slug
+                  </label>
+                  <input
+                    id="content-slug"
+                    type="text"
+                    value={formSlug}
+                    onChange={(e) => setFormSlug(e.target.value)}
+                    className="w-full px-4 py-3 bg-surface border border-border rounded-xl text-text-primary placeholder:text-text-muted focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-mono text-sm"
+                    placeholder="url-slug"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label htmlFor="content-meta" className="block text-sm font-medium text-text-primary">
+                    Meta Description
+                  </label>
+                  <textarea
+                    id="content-meta"
+                    rows={2}
+                    value={formMetaDescription}
+                    onChange={(e) => setFormMetaDescription(e.target.value)}
+                    className="w-full px-4 py-3 bg-surface border border-border rounded-xl text-text-primary placeholder:text-text-muted focus:border-primary focus:ring-1 focus:ring-primary transition-colors resize-y text-sm"
+                    placeholder="SEO meta description..."
+                  />
+                </div>
+
+                {/* Blog-specific fields */}
+                {activeTab === 'blog' && (
+                  <>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-1.5">
+                        <label htmlFor="content-author" className="block text-sm font-medium text-text-primary">
+                          Author
+                        </label>
+                        <input
+                          id="content-author"
+                          type="text"
+                          value={formAuthor}
+                          onChange={(e) => setFormAuthor(e.target.value)}
+                          className="w-full px-4 py-3 bg-surface border border-border rounded-xl text-text-primary placeholder:text-text-muted focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
+                          placeholder="Author name"
+                        />
+                      </div>
+                      <div className="space-y-1.5">
+                        <label htmlFor="content-category" className="block text-sm font-medium text-text-primary">
+                          Category
+                        </label>
+                        <select
+                          id="content-category"
+                          value={formCategory}
+                          onChange={(e) => setFormCategory(e.target.value)}
+                          className="w-full px-4 py-3 bg-surface border border-border rounded-xl text-text-primary focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
+                        >
+                          <option value="">Select category...</option>
+                          {BLOG_CATEGORIES.map((cat) => (
+                            <option key={cat} value={cat}>{cat}</option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <label htmlFor="content-excerpt" className="block text-sm font-medium text-text-primary">
+                        Excerpt
+                      </label>
+                      <textarea
+                        id="content-excerpt"
+                        rows={2}
+                        value={formExcerpt}
+                        onChange={(e) => setFormExcerpt(e.target.value)}
+                        className="w-full px-4 py-3 bg-surface border border-border rounded-xl text-text-primary placeholder:text-text-muted focus:border-primary focus:ring-1 focus:ring-primary transition-colors resize-y text-sm"
+                        placeholder="Short summary for blog cards..."
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-1.5">
+                        <label htmlFor="content-image" className="block text-sm font-medium text-text-primary">
+                          Featured Image URL
+                        </label>
+                        <input
+                          id="content-image"
+                          type="url"
+                          value={formFeaturedImageUrl}
+                          onChange={(e) => setFormFeaturedImageUrl(e.target.value)}
+                          className="w-full px-4 py-3 bg-surface border border-border rounded-xl text-text-primary placeholder:text-text-muted focus:border-primary focus:ring-1 focus:ring-primary transition-colors text-sm"
+                          placeholder="https://..."
+                        />
+                      </div>
+                      <div className="space-y-1.5">
+                        <label htmlFor="content-readtime" className="block text-sm font-medium text-text-primary">
+                          Read Time (min)
+                        </label>
+                        <input
+                          id="content-readtime"
+                          type="number"
+                          min="1"
+                          value={formReadTimeMinutes}
+                          onChange={(e) => setFormReadTimeMinutes(e.target.value ? parseInt(e.target.value) : '')}
+                          className="w-full px-4 py-3 bg-surface border border-border rounded-xl text-text-primary focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
+                          placeholder="5"
+                        />
+                      </div>
+                    </div>
+                  </>
+                )}
 
                 <div className="space-y-1.5">
                   <label htmlFor="content-body" className="block text-sm font-medium text-text-primary">
@@ -287,11 +467,15 @@ export function ContentManager({ content }: ContentManagerProps) {
                 </div>
 
                 <div className="flex gap-2 pt-4 border-t border-border">
-                  <Button variant="primary" className="gap-2" onClick={handleSave}>
-                    <Save className="h-4 w-4" />
+                  <Button variant="primary" className="gap-2" onClick={handleSave} disabled={isPending}>
+                    {isPending ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Save className="h-4 w-4" />
+                    )}
                     {isCreating ? 'Create' : 'Save Changes'}
                   </Button>
-                  <Button variant="ghost" onClick={cancelEdit}>
+                  <Button variant="ghost" onClick={cancelEdit} disabled={isPending}>
                     Cancel
                   </Button>
                 </div>
